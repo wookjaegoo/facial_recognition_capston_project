@@ -2,27 +2,31 @@ import React, { useEffect } from 'react';
 import './Profile.css'
 import useEth from '../contexts/EthContext/useEth';
 import { useState } from 'react';
-import {TiChevronLeftOutline, TiChevronRightOutline} from 'react-icons/ti';
 import { useRef } from 'react';
+
+import * as canvas from 'canvas';
+import * as faceapi from 'face-api.js';
+
+const { Canvas, Image, ImageData } = canvas;
+faceapi.env.monkeyPatch({
+  Canvas: HTMLCanvasElement,
+  Image: HTMLImageElement,
+  ImageData: ImageData,
+  Video: HTMLVideoElement,
+  createCanvasElement: () => document.createElement('canvas'),
+  createImageElement: () => document.createElement('img')
+  })
 
 
 function Profile() 
 {    
   var axios = require("axios").default;
   const[yournumber,numset]=useState("");
-  const [onChainUrl1, updateonChainUrl1] = useState("");
-  
+  const [onChainUrl1, updateonChainUrl1] = useState("");  
   const [onChainUrl2, updateonChainUrl2] = useState("");
-  const [imageUrl, updateImageUrl] = useState("");
-  const [imageUrl2, updateImageUrl2] = useState("");
-  // const [value, setValue] = useState("");
   const [isexist,setExist] = useState(false);  
   const [swap,setswap]=useState(true);
   const [swap1,setswap1]=useState(true);
-  
-  const [gprivateDetail,setgdetail]=useState(false);
-  
-  const [jprivateDetail,setjdetail]=useState(false);
 
   const{state: { contract, accounts,web3 } } = useEth();
 
@@ -31,8 +35,7 @@ function Profile()
 
   
 
-  const[inputs, setInputs] =
-  useState({number:'',name:'',number1:'',usage:'',location:'',date:'',member:'',severe:'',dgrade:'',guardian:'',relationship:'',duration:'',work:'',education:'',awards:'',institution:''});
+  const[inputs, setInputs] =  useState({number:''});
   const {number} =inputs;
 
   
@@ -131,203 +134,8 @@ function Profile()
       </div>
     );
   };
-  const Gdetailset=()=>
-  {
-    if(gprivateDetail==true)
-      {
-        setgdetail(false);
-      }
-      else{
-        setgdetail(true);
-      }
-  }
-
-  const Jdetailset=()=>
-  {
-    if(jprivateDetail==true)
-      {
-        setjdetail(false);
-      }
-      else{
-        setjdetail(true);
-      }
-  }
-
-  const AuSwap=()=>
-  {
-    if(au==true)
-      {
-        auSwap(false);
-      }
-      else{
-        auSwap(true);
-      }
-  }
-  
-  const JobSwap=()=>
-  {
-    if(job==true)
-      {
-        jobSwap(false);
-      }
-      else{                               
-        getqr3();
-        jobSwap(true);
-      }
-  }
-  
 
 
-const MAX_VISIBILITY = 3;
-
-
-const CardGrade = () => (
-  
-  <div >
-    {(!au)&&(isexist)&&<div className='Authentication2' onClick={AuSwap} >
-    <div className='dicbar' style={{textAlign:'right',marginBottom:'-300px'}}>
-          
-          <img src='logomy.png'></img>
-             </div>
-    <h1 style={{color:'white' , marginTop:'330px' ,textAlign:'left' }} >장애인 등급인증서</h1>
- 
-<div className='prbottom2'>
-    
-<div style={{textAlign:'left'}}>
-  </div>
-</div>
-</div>
-}
-<CardGrade2>
-</CardGrade2>
-  </div>
-);
-
-const CardGrade2 = ()=>
-( <div>
-{(au)&&<div className='Authentication2'>
-    <h1 style={{color:'white' , marginTop:'25%',fontSize:'40px'}}>등급인증서</h1>
-
-{(swap)&&<div >
-<img src="https://qrtiger.com/qr/YINX.png" className='animatedimage'></img>
-</div>}
-
-{(!swap)&&<div  >
-<img src="https://qrtiger.com/qr/4XQU.png"  className='animatedimage'></img>
-</div>
-}
-
-
- <div>
-
-<div style={{fontSize:15, color:'white' }}>
-<div>시간안에 인증해주세요</div>
-<Timer ss="15"></Timer>
-<div>필수 제출 정보</div>
-<span style={{border:'2px solid black' ,backgroundColor:'white' , color:'black'} }>나이</span>
-<span style={{border:'2px solid black' ,backgroundColor:'white' , color:'black'} }>장애정도</span>
-<br>
-</br>
-<span style={{border:'2px solid black' ,backgroundColor:'white' , color:'black'} }>취득일자</span>
-<span style={{border:'2px solid black' ,backgroundColor:'white' , color:'black'} }>용도</span>
-<span style={{border:'2px solid black' ,backgroundColor:'white' , color:'black'} }>발급처</span>
-</div>
-    </div>
-    
-    <div style={{textAlign:'center',display:'inline-block'}}>  
-    <br></br>
-  <button type='button' onClick={Gdetailset} style={{height:'30px'}} >상세보기</button>  
- <button type='button' onClick={()=>window.open(` https://goerli.etherscan.io/token/0xa08af44a2e0c88d1f9e12dad8ece694c4ff779ea?a=${number}`,'_blank')}  style={{height:'30px'}}>블록체인 기록</button>
-    
-<button type='button' onClick={()=>window.open(`${imageUrl}`,'_blank')}  style={{height:'30px'}}>등급 인증서 사진</button>
-  </div>
-
-  <div className='prbottom2' >
-    
-    </div>
-</div>
-
-}
-
-</div>
-
-  
-)
-
-const CardJob = () => (
-
-  <div>
-    {(!job)&&(isexist)&&<div className='Authentication2'   onClick={JobSwap}>
-    <div className='dicbar' style={{textAlign:'right',marginBottom:'-300px'}}>
-          
-          <img  src='logomy.png'></img>
-             </div>
-    <h1 style={{color:'white'  ,  marginTop:'300px' ,textAlign:'left' }}>본인 교육경력 인증서</h1>
- 
-<div className='prbottom2' >
-    
-<div style={{textAlign:'left'}}>
-  </div>
-</div>
-</div>
-}    
-
-<CardJob2>
-</CardJob2>
-
-  </div>
-);
-
-const CardJob2 = ()=>
-(
-  <div>
-    {(job)&&<div className='Authentication2'>
-   <h1  style={{color:'white', marginTop:'25%',fontSize:'40px'}}>경력인증서</h1>
-
-{(swap1)&&<div  >
-
-<img src="https://qrtiger.com/qr/E7NM.png" className='animatedimage'></img>
-</div>}
-
-{(!swap1)&&<div  >
-
-<img src="https://qrtiger.com/qr/4XQU.png" className='animatedimage'></img>
-</div>}
-
-
- <div>
-    
-<div style={{fontSize:15, color:'white' }}>
-<div>시간안에 인증해주세요</div>
-<Timer ss="15"></Timer>
-<div>필수 제출 정보</div>
-<span style={{border:'2px solid black' ,backgroundColor:'white' , color:'black'} }>나이</span>
-<br>
-</br>
-<span style={{border:'2px solid black' ,backgroundColor:'white' , color:'black'} }>취득일자</span>
-<span style={{border:'2px solid black' ,backgroundColor:'white' , color:'black'} }>용도</span>
-<span style={{border:'2px solid black' ,backgroundColor:'white' , color:'black'} }>발급기관</span>
-
-</div>
-    </div>
-     
-    <div style={{textAlign:'center',display:'inline-block'}} >
-  <br></br>
-  <button type='button' onClick={Jdetailset}  style={{height:'30px'}}>상세보기</button>
-    
-  <button type='button' onClick={()=>window.open(` https://goerli.etherscan.io/token/0xa08af44a2e0c88d1f9e12dad8ece694c4ff779ea?a=${number}`,'_blank')}  style={{height:'30px'}}>블록체인 기록</button>
-  
-  <button type='button' onClick={()=>window.open(`${imageUrl2}`,'_blank')}  style={{height:'30px'}}>경력 인증서 사진</button>
-    </div>
-    <div className='prbottom2' >
-    
-    </div>
-</div>
-
-}
-
-  </div>
-)
 
 
 
@@ -363,40 +171,7 @@ async function getqr()
       let autsrc=json1.links.images[0].장애인인증서;
       let autsrc1=json2.links.images[0].본인경력인증서;
 
-      // updatenumber(json1.number);
-      // updateName1(json1.name);
-      // updateusage1(json1.usage);
-      // updateloc(json1.location);
-      // updatedate1(json1.date);
-      // updatemember1(json1.member);
-      // updatesvere(json1.severe);
-      // updatedgrade(json1.dgrade);
-      // updateinstitution1(json1.institution);
-      // updateguardian(json1.guardian);
-      // updaterelationship(json1.relationship);
-      // updatesubmit1(json1.submit);
       
-    
-      
-      // updateName2(json2.name);
-      // updateusage2(json2.usage);
-      // updateduration(json2.duration);
-      // updatework(json2.work)
-      // updateeducation(json2.education);
-      // updateawards(json2.awards);
-      // updateinstitution2(json2.institution);
-      // updatesubmit2(json2.submit);
-      // updatedate2(json2.date);
-      // updatemember2(json2.member);
-    
-      
-
-      // updateonChainUrl1(gjson);
-      // updateonChainUrl2(jjson);
-      
-
-      // updateImageUrl(autsrc);
-      // updateImageUrl2(autsrc1);
       
 } 
 
@@ -594,6 +369,31 @@ axios.request(options3).then(function (response) {
     console.error(error);
   });
  }
+
+
+ const wrapRef = useRef<HTMLDivElement>(null);
+ const videoRef = useRef<HTMLVideoElement>(null);
+
+ const [isStartDetect, setIsStartDetect] = useState(false);
+ const [modelsLoaded, setModelsLoaded] = useState(false);
+
+async function facecam()
+{
+  await faceapi.nets.ssdMobilenetv1.loadFromUri('https://raw.githubusercontent.com/ml5js/ml5-data-and-models/main/models/faceapi/ssd_mobilenetv1_model-weights_manifest.json')
+  await faceapi.nets.faceLandmark68Net.loadFromUri('https://raw.githubusercontent.com/ml5js/ml5-data-and-models/main/models/faceapi/face_landmark_68_model-weights_manifest.json')
+  await faceapi.nets.faceLandmark68TinyNet.loadFromUri('https://raw.githubusercontent.com/ml5js/ml5-data-and-models/main/models/faceapi/face_landmark_68_tiny_model-weights_manifest.json')
+  await faceapi.nets.faceRecognitionNet.loadFromUri('https://raw.githubusercontent.com/ml5js/ml5-data-and-models/main/models/faceapi/face_recognition_model-weights_manifest.json')
+
+  const startVideo = () => {
+    setIsStartDetect(true);
+
+    // navigator.mediaDevices
+    //   .getUserMedia(constraints)
+    //   .then((stream) => ((videoRef.current as any).srcObject = stream))
+    //   .catch((err) => console.error(err));
+  };
+  
+}
 
 
 function authentifier()
