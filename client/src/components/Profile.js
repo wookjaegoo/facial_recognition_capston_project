@@ -35,32 +35,6 @@ function Profile()
   useState({number:'',name:'',number1:'',usage:'',location:'',date:'',member:'',severe:'',dgrade:'',guardian:'',relationship:'',duration:'',work:'',education:'',awards:'',institution:''});
   const {number} =inputs;
 
-  const [name1, updateName1] = useState("");
-  const [name2, updateName2] = useState("");
-  const [number1, updatenumber] = useState("");
-  const [usage1, updateusage1] = useState("");
-  const [usage2, updateusage2] = useState("");
-  const [location, updateloc] = useState("");
-  const [date1, updatedate1] = useState("");
-  const [date2, updatedate2] = useState("");
-  const [member1, updatemember1] = useState("");
-  const [member2, updatemember2] = useState("");
-  const [severe, updatesvere] = useState("");
-  const [dgrade, updatedgrade] = useState("");
-
-  const [guardian, updateguardian] = useState("");
-  const [relationship, updaterelationship] = useState("");
-  const [duration, updateduration] = useState("");
-  const [work, updatework] = useState("");
-
-  const [education, updateeducation] = useState("");
-  const [awards, updateawards] = useState("");
-  const [institution1, updateinstitution1] = useState("");
-  
-  const [institution2, updateinstitution2] = useState("");
-  const [submit1, updatesubmit1] = useState("");
-  const [submit2, updatesubmit2] = useState("");
-  
   
 
   async function howmany()
@@ -220,10 +194,6 @@ const CardGrade = () => (
 <div className='prbottom2'>
     
 <div style={{textAlign:'left'}}>
-<h2>성명:{name1}</h2>
-<h2>장애등급{dgrade}</h2>
-<h2>보호자명:{guardian}</h2>
-<h2>마지막 발급날짜:{date1}</h2>
   </div>
 </div>
 </div>
@@ -297,10 +267,6 @@ const CardJob = () => (
 <div className='prbottom2' >
     
 <div style={{textAlign:'left'}}>
-
-<h2>성명:{name2}</h2>
-<h2>생년월일{member2}</h2>
-<h2>성인여부:성인</h2>
   </div>
 </div>
 </div>
@@ -364,105 +330,6 @@ const CardJob2 = ()=>
 )
 
 
-const Carousel = ({children}) => {
-  const [active, setActive] = useState(1);
-  const count = React.Children.count(children);
-  //active 는 카드 개수같은데
-  useEffect(()=>{
-    if(au)
-  {
-    setActive(1);
-  }
-  else if(job)
-  {
-    setActive(0);
-  }
-  },[])
-  return (
-    
-    <div className='carousel'>
-      
-    {gprivateDetail&&  <div className='Authentication3' onClick={Gdetailset} >
-<h1 style={{marginLeft:'30px'}}>성명:{name1}</h1>
-<br></br>
-<h1 style={{marginLeft:'30px'}}>생년월일:{member1}</h1>
-<br></br>
-<h1 style={{marginLeft:'30px'}}>발급기관:{institution1}</h1>
-<br></br>
-<h1 style={{marginLeft:'30px'}}>발행날짜:{date1}</h1>
-<br></br>
-<h1 style={{marginLeft:'30px'}}>보호자:{guardian}</h1>
-<br></br>
-<h1 style={{marginLeft:'30px'}}>보호자와의 관계:{relationship}</h1>
-<br></br>
-<h1 style={{marginLeft:'30px'}}>등록번호:{number1}</h1>
-<br></br>
-<h1 style={{marginLeft:'30px'}}>장애등급:{dgrade}</h1>
-<br></br>
-<h1 style={{marginLeft:'30px'}}>중증여부:{severe}</h1>
-<br></br>
-<h1 style={{marginLeft:'30px'}}>소재지:{location}</h1>
-<br></br>
-<h1 style={{marginLeft:'30px'}}>제출처:{submit1}</h1>
-<br></br>
-<h1 style={{marginLeft:'30px'}}>사용목적:{usage1}</h1>
-<br></br>
-<h1 style={{textAlign:'center'}} >클릭시 창이 닫힙니다</h1>
-
-
-</div>
-}
-
-{jprivateDetail&&  <div className='Authentication3' onClick={Jdetailset} >
-<h1 style={{marginLeft:'30px'}}>성명:{name2}</h1>
-<br></br>
-<h1 style={{marginLeft:'30px'}}>생년월일:{member2}</h1>
-<br></br>
-<h1 style={{marginLeft:'30px'}}>교육기관:{institution2}</h1>
-<br></br>
-<h1 style={{marginLeft:'30px'}}>교육날짜:{date2}</h1>
-<br></br>
-<h1 style={{marginLeft:'30px'}}>교육시간:{duration}</h1>
-<br></br>
-<h1 style={{marginLeft:'30px'}}>담당업무:{work}</h1>
-<br></br>
-<h1 style={{marginLeft:'30px'}}>교육내역:{education}</h1>
-<br></br>
-<h1 style={{marginLeft:'30px'}}>수상내역:{awards}</h1>
-<br></br>
-<h1 style={{marginLeft:'30px'}}>제출처:{submit2}</h1>
-<br></br>
-<h1 style={{marginLeft:'30px'}}>사용목적:{usage2}</h1>
-<br></br>
-<h1  style={{textAlign:'center'}} >클릭시 창이 닫힙니다</h1>
-</div>
-}
-
-      {React.Children.map(children, (child, i) => (  
-        <div className='card-container' id={i} style={{
-            '--active': i === active ? 1 : 0,
-            '--offset': (active - i) / 4,
-            '--direction': Math.sign(active - i),
-            '--abs-offset': Math.abs(active - i) / 4,
-            'pointer-events': active === i ? 'auto' : 'none',
-            'opacity': Math.abs(active - i) >= MAX_VISIBILITY ? '0' : '1',
-            'display': Math.abs(active - i) > MAX_VISIBILITY ? 'none' : 'block',
-          }}>
-          {child}
-    
-          
-        </div>
-      ))}
-      
-      {(isexist)&&active > 0 && <button className='nav left' onClick={() => {setActive(i => i - 1);  auSwap(false); } }><TiChevronLeftOutline/></button>}
-      {(isexist)&&active < count - 1 && <button className='nav right' onClick={() => {setActive(i => i + 1);jobSwap(false); } }><TiChevronRightOutline/></button>}
-     
-    
-    
-    </div>
-  );
-};
-
 
 
 async function getqr()
@@ -496,40 +363,40 @@ async function getqr()
       let autsrc=json1.links.images[0].장애인인증서;
       let autsrc1=json2.links.images[0].본인경력인증서;
 
-      updatenumber(json1.number);
-      updateName1(json1.name);
-      updateusage1(json1.usage);
-      updateloc(json1.location);
-      updatedate1(json1.date);
-      updatemember1(json1.member);
-      updatesvere(json1.severe);
-      updatedgrade(json1.dgrade);
-      updateinstitution1(json1.institution);
-      updateguardian(json1.guardian);
-      updaterelationship(json1.relationship);
-      updatesubmit1(json1.submit);
+      // updatenumber(json1.number);
+      // updateName1(json1.name);
+      // updateusage1(json1.usage);
+      // updateloc(json1.location);
+      // updatedate1(json1.date);
+      // updatemember1(json1.member);
+      // updatesvere(json1.severe);
+      // updatedgrade(json1.dgrade);
+      // updateinstitution1(json1.institution);
+      // updateguardian(json1.guardian);
+      // updaterelationship(json1.relationship);
+      // updatesubmit1(json1.submit);
       
     
       
-      updateName2(json2.name);
-      updateusage2(json2.usage);
-      updateduration(json2.duration);
-      updatework(json2.work)
-      updateeducation(json2.education);
-      updateawards(json2.awards);
-      updateinstitution2(json2.institution);
-      updatesubmit2(json2.submit);
-      updatedate2(json2.date);
-      updatemember2(json2.member);
+      // updateName2(json2.name);
+      // updateusage2(json2.usage);
+      // updateduration(json2.duration);
+      // updatework(json2.work)
+      // updateeducation(json2.education);
+      // updateawards(json2.awards);
+      // updateinstitution2(json2.institution);
+      // updatesubmit2(json2.submit);
+      // updatedate2(json2.date);
+      // updatemember2(json2.member);
     
       
 
-      updateonChainUrl1(gjson);
-      updateonChainUrl2(jjson);
+      // updateonChainUrl1(gjson);
+      // updateonChainUrl2(jjson);
       
 
-      updateImageUrl(autsrc);
-      updateImageUrl2(autsrc1);
+      // updateImageUrl(autsrc);
+      // updateImageUrl2(autsrc1);
       
 } 
 
@@ -589,46 +456,6 @@ catch (error) {
 async function getqr2()
 {
 
-//   try {
-    
-    
-//     const Writer= await contract.methods.tokenURI(number).call();
-//     console.log(Writer)
-//     const response = await fetch(Writer);
-//       if(!response.ok)
-//       throw new Error(response.statusText);
-//       const json = await response.json();
-      
-
-       
-//       let gjson=json.links.loc[0].장애인인증서;
-//       let jjson=json.links.loc[1].본인경력인증서;
-
-//       const response1 = await fetch(gjson);
-//       if(!response1.ok)
-//       throw new Error(response1.statusText);
-//       const json1 = await response1.json();
-
-      
-//       const response2 = await fetch(jjson);
-//       if(!response2.ok)
-//       throw new Error(response2.statusText);
-//       const json2 = await response2.json();
-
-//       let autsrc=json1.links.images[0].장애인인증서;
-//       let autsrc1=json2.links.images[0].본인경력인증서;
-      
-      
-//       updateonChainUrl1(json1);
-//       updateonChainUrl1(json2);
-      
-//       updateImageUrl(autsrc);
-//       updateImageUrl2(autsrc1);
-        
-// } 
-
-// catch (error) {  
-// }
 
 
 var options2 = {
@@ -774,32 +601,24 @@ function authentifier()
   
   return(
     <div  className='Profile' >      
-      {!isexist && 
+    
       <div className='Authentication'>
-      <div className='dicbar' style={{textAlign:'right',marginBottom:'-300px'}}>
-          
-          <img src='logomy.png'></img>
-             </div>  
-       <div className='contained'>
+      
         
-      <h1 style={{color:'white'}}>마지막 토큰아이디:{yournumber}</h1>
-       <h1>인증서확인</h1>
-    <label>토큰번호입력</label>
 
     <div style={{textAlign:'center'}}>
       
-    <input name='number' value={number} onChange={onChange3} style={{width:'50px',textAlign:'center'} }>
-    </input>
-    <br />
     <button onClick={ getqr} style={{width:'50px'}}>확인</button>
     <br />
        </div>
-    </div>
-    <div className='prbottom'>
-  </div>
   
+
+       {/* <div className='prbottom'>
   </div>
-    }
+  */}
+  </div>
+    
+    
 
     </div>
     
@@ -817,13 +636,6 @@ function authentifier()
       
     <React.Fragment>
 {authentifier()}
-    <Carousel>
-    <CardJob>
-      </CardJob>
-      <CardGrade>
-      </CardGrade>
-   
-    </Carousel>
 
     </React.Fragment>
     
