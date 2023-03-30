@@ -4,18 +4,18 @@ import useEth from '../contexts/EthContext/useEth';
 import { useState } from 'react';
 import { useRef } from 'react';
 
-import * as canvas from 'canvas';
+// import * as canvas from 'canvas';
 import * as faceapi from 'face-api.js';
 
-const { Canvas, Image, ImageData } = canvas;
-faceapi.env.monkeyPatch({
-  Canvas: HTMLCanvasElement,
-  Image: HTMLImageElement,
-  ImageData: ImageData,
-  Video: HTMLVideoElement,
-  createCanvasElement: () => document.createElement('canvas'),
-  createImageElement: () => document.createElement('img')
-  })
+// const { Canvas, Image, ImageData } = canvas;
+// faceapi.env.monkeyPatch({
+//   Canvas: HTMLCanvasElement,
+//   Image: HTMLImageElement,
+//   ImageData: ImageData,
+//   Video: HTMLVideoElement,
+//   createCanvasElement: () => document.createElement('canvas'),
+//   createImageElement: () => document.createElement('img')
+//   })
 
 
 function Profile() 

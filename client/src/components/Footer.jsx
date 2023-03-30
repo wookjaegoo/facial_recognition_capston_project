@@ -6,13 +6,19 @@ import useEth from "../contexts/EthContext/useEth";
 import { Buffer } from 'buffer';
 // const client2= create('/ip4/127.0.0.1/tcp/5001');
 
-import {TiChevronLeftOutline, TiChevronRightOutline} from 'react-icons/ti';
-import WalletConnectProvider from '@walletconnect/web3-provider';
+// import {
+//   EthereumClient,
+//   modalConnectors,
+//   walletConnectProvider,
+// } from "@web3modal/ethereum";
+
 import {
   EthereumClient,
-  modalConnectors,
-  walletConnectProvider,
+  w3mConnectors,
+  w3mProvider
 } from "@web3modal/ethereum";
+
+
 import { Web3Button } from "@web3modal/react";
 
 import { Web3Modal } from "@web3modal/react";
@@ -20,14 +26,14 @@ import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { goerli } from "wagmi";
 
 
-import * as canvas from 'canvas';
+// import * as canvas from 'canvas';
 
 import * as faceapi from 'face-api.js';
 
 // patch nodejs environment, we need to provide an implementation of
 // HTMLCanvasElement and HTMLImageElement
-const { Canvas, Image, ImageData } = canvas;
-faceapi.env.monkeyPatch({ Canvas, Image, ImageData });
+// const { Canvas, Image, ImageData } = canvas;
+// faceapi.env.monkeyPatch({ Canvas, Image, ImageData });
 
 const projectId = '2L2d01In1I9OFbre81IirWt0szw';
 const projectSecret = '7c43815b40bc5ae32c34ad9d6db87dad';
@@ -64,16 +70,15 @@ function Footer() {
 
 
 
-  const {provider} = configureChains(chains,[
-    walletConnectProvider({ projectId: "251542da3c8552393e55d6d3b636127e" }),
-  ]);
+  const {provider} = configureChains(chains,[w3mProvider({ projectId: "251542da3c8552393e55d6d3b636127e" })]);
   
   const wagmiClient = createClient({
     autoConnect: true,
-    connectors: modalConnectors({
-      projectId: "251542da3c8552393e55d6d3b636127e",
-      version: "1", // or "2"
+    connectors: w3mConnectors({
+      version: "1", 
       chains,
+      projectId: "251542da3c8552393e55d6d3b636127e",
+      
     }),
     provider,
   });
