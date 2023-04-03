@@ -61,7 +61,7 @@ const NavBar = () => {
                     
                     <li className='nav-item'>
                         <Link to="/Footer" className='nav-links' onClick = {closeMobileMenu}>
-                            와꾸 최초 등록탭
+                            최초 등록탭
                         </Link>
                     </li>
                     

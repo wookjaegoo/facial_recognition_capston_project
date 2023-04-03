@@ -4,18 +4,18 @@ import useEth from '../contexts/EthContext/useEth';
 import { useState } from 'react';
 import { useRef } from 'react';
 
-// import * as canvas from 'canvas';
+import * as canvas from 'canvas';
 import * as faceapi from 'face-api.js';
 
-// const { Canvas, Image, ImageData } = canvas;
-// faceapi.env.monkeyPatch({
-//   Canvas: HTMLCanvasElement,
-//   Image: HTMLImageElement,
-//   ImageData: ImageData,
-//   Video: HTMLVideoElement,
-//   createCanvasElement: () => document.createElement('canvas'),
-//   createImageElement: () => document.createElement('img')
-//   })
+const { Canvas, Image, ImageData } = canvas;
+faceapi.env.monkeyPatch({
+  Canvas:HTMLCanvasElement,
+  Image: HTMLImageElement,
+  ImageData: ImageData,
+  Video: HTMLVideoElement,
+  createCanvasElement: () => document.createElement('canvas'),
+  createImageElement: () => document.createElement('img')
+  })
 
 
 function Profile() 
@@ -38,7 +38,73 @@ function Profile()
   const[inputs, setInputs] =  useState({number:''});
   const {number} =inputs;
 
-  
+ 
+  const videoRef = useRef();
+  const videoHeight = 480;
+  const videoWidth = 640;
+  const canvasRef =useRef();
+  const [modelsLoaded, setModelsLoaded] = useState(false);
+  const [captureVideo, setCaptureVideo] = useState(false);
+
+
+  useEffect(() => {
+    const loadModels = async () => {
+
+      Promise.all([
+        faceapi.nets.ssdMobilenetv1.loadFromUri('https://raw.githubusercontent.com/ml5js/ml5-data-and-models/main/models/faceapi/ssd_mobilenetv1_model-weights_manifest.json'),
+        faceapi.nets.faceLandmark68Net.loadFromUri('https://raw.githubusercontent.com/ml5js/ml5-data-and-models/main/models/faceapi/face_landmark_68_model-weights_manifest.json'),
+        faceapi.nets.faceLandmark68TinyNet.loadFromUri('https://raw.githubusercontent.com/ml5js/ml5-data-and-models/main/models/faceapi/face_landmark_68_tiny_model-weights_manifest.json'),
+        faceapi.nets.faceRecognitionNet.loadFromUri('https://raw.githubusercontent.com/ml5js/ml5-data-and-models/main/models/faceapi/face_recognition_model-weights_manifest.json')
+
+      ]).then(setModelsLoaded(true));
+    }
+    loadModels();
+  }, []);
+
+  const startVideo = () => {
+    setCaptureVideo(true);
+    navigator.mediaDevices
+      .getUserMedia({ video: { width: 300 } })
+      .then(stream => {
+        let video = videoRef.current;
+        video.srcObject = stream;
+        video.play();
+      })
+      .catch(err => {
+        console.error("error:", err);
+      });
+  }
+
+  const handleVideoOnPlay = () => {
+    setInterval(async () => {
+      if (canvasRef && canvasRef.current) {
+        canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(videoRef.current);
+        const displaySize = {
+          width: videoWidth,
+          height: videoHeight
+        }
+
+        faceapi.matchDimensions(canvasRef.current, displaySize);
+
+        const detections = await faceapi.detectAllFaces(videoRef.current).withFaceLandmarks();
+        let marks=[detections[0].landmarks.positions]
+        console.log(marks)
+
+        const resizedDetections = faceapi.resizeResults(detections, displaySize);
+
+        canvasRef && canvasRef.current && canvasRef.current.getContext('2d').clearRect(0, 0, videoWidth, videoHeight);
+        canvasRef && canvasRef.current && faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
+        canvasRef && canvasRef.current && faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
+        // canvasRef && canvasRef.current && faceapi.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
+      }
+    }, 100)
+  }
+
+  const closeWebcam = () => {
+    videoRef.current.pause();
+    videoRef.current.srcObject.getTracks()[0].stop();
+    setCaptureVideo(false);
+  }
 
   async function howmany()
   {
@@ -60,20 +126,15 @@ function Profile()
       console.log(yournumber);
       
     }
-  } 
+  }
+  
+
   useEffect(() => {
     howmany()
     console.log(yournumber)
   }, []);
 
-  async function onChange3(e)
-{
-  const {value,name} =e.target
-    setInputs({
-      ...inputs, // 기존의 input 객체를 복사한 뒤
-      [name]: value // name 키를 가진 값을 value 로 설정
-    });
-}
+ 
 
   const intToString = (num) => {
     return String(num).padStart(2, "0");
@@ -371,30 +432,6 @@ axios.request(options3).then(function (response) {
  }
 
 
- const wrapRef = useRef<HTMLDivElement>(null);
- const videoRef = useRef<HTMLVideoElement>(null);
-
- const [isStartDetect, setIsStartDetect] = useState(false);
- const [modelsLoaded, setModelsLoaded] = useState(false);
-
-async function facecam()
-{
-  await faceapi.nets.ssdMobilenetv1.loadFromUri('https://raw.githubusercontent.com/ml5js/ml5-data-and-models/main/models/faceapi/ssd_mobilenetv1_model-weights_manifest.json')
-  await faceapi.nets.faceLandmark68Net.loadFromUri('https://raw.githubusercontent.com/ml5js/ml5-data-and-models/main/models/faceapi/face_landmark_68_model-weights_manifest.json')
-  await faceapi.nets.faceLandmark68TinyNet.loadFromUri('https://raw.githubusercontent.com/ml5js/ml5-data-and-models/main/models/faceapi/face_landmark_68_tiny_model-weights_manifest.json')
-  await faceapi.nets.faceRecognitionNet.loadFromUri('https://raw.githubusercontent.com/ml5js/ml5-data-and-models/main/models/faceapi/face_recognition_model-weights_manifest.json')
-
-  const startVideo = () => {
-    setIsStartDetect(true);
-
-    // navigator.mediaDevices
-    //   .getUserMedia(constraints)
-    //   .then((stream) => ((videoRef.current as any).srcObject = stream))
-    //   .catch((err) => console.error(err));
-  };
-  
-}
-
 
 function authentifier()
 {
@@ -403,21 +440,12 @@ function authentifier()
     <div  className='Profile' >      
     
       <div className='Authentication'>
-      
-        
 
-    <div style={{textAlign:'center'}}>
-      
-    <button onClick={ getqr} style={{width:'50px'}}>확인</button>
-    <br />
-       </div>
+   <img id="myImg" src="my.jpg" style={{height:'200px'}}></img>
   
 
-       {/* <div className='prbottom'>
   </div>
-  */}
-  </div>
-    
+
     
 
     </div>
@@ -435,7 +463,36 @@ function authentifier()
       
       
     <React.Fragment>
-{authentifier()}
+{/* {authentifier()} */}
+
+<div style={{ textAlign: 'center', padding: '10px' }}>
+        {
+          captureVideo && modelsLoaded ?
+            <button onClick={closeWebcam} style={{ cursor: 'pointer', backgroundColor: 'green', color: 'white', padding: '15px', fontSize: '25px', border: 'none', borderRadius: '10px' }}>
+              Close Webcam
+            </button>
+            :
+            <button onClick={startVideo} style={{ cursor: 'pointer', backgroundColor: 'green', color: 'white', padding: '15px', fontSize: '25px', border: 'none', borderRadius: '10px' }}>
+              Open Webcam
+            </button>
+        }
+      </div>
+      {
+        captureVideo ?
+          modelsLoaded ?
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'center', padding: '10px' }}>
+                <video ref={videoRef} height={videoHeight} width={videoWidth} onPlay={handleVideoOnPlay} style={{ borderRadius: '10px' }} />
+                <canvas ref={canvasRef} style={{ position: 'absolute' }} />
+              </div>
+            </div>
+            :
+            <div>loading...</div>
+          :
+          <>
+          </>
+      }
+
 
     </React.Fragment>
     

@@ -54,8 +54,7 @@ const client2 = create({
 let ipfsurl = ""
 let authenticaiton1=""
 let authenticaiton2=""
-var newjson=[]
-var songs=""
+
 
 
 function Footer() {  
@@ -65,26 +64,31 @@ function Footer() {
   const[inputs, setInputs]=useState({name1:'',name2:'',number:'',date1:'',institution1:'',date2:'',institution2:'',usage1:'',usage2:'',location:'',dgrade:'',guardian:'',education:'',awards:'',relationship:'',member1:'',member2:'',submit1:'',submit2:'',duration:'',severe:'',work:''});
   const {name1 ,name2 ,number,date1,institution1,date2,institution2,usage1,usage2,location,dgrade,guardian,education,awards,relationship,member1,member2,submit1,submit2,duration,severe,work} =inputs;
   const inputss = document.getElementById('myImg')
+
+
   const chains =[goerli];
-
-
-
-
-  const {provider} = configureChains(chains,[w3mProvider({ projectId: "251542da3c8552393e55d6d3b636127e" })]);
   
+  
+  
+  const {provider} = configureChains(chains,[w3mProvider({ projectId:'ad51cb658b57c4bb5916b92e7f4a4ff7'})]);
+    
   const wagmiClient = createClient({
     autoConnect: true,
     connectors: w3mConnectors({
-      version: "1", 
-      chains,
-      projectId: "251542da3c8552393e55d6d3b636127e",
-      
-    }),
-    provider,
+  
+      projectId:'ad51cb658b57c4bb5916b92e7f4a4ff7',
+      version: "2", 
+  
+    chains,
+    
+  }),
+  provider,
   });
 
-
+  
   const ethereumClient = new EthereumClient(wagmiClient,chains);
+  
+
 
 
 async function howmany()
@@ -287,17 +291,19 @@ const MAX_VISIBILITY = 3;
 
   <div className='Deploys' >
 
+<WagmiConfig client={wagmiClient} >
+            
+            </WagmiConfig>
+        <Web3Modal projectId="ad51cb658b57c4bb5916b92e7f4a4ff7"ethereumClient={ethereumClient}/>
+
 <div className='Procedure'>
       
       <div className='container'>
        
 
     <div className='ProDetail2'>
-    <WagmiConfig client={wagmiClient} >
-            <Web3Button  />
-            </WagmiConfig>
-        <Web3Modal projectId="251542da3c8552393e55d6d3b636127e" ethereumClient={ethereumClient}/>
-        
+    
+        <Web3Button  />
       <h1 style={{color:'white'}}>마지막 토큰아이디:{yournumber}</h1>
 
     <h1 style={{color:'white'}}>본인 정보를 입력해주세요</h1>
