@@ -440,43 +440,7 @@ function authentifier()
     <div  className='Profile' >      
     
       <div className='Authentication'>
-
-   <img id="myImg" src="my.jpg" style={{height:'200px'}}></img>
-  
-
-  </div>
-
-    
-
-    </div>
-    
-    
-  )
-}
-
-
-//23/0101 추가할거 공증마크가 위변조 되어지지 않았다는것 그리고 pdf 혹은  png에서 원하는 정보 파싱하는거
-//후자부분은 표준화된 증명서가 있으면 가능할거같음 예시를들어서 내가 해야할 부분인거같다. 이거만 추가하면 완벽함
-  
-    return(
-
       
-      
-    <React.Fragment>
-{/* {authentifier()} */}
-
-<div style={{ textAlign: 'center', padding: '10px' }}>
-        {
-          captureVideo && modelsLoaded ?
-            <button onClick={closeWebcam} style={{ cursor: 'pointer', backgroundColor: 'green', color: 'white', padding: '15px', fontSize: '25px', border: 'none', borderRadius: '10px' }}>
-              Close Webcam
-            </button>
-            :
-            <button onClick={startVideo} style={{ cursor: 'pointer', backgroundColor: 'green', color: 'white', padding: '15px', fontSize: '25px', border: 'none', borderRadius: '10px' }}>
-              Open Webcam
-            </button>
-        }
-      </div>
       {
         captureVideo ?
           modelsLoaded ?
@@ -492,6 +456,42 @@ function authentifier()
           <>
           </>
       }
+
+<div style={{ textAlign: 'center', padding: '10px' }}>
+        {
+          captureVideo && modelsLoaded ?
+            <button onClick={closeWebcam} style={{ cursor: 'pointer', backgroundColor: 'green', color: 'white', padding: '15px', fontSize: '25px', border: 'none', borderRadius: '10px' }}>
+              Close Webcam
+            </button>
+            :
+            <button onClick={startVideo} style={{ cursor: 'pointer', backgroundColor: 'green', color: 'white', padding: '15px', fontSize: '25px', border: 'none', borderRadius: '10px' }}>
+              Open Webcam
+            </button>
+        }
+      </div>
+
+
+
+
+  </div>
+
+    
+
+    </div>
+    
+    
+  )
+}
+
+
+  
+    return(
+
+      
+      
+    <React.Fragment>
+{authentifier()}
+
 
 
     </React.Fragment>
