@@ -46,6 +46,28 @@ function Profile()
   const [modelsLoaded, setModelsLoaded] = useState(false);
   const [captureVideo, setCaptureVideo] = useState(false);
 
+  let input = document.getElementById('myImg')
+
+
+  const loadImage = async () => {
+        // 업로드 된 이미지 이름을 배열에 담아 라벨링 합니다.
+        const labels = ["you", "kimson"];
+
+    
+        return Promise.all(
+          labels.map(async (label) => {
+            const descriptions = [];
+            const detections = await faceapi
+              .detectSingleFace(input)
+              .withFaceLandmarks()
+              .withFaceDescriptor();
+            descriptions.push(detections.descriptor);
+    
+            return new faceapi.LabeledFaceDescriptors(label, descriptions);
+          })
+        );
+      };
+
 
   useEffect(() => {
     const loadModels = async () => {
@@ -76,6 +98,9 @@ function Profile()
   }
 
   const handleVideoOnPlay = () => {
+
+    
+      
     setInterval(async () => {
       if (canvasRef && canvasRef.current) {
         canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(videoRef.current);
@@ -84,17 +109,31 @@ function Profile()
           height: videoHeight
         }
 
+
+    
         faceapi.matchDimensions(canvasRef.current, displaySize);
 
         const detections = await faceapi.detectAllFaces(videoRef.current).withFaceLandmarks();
-        let marks=[detections[0].landmarks.positions]
-        console.log(marks)
+
+        const detected = await faceapi.detectAllFaces(videoRef.current).withFaceLandmarks().withFaceDescriptors();
+        // console.log(detections)
+        // let marks=[detections[0].landmarks.positions]
+        // console.log(marks)
 
         const resizedDetections = faceapi.resizeResults(detections, displaySize);
+        const resizedDetected = faceapi.resizeResults(detected, displaySize);
+        
+
+        const labeledFaceDescriptors = await loadImage();
+        const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.6);
+        const label = faceMatcher.findBestMatch(resizedDetected[0].descriptor).toString();
+        console.log(label)
+
 
         canvasRef && canvasRef.current && canvasRef.current.getContext('2d').clearRect(0, 0, videoWidth, videoHeight);
         canvasRef && canvasRef.current && faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
         canvasRef && canvasRef.current && faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
+
         // canvasRef && canvasRef.current && faceapi.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
       }
     }, 100)
@@ -438,7 +477,8 @@ function authentifier()
   
   return(
     <div  className='Profile' >      
-    
+    <img id="myImg" src="my1.jpeg" style={{width:'640px',height:'480px'}}></img>
+
       <div className='Authentication'>
       
       {
@@ -471,8 +511,6 @@ function authentifier()
       </div>
 
 
-
-
   </div>
 
     
@@ -490,6 +528,12 @@ function authentifier()
       
       
     <React.Fragment>
+
+{/* <img id="myImg" src="my.jpg" style={{height:'200px'}}></img> */}
+
+
+
+
 {authentifier()}
 
 
