@@ -40,8 +40,11 @@ function Profile()
 
  
   const videoRef = useRef();
-  const videoHeight = 480;
-  const videoWidth = 640;
+  const videoHeight = 1050;
+  const videoWidth = 1400;
+
+  // const videoHeight = 480;
+  // const videoWidth = 640;
   const canvasRef =useRef();
   const [modelsLoaded, setModelsLoaded] = useState(false);
   const [captureVideo, setCaptureVideo] = useState(false);
@@ -51,7 +54,7 @@ function Profile()
 
   const loadImage = async () => {
         // 업로드 된 이미지 이름을 배열에 담아 라벨링 합니다.
-        const labels = ["you", "kimson"];
+        const labels = ["you"];
 
     
         return Promise.all(
@@ -112,9 +115,7 @@ function Profile()
 
     
         faceapi.matchDimensions(canvasRef.current, displaySize);
-
         const detections = await faceapi.detectAllFaces(videoRef.current).withFaceLandmarks();
-
         const detected = await faceapi.detectAllFaces(videoRef.current).withFaceLandmarks().withFaceDescriptors();
         // console.log(detections)
         // let marks=[detections[0].landmarks.positions]
@@ -125,10 +126,13 @@ function Profile()
         
 
         const labeledFaceDescriptors = await loadImage();
+       
         const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.6);
         const label = faceMatcher.findBestMatch(resizedDetected[0].descriptor).toString();
-        console.log(label)
-
+        
+        console.log(JSON.stringify(labeledFaceDescriptors))
+        
+        
 
         canvasRef && canvasRef.current && canvasRef.current.getContext('2d').clearRect(0, 0, videoWidth, videoHeight);
         canvasRef && canvasRef.current && faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
@@ -136,7 +140,7 @@ function Profile()
 
         // canvasRef && canvasRef.current && faceapi.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
       }
-    }, 100)
+    }, 1)
   }
 
   const closeWebcam = () => {
@@ -174,66 +178,6 @@ function Profile()
   }, []);
 
  
-
-  const intToString = (num) => {
-    return String(num).padStart(2, "0");
-  };
-  
-  const Timer = ({ss}) => {
-    const SS = ss ? parseInt(ss) : 0;
-    
-    const count = useRef(SS);
-    const interval = useRef(null);
-  
-    const [second, setSecond] = useState(intToString(SS));
-  
-    useEffect(() => {
-      interval.current = setInterval(() => {
-        count.current -= 1;
-  
-        setSecond(intToString((count.current % 60)));
-      }, 1000);
-    }, []);
-  
-    useEffect(() => {
-      if (count.current <= 0) {
-        clearInterval(interval.current);
-      
-        if(au&&swap==true)
-        {
-          setswap(false);
-          getqr2();
-        }
-        else if(au&&swap==false){
-          setswap(true);
-          getqr();
-        } 
-        
-        if(job&&swap1==true)
-        {
-          setswap1(false);
-          getqr4();
-        }
-        else if(job&&swap1==false){
-          setswap1(true);
-          getqr3();
-        }  
-      }
-      
-
-    }, [second]);
-
-    
-
-
-    //QR로직 수정하셈 
-  
-    return (
-      <div>
-        {second}
-      </div>
-    );
-  };
 
 
 
@@ -476,9 +420,10 @@ function authentifier()
 {
   
   return(
-    <div  className='Profile' >      
-    <img id="myImg" src="my1.jpeg" style={{width:'640px',height:'480px'}}></img>
-
+    <div  className='Profile' >    
+      
+    <img id="myImg" src="umsel.jpeg" style={{width:'100px',height:'100px'}} ></img>
+    
       <div className='Authentication'>
       
       {

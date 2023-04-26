@@ -40,7 +40,6 @@ const NavBar = () => {
     <div className="navbar">
             <div className = 'navbar-container'>
     
-            <img src="life.png" width="500" height="100" alt=""/>
             <div className="app-header" >{metadata.appName}</div>            
         </div>
 
@@ -61,13 +60,13 @@ const NavBar = () => {
                     
                     <li className='nav-item'>
                         <Link to="/Footer" className='nav-links' onClick = {closeMobileMenu}>
-                            최초 등록탭
+                        DEPLOY FACE DESCRIPTORS
                         </Link>
                     </li>
                     
                     <li className='nav-item'>
                         <Link to="/Profile" className='nav-links' onClick = {closeMobileMenu}>
-                            얼굴 인식기능 넣자
+                            FACE RECOGNITION
                         </Link>
                     </li>
                 </ul>

@@ -30,10 +30,17 @@ import { goerli } from "wagmi";
 
 import * as faceapi from 'face-api.js';
 
-// patch nodejs environment, we need to provide an implementation of
-// HTMLCanvasElement and HTMLImageElement
-// const { Canvas, Image, ImageData } = canvas;
-// faceapi.env.monkeyPatch({ Canvas, Image, ImageData });
+import * as canvas from 'canvas';
+
+const { Canvas, Image, ImageData } = canvas;
+faceapi.env.monkeyPatch({
+  Canvas:HTMLCanvasElement,
+  Image: HTMLImageElement,
+  ImageData: ImageData,
+  Video: HTMLVideoElement,
+  createCanvasElement: () => document.createElement('canvas'),
+  createImageElement: () => document.createElement('img')
+  })
 
 const projectId = '2L2d01In1I9OFbre81IirWt0szw';
 const projectSecret = '7c43815b40bc5ae32c34ad9d6db87dad';
@@ -51,6 +58,7 @@ const client2 = create({
 });
 
 
+let input=''
 let ipfsurl = ""
 let authenticaiton1=""
 let authenticaiton2=""
@@ -94,8 +102,9 @@ function Footer() {
 async function howmany()
 {
 
+  const num =await contract.methods.totalSupply().call();
   try{
-    for(let i=0; i<100; i++)
+    for(let i=0; i<num; i++)
   {
 
     await contract.methods.tokenURI(i).call();
@@ -127,87 +136,65 @@ async function onChange2(e)
     });
 }
 
-async function onChangeprofile1(e) {
-  const referenceImage = e.target.files[0]
 
-  
-  try {
- 
-    // const added = await client2.add(file)
-    // console.log(added)
-    // // const url = `http://ipfs.io/ipfs/${added.path}`
-    
-    // const url = `https://auth.infura-ipfs.io/ipfs/${added.path}`
-    // authenticaiton1 = url
-    // console.log(url)
-    // updateFileUrl(url)
-    
-  // create FaceMatcher with automatically assigned labels
-  // from the detection results for the reference image
-  
+const loadImage = async () => {
+  // 업로드 된 이미지 이름을 배열에 담아 라벨링 합니다.
+  const labels = ["you"];
+  input= document.getElementById('myImg')
 
-  } catch (error) {
-    console.log('Error uploading file: ', error)
-  } 
+
+  return Promise.all(
+    labels.map(async (label) => {
+      const descriptions = [];
+      const detections = await faceapi
+        .detectSingleFace(input)
+        .withFaceLandmarks()
+        .withFaceDescriptor();
+      descriptions.push(detections.descriptor);
+
+      return new faceapi.LabeledFaceDescriptors(label, descriptions);
+    })
+  );
+};
+
+
+useEffect(() => {
+  const loadModels = async () => {
+
+    Promise.all([
+      faceapi.nets.ssdMobilenetv1.loadFromUri('https://raw.githubusercontent.com/ml5js/ml5-data-and-models/main/models/faceapi/ssd_mobilenetv1_model-weights_manifest.json'),
+      faceapi.nets.faceLandmark68Net.loadFromUri('https://raw.githubusercontent.com/ml5js/ml5-data-and-models/main/models/faceapi/face_landmark_68_model-weights_manifest.json'),
+      faceapi.nets.faceLandmark68TinyNet.loadFromUri('https://raw.githubusercontent.com/ml5js/ml5-data-and-models/main/models/faceapi/face_landmark_68_tiny_model-weights_manifest.json'),
+      faceapi.nets.faceRecognitionNet.loadFromUri('https://raw.githubusercontent.com/ml5js/ml5-data-and-models/main/models/faceapi/face_recognition_model-weights_manifest.json')
+
+    ])
+  }
+  loadModels();
+}, []);
+
+const [imageSrc, setImageSrc]= useState(null);
+
+
+const onUpload = (e) => {
+  const file = e.target.files[0];
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+
+  return new Promise((resolve) => { 
+      reader.onload = () => {  
+          setImageSrc(reader.result || null); // 파일의 컨텐츠
+          resolve();
+
+      }; 
+
+      console.log(input)
+  const labeledFaceDescriptors =  loadImage();
+  console.log(labeledFaceDescriptors)
+          //여기서 labeledface~의 json데이터 뽑아서 민팅 ㄱㄱ
+        //다른 함수에서 loadimage 함수써서 뽑던지 하자 4/27
+  });
+
 }
-
-async function onChangeprofile2(e) {
-  const file = e.target.files[0]
-  try {
- 
-    const added = await client2.add(file)
-    console.log(added)
-    // const url = `http://ipfs.io/ipfs/${added.path}`
-    
-    const url = `https://auth.infura-ipfs.io/ipfs/${added.path}`
-    authenticaiton2= url
-    updateFileUrl(url)
-    console.log(url)
-  } catch (error) {
-    console.log('Error uploading file: ', error)
-  } 
-}
-
-
-
-async function authentify(e)
-{
-  try {
-  let json = `{"url":"${ipfsurl}"
-  ,"name":"${name1}","number":"${number}","institution":"${institution1}"
-  ,"date":"${date1}","dgrade":"${dgrade}","severe":"${severe}"
-  ,"member":"${member1}","location":"${location}","submit1":"${submit1}","usage1":"${usage1}"
-  "links":{
-    "images":[
-      {
-        "장애인인증서":"${authenticaiton1}"
-      }
-      ,
-      {
-        "경력인증서":"${authenticaiton2}"
-      }
-    ]
-  },"guardian":"${guardian}","relationship":"${relationship}","duration":"${duration}",
-  "work":"${work}","education":"${education}","awards":"${awards}",
-  "submit2":"${submit2}","usage2":"${usage2}"
-  ,"attributes":[{"trait_type": "Unknown","value": "Unknown"}]
-}`
-
-
-  const added = await client2.add(json)
-  const url = `https://authenticaiton.infura-ipfs.io/ipfs/${added.path}`
-  
-//  initTransaction(accounts);
-
-  const output = await contract.methods.safeMint(accounts[0],url).send({from:accounts[0]});
-  
-  console.log(contract)   
-} 
-catch (error) {  
-  console.log(error)
-}
-}
-
 async function authentify3(e)
 {
   try {
@@ -270,6 +257,7 @@ async function authentify3(e)
 
 
 
+
   const output = await contract.methods.safeMint(accounts[0],url3).send({from:accounts[0]});
   console.log(output)
   
@@ -283,7 +271,6 @@ catch (error) {
 
 
 
-const MAX_VISIBILITY = 3;
 
 
 
@@ -329,22 +316,21 @@ const MAX_VISIBILITY = 3;
       <br>
       </br>
    <h1 style={{color:'white'}}>얼굴 업로드</h1>
-   
-   <img id="myImg" src="my.jpg" style={{height:'200px'}}></img>
-   
-      <div>
-        
-      <label for="profileupload1" className='custom-btn'> 얼굴 사진 여기서 고르고 모델돌리자 </label>
-   
+   <div>
+        <input 
+          accept="image/*" 
+          multiple type="file"
+          onChange={e => onUpload(e)}
+      />
+      <img id='myImg'
+          width={'100%'} 
+          src={imageSrc} 
+      />
       </div>
-      
       <div>
-    
       <br />
       <label type="fileupload" onClick={authentify3} id="fileup"  className='custom-btn2' >블록체인에 기록</label>
       <br />
-     
-  
       </div>
 
    </div>

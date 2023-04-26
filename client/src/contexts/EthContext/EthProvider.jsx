@@ -25,18 +25,7 @@ import { goerli } from "wagmi";
 
 
 // import '@tensorflow/tfjs-node';
-import * as canvas from 'canvas';
-import * as faceapi from 'face-api.js';
 
-const { Canvas, Image, ImageData } = canvas;
-faceapi.env.monkeyPatch({
-  Canvas: HTMLCanvasElement,
-  Image: HTMLImageElement,
-  ImageData: ImageData,
-  Video: HTMLVideoElement,
-  createCanvasElement: () => document.createElement('canvas'),
-  createImageElement: () => document.createElement('img')
-  })
   
 var newjson=[]
 
@@ -112,28 +101,6 @@ const ethereumClient = new EthereumClient(wagmiClient,chains);
   
   const web3 = new Web3(window.web3.currentProvider);
   await window.web3.currentProvider.enable();
-
-  await faceapi.nets.ssdMobilenetv1.loadFromUri('https://raw.githubusercontent.com/ml5js/ml5-data-and-models/main/models/faceapi/ssd_mobilenetv1_model-weights_manifest.json')
-  await faceapi.nets.faceLandmark68Net.loadFromUri('https://raw.githubusercontent.com/ml5js/ml5-data-and-models/main/models/faceapi/face_landmark_68_model-weights_manifest.json')
-  await faceapi.nets.faceRecognitionNet.loadFromUri('https://raw.githubusercontent.com/ml5js/ml5-data-and-models/main/models/faceapi/face_recognition_model-weights_manifest.json')
-  const inputss = document.getElementById('myImg')
-  console.log(inputss)
-
-  const results = await faceapi.detectSingleFace(inputss).withFaceLandmarks().withFaceDescriptor()
-  console.log(results)
-
-  
-  
-  const faceMatcher = new faceapi.FaceMatcher(results)
-  const singleResult = await faceapi
-  .detectSingleFace(inputss)
-  .withFaceLandmarks()
-  .withFaceDescriptor()
-
-if (singleResult) {
-  const bestMatch = faceMatcher.findBestMatch(singleResult.descriptor)
-  console.log(bestMatch)
-}
 
 
  
