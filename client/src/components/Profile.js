@@ -20,31 +20,14 @@ faceapi.env.monkeyPatch({
 
 function Profile() 
 {    
-  var axios = require("axios").default;
   const[yournumber,numset]=useState("");
-  const [onChainUrl1, updateonChainUrl1] = useState("");  
-  const [onChainUrl2, updateonChainUrl2] = useState("");
-  const [isexist,setExist] = useState(false);  
-  const [swap,setswap]=useState(true);
-  const [swap1,setswap1]=useState(true);
-
   const{state: { contract, accounts,web3 } } = useEth();
-
-  const [au,auSwap]=useState(false);
-  const [job,jobSwap]=useState(false);
-
-  
-
   const[inputs, setInputs] =  useState({number:''});
   const {number} =inputs;
 
- 
   const videoRef = useRef();
   const videoHeight = 1050;
   const videoWidth = 1400;
-
-  // const videoHeight = 480;
-  // const videoWidth = 640;
   const canvasRef =useRef();
   const [modelsLoaded, setModelsLoaded] = useState(false);
   const [captureVideo, setCaptureVideo] = useState(false);
@@ -55,8 +38,6 @@ function Profile()
   const loadImage = async () => {
         // 업로드 된 이미지 이름을 배열에 담아 라벨링 합니다.
         const labels = ["you"];
-
-    
         return Promise.all(
           labels.map(async (label) => {
             const descriptions = [];
@@ -101,8 +82,6 @@ function Profile()
   }
 
   const handleVideoOnPlay = () => {
-
-    
       
     setInterval(async () => {
       if (canvasRef && canvasRef.current) {
@@ -130,8 +109,8 @@ function Profile()
         const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.6);
         const label = faceMatcher.findBestMatch(resizedDetected[0].descriptor).toString();
         
-        console.log(JSON.stringify(labeledFaceDescriptors))
         
+        console.log(label)
         
 
         canvasRef && canvasRef.current && canvasRef.current.getContext('2d').clearRect(0, 0, videoWidth, videoHeight);
@@ -151,9 +130,10 @@ function Profile()
 
   async function howmany()
   {
-  
+    const num =await contract.methods.totalSupply().call();
+
     try{
-      for(let i=0; i<100; i++)
+      for(let i=0; i<num; i++)
     {
   
       await contract.methods.tokenURI(i).call();
@@ -170,19 +150,10 @@ function Profile()
       
     }
   }
-  
-
   useEffect(() => {
     howmany()
     console.log(yournumber)
   }, []);
-
- 
-
-
-
-
-
 
 async function getqr()
 {
@@ -222,198 +193,7 @@ async function getqr()
 catch (error) {  
   console.log(error)
 }
-//edit qr url code
-  var options1 = {
-    method: 'POST',
-    url: 'https://qrtiger.com/api/campaign/edit/YINX',
-    headers: {'Content-Type': 'application/json', Authorization:'Bearer 4c65ef80-84fb-11ed-88f6-3fe97310821f'},
-    data: {
-      qr: {
-        size: 500,
-        colorDark: 'rgb(5,64,128)',
-        logo: '',
-        eye_outer: 'eyeOuter2',
-        eye_inner: 'eyeInner1',
-        qrData: 'pattern0',
-        backgroundColor: 'rgb(255,255,255)',
-        transparentBkg: false,
-        qrCategory: 'url',
-        text: 'https://www.qrcode-tiger.com.com/'
-      },
-      qrUrl: `${onChainUrl1}`,
-      qrType: 'qr2',
-      qrCategory: 'url'
-    }
-  };
-  
-  axios.request(options1).then(function (response) {
-    console.log(response.data);
-  }).catch(function (error) {
-    console.error(error);
-  });
-
-  //불러오기 데이터 QR로
-  var options = {
-    method: 'GET',
-    url: 'https://qrtiger.com/data/YINX',
-    params: {period: 'month', tz: 'Asia/Singapore'},
-    headers: {'Content-Type': 'application/json', Authorization:  'Bearer 4c65ef80-84fb-11ed-88f6-3fe97310821f'}
-  };
-  
-  axios.request(options).then(function (response) {
-    console.log(response.data);
-  }).catch(function (error) {
-    console.error(error);
-  });
-
-
-  setExist(true);
- 
-  
 }
-
-async function getqr2()
-{
-
-
-
-var options2 = {
-  method: 'POST',
-  url: 'https://qrtiger.com/api/campaign/edit/4XQU',
-  headers: {'Content-Type': 'application/json', Authorization:'Bearer 4c65ef80-84fb-11ed-88f6-3fe97310821f'},
-  data: {
-    qr: {
-      size: 500,
-      colorDark: 'rgb(5,64,128)',
-      logo: '',
-      eye_outer: 'eyeOuter2',
-      eye_inner: 'eyeInner1',
-      qrData: 'pattern0',
-      backgroundColor: 'rgb(255,255,255)',
-      transparentBkg: false,
-      qrCategory: 'url',
-      text: 'https://www.qrcode-tiger.com.com/'
-    },
-    qrUrl: `${onChainUrl1}`,
-    qrType: 'qr2',
-    qrCategory: 'url'
-  }
-};
-
-axios.request(options2).then(function (response) {
-  console.log(response.data);
-}).catch(function (error) {
-  console.error(error);
-});
-
-var options3 = {
-  method: 'GET',
-  url: 'https://qrtiger.com/data/4XQU',
-  params: {period: 'month', tz: 'Asia/Singapore'},
-  headers: {'Content-Type': 'application/json', Authorization:  'Bearer 4c65ef80-84fb-11ed-88f6-3fe97310821f'}
-};
-
-axios.request(options3).then(function (response) {
-  console.log(response.data);
-}).catch(function (error) {
-  console.error(error);
-});
-}
-
- async function getqr3()
- {
-  
-  var options1 = {
-    method: 'POST',
-    url: 'https://qrtiger.com/api/campaign/edit/E7NM',
-    headers: {'Content-Type': 'application/json', Authorization:'Bearer 4c65ef80-84fb-11ed-88f6-3fe97310821f'},
-    data: {
-      qr: {
-        size: 500,
-        colorDark: 'rgb(5,64,128)',
-        logo: '',
-        eye_outer: 'eyeOuter2',
-        eye_inner: 'eyeInner1',
-        qrData: 'pattern0',
-        backgroundColor: 'rgb(255,255,255)',
-        transparentBkg: false,
-        qrCategory: 'url',
-        text: 'https://www.qrcode-tiger.com.com/'
-      },
-      qrUrl: `${onChainUrl2}`,
-      qrType: 'qr2',
-      qrCategory: 'url'
-    }
-  };
-  
-  axios.request(options1).then(function (response) {
-    console.log(response.data);
-  }).catch(function (error) {
-    console.error(error);
-  });
- 
-  var options = {
-    method: 'GET',
-    url: 'https://qrtiger.com/data/E7NM',
-    params: {period: 'month', tz: 'Asia/Singapore'},
-    headers: {'Content-Type': 'application/json', Authorization:  'Bearer 4c65ef80-84fb-11ed-88f6-3fe97310821f'}
-  };
-  
-  axios.request(options).then(function (response) {
-    console.log(response.data);
-  }).catch(function (error) {
-    console.error(error);
-  });
-  
-
- }
-
- async function getqr4()
- {
-
-  var options2 = {
-    method: 'POST',
-    url: 'https://qrtiger.com/api/campaign/edit/4XQU',
-    headers: {'Content-Type': 'application/json', Authorization:'Bearer 4c65ef80-84fb-11ed-88f6-3fe97310821f'},
-    data: {
-      qr: {
-        size: 500,
-        colorDark: 'rgb(5,64,128)',
-        logo: '',
-        eye_outer: 'eyeOuter2',
-        eye_inner: 'eyeInner1',
-        qrData: 'pattern0',
-        backgroundColor: 'rgb(255,255,255)',
-        transparentBkg: false,
-        qrCategory: 'url',
-        text: 'https://www.qrcode-tiger.com.com/'
-      },
-      qrUrl: `${onChainUrl2}`,
-      qrType: 'qr2',
-      qrCategory: 'url'
-    }
-  };
-  
-  axios.request(options2).then(function (response) {
-    console.log(response.data);
-  }).catch(function (error) {
-    console.error(error);
-  });
-
-  var options3 = {
-    method: 'GET',
-    url: 'https://qrtiger.com/data/4XQU',
-    params: {period: 'month', tz: 'Asia/Singapore'},
-    headers: {'Content-Type': 'application/json', Authorization:  'Bearer 4c65ef80-84fb-11ed-88f6-3fe97310821f'}
-  };
-  
-  axios.request(options3).then(function (response) {
-    console.log(response.data);
-  }).catch(function (error) {
-    console.error(error);
-  });
- }
-
 
 
 function authentifier()
@@ -474,7 +254,6 @@ function authentifier()
       
     <React.Fragment>
 
-{/* <img id="myImg" src="my.jpg" style={{height:'200px'}}></img> */}
 
 
 

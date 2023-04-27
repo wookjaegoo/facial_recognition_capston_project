@@ -4,13 +4,6 @@ import React from 'react';
 import "./Footer.css"
 import useEth from "../contexts/EthContext/useEth";
 import { Buffer } from 'buffer';
-// const client2= create('/ip4/127.0.0.1/tcp/5001');
-
-// import {
-//   EthereumClient,
-//   modalConnectors,
-//   walletConnectProvider,
-// } from "@web3modal/ethereum";
 
 import {
   EthereumClient,
@@ -25,13 +18,8 @@ import { Web3Modal } from "@web3modal/react";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { goerli } from "wagmi";
 
-
-// import * as canvas from 'canvas';
-
 import * as faceapi from 'face-api.js';
-
 import * as canvas from 'canvas';
-
 const { Canvas, Image, ImageData } = canvas;
 faceapi.env.monkeyPatch({
   Canvas:HTMLCanvasElement,
@@ -45,24 +33,7 @@ faceapi.env.monkeyPatch({
 const projectId = '2L2d01In1I9OFbre81IirWt0szw';
 const projectSecret = '7c43815b40bc5ae32c34ad9d6db87dad';
 const auth = 'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64');
-var minturl=''
-
-
-const client2 = create({
-  host: 'ipfs.infura.io',
-  port: 5001,
-  protocol: 'https',
-  headers: {
-      authorization: auth,
-  },
-});
-
-
 let input=''
-let ipfsurl = ""
-let authenticaiton1=""
-let authenticaiton2=""
-
 
 
 function Footer() {  
@@ -70,7 +41,7 @@ function Footer() {
   const{state: {contract,accounts,web3}} = useEth();
   const[yournumber,numset]=useState("");
   const[inputs, setInputs]=useState({name1:'',name2:'',number:'',date1:'',institution1:'',date2:'',institution2:'',usage1:'',usage2:'',location:'',dgrade:'',guardian:'',education:'',awards:'',relationship:'',member1:'',member2:'',submit1:'',submit2:'',duration:'',severe:'',work:''});
-  const {name1 ,name2 ,number,date1,institution1,date2,institution2,usage1,usage2,location,dgrade,guardian,education,awards,relationship,member1,member2,submit1,submit2,duration,severe,work} =inputs;
+  const {member2,name2 } =inputs;
   const inputss = document.getElementById('myImg')
 
 
@@ -116,13 +87,14 @@ async function howmany()
 catch(error)
   { 
     console.log("마지막아이디1");
-    console.log(yournumber);
+    
     
   }
 } 
 useEffect(() => {
   howmany()
-  
+ input= document.getElementById('myImg')
+
   console.log(yournumber)
   
 }, []);
@@ -140,7 +112,6 @@ async function onChange2(e)
 const loadImage = async () => {
   // 업로드 된 이미지 이름을 배열에 담아 라벨링 합니다.
   const labels = ["you"];
-  input= document.getElementById('myImg')
 
 
   return Promise.all(
@@ -187,9 +158,9 @@ const onUpload = (e) => {
 
       }; 
 
-      console.log(input)
-  const labeledFaceDescriptors =  loadImage();
-  console.log(labeledFaceDescriptors)
+  //     console.log(input)
+  // const labeledFaceDescriptors =  loadImage();
+  // console.log(labeledFaceDescriptors)
           //여기서 labeledface~의 json데이터 뽑아서 민팅 ㄱㄱ
         //다른 함수에서 loadimage 함수써서 뽑던지 하자 4/27
   });
@@ -199,67 +170,30 @@ async function authentify3(e)
 {
   try {
 
-    let json1 = `{"name":"${name1}","number":"${number}","institution":"${institution1}" 
-    ,"guardian":"${guardian}","relationship":"${relationship}"
-    ,"date":"${date1}","dgrade":"${dgrade}","severe":"${severe}"
-    ,"member":"${member1}","location":"${location}"
-    ,"submit":"${submit1}","usage":"${usage1}",
-    "links":{
-      "images":[
-        {
-          "장애인인증서":"${authenticaiton1}"
-        }
-      
-      ]
-    }
-    ,"attributes":[{"trait_type": "Unknown","value": "Unknown"}]
-  }`
-  
-
-    const added1 = await client2.add(json1);
-    const url1 = `https://auth.infura-ipfs.io/ipfs/${added1.path}`;
-    console.log(url1);
-
-
-
-    let json2 = `{"name":"${name2}","member":"${member2}","institution":"${institution2}"
-    ,"date":"${date2}","duration":"${duration}","work":"${work}"
-    ,"education":"${education}","awards":"${awards}"
-    ,"submit":"${submit2}","usage":"${usage2}",
-    "links":{
-      "images":[
-        
-        {
-          "본인경력인증서":"${authenticaiton2}"
-        }
-      ]
-    },"attributes":[{"trait_type": "Unknown","value": "Unknown"}]
-  }`
-  const added2 = await client2.add(json2);
-  const url2 = `https://auth.infura-ipfs.io/ipfs/${added2.path}`;
-  console.log(url2);
-
-
-  let json3= `{"links":{
-      "loc":[
-        {
-          "장애인인증서":"${url1}"
-        },
-        {
-          "본인경력인증서":"${url2}"
-        }
-      ]
-    },"attributes":[{"trait_type": "Unknown","value": "Unknown"}]
-  }`
-  const added3 = await client2.add(json3)
-  const url3 = `https://auth.infura-ipfs.io/ipfs/${added3.path}`;
-  console.log(url3);
+  // let json3= `{"links":{
+  //     "loc":[
+  //       {
+  //         "장애인인증서":"${url1}"
+  //       },
+  //       {
+  //         "본인경력인증서":"${url2}"
+  //       }
+  //     ]
+  //   },"attributes":[{"trait_type": "Unknown","value": "Unknown"}]
+  // }`
+  // const added3 = await client2.add(json3)
+  // const url3 = `https://auth.infura-ipfs.io/ipfs/${added3.path}`;
+  // console.log(url3);
 
 
 
 
-  const output = await contract.methods.safeMint(accounts[0],url3).send({from:accounts[0]});
-  console.log(output)
+  // const output = await contract.methods.safeMint(accounts[0],url3).send({from:accounts[0]});
+  // console.log(output)
+
+
+  const labeledFaceDescriptors =await  loadImage();
+  console.log(JSON.stringify(labeledFaceDescriptors[0]))
   
 } 
 catch (error) {  
@@ -267,48 +201,28 @@ catch (error) {
 }
 }
 
-
-
-
-
-
-
-
   return (
 
   <div className='Deploys' >
 
-<WagmiConfig client={wagmiClient} >
-            
+<WagmiConfig client={wagmiClient} >            
             </WagmiConfig>
         <Web3Modal projectId="ad51cb658b57c4bb5916b92e7f4a4ff7"ethereumClient={ethereumClient}/>
 
 <div className='Procedure'>
       
       <div className='container'>
-       
-
     <div className='ProDetail2'>
-    
         <Web3Button  />
       <h1 style={{color:'white'}}>마지막 토큰아이디:{yournumber}</h1>
-
     <h1 style={{color:'white'}}>본인 정보를 입력해주세요</h1>
-   
-    
-
       <div style={{display:'inline-block'}} >
       <div >
          <input name="name2" placeholder='성명' onChange={onChange2} value={name2} style={{width:'130px'}} />
       </div> 
-
       <div >
        <input name="member2"placeholder='생년월일' onChange={onChange2} value={member2} style={{width:'130px'}}/>
       </div>
-
-
-
-
       </div>      
       <br>
       </br>
@@ -322,14 +236,15 @@ catch (error) {
           multiple type="file"
           onChange={e => onUpload(e)}
       />
-      <img id='myImg'
-          width={'100%'} 
-          src={imageSrc} 
-      />
+      
       </div>
       <div>
+      <img id="myImg"
+          width={'100px'} height={'100px'} 
+          src={imageSrc} 
+      />
       <br />
-      <label type="fileupload" onClick={authentify3} id="fileup"  className='custom-btn2' >블록체인에 기록</label>
+      <label type="fileupload" onClick={authentify3} id="fileup"  className='custom-btn2' >특징추출</label>
       <br />
       </div>
 
