@@ -66,13 +66,10 @@ module.exports = {
     //   port: 7545,            // Standard Ethereum port (default: none)
     //   network_id: "5777",       // Any network (default: none)
     // },
-    goeril: {
-      provider: () => new HDWalletProvider(privateKey, `https://goerli.infura.io/v3/${infura_api_key}`),
-      network_id: 5, //Goerli's id
+    sepolia: {
+      provider: () => new HDWalletProvider(privateKey, `https://sepolia.infura.io/v3/${infura_api_key}`),
+      network_id: 11155111, //Goerli's id
       gas: 5000000, //gas limit
-      confirmations: 1,    // # of confs to wait between deployments. (default: 0)
-      timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
-      skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
      },
     //
     // An additional network, but with some advanced options…
