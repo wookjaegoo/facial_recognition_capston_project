@@ -73,23 +73,23 @@ function Footer() {
 async function howmany()
 {
 
-  const num =await contract.methods.totalSupply().call();
-  try{
-    for(let i=0; i<num; i++)
-  {
+//   const num =await contract.methods.totalSupply().call();
+//   try{
+//     for(let i=0; i<num; i++)
+//   {
 
-    await contract.methods.tokenURI(i).call();
-    numset(i);
+//     await contract.methods.tokenURI(i).call();
+//     numset(i);
   
-  }
-}
+//   }
+// }
 
-catch(error)
-  { 
-    console.log("마지막아이디1");
+// catch(error)
+//   { 
+//     console.log("마지막아이디1");
     
     
-  }
+//   }
 } 
 useEffect(() => {
   howmany()

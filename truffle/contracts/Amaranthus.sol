@@ -18,7 +18,6 @@ contract Amaranthus is ERC20{
    using SafeERC20 for IERC20;
 
 
-    //송금 트랜잭션을 처음하는 모든 트랜잭션에 대한 구조체
 
     struct AddrInfo {
         uint256 timePeriod;                     // Uploaded time
@@ -58,7 +57,7 @@ contract Amaranthus is ERC20{
       
     }
 
-//여기서 반복문 구현해서 구조체 정보 리턴하려고 하지마셈 int i=0 선언하는순간 가스비임 그냥 인덱스 입력하면 계정 리턴하는 함수 따로하나 파셈
+//여기서 반복문 구현해서 구조체 정보 리턴ㄴㄴ int i=0 선언하는순간 가스비임 그냥 인덱스 입력하면 계정 리턴하는 함수 따로하나 파셈
     function isAddrLocked(uint256 index) public view returns( uint256)
     {
         if( _playerList[index].BlockedAddress==msg.sender)

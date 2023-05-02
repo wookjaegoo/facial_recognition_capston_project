@@ -30,7 +30,7 @@ const HDWalletProvider = require("../client/node_modules/@truffle/hdwallet-provi
 const privateKey = process.env.PRIVATE_KEY;
 const infura_api_key = process.env.INFURA_API_KEY;
 const etherscan_api_key = process.env.ETHERSCAN_API_KEY;
- 
+const MNEMONIC="dry dove derive split whale disagree rhythm pulse forward wolf awesome cat"
 
 
 module.exports = {
@@ -64,12 +64,15 @@ module.exports = {
     // development: {
     //   host: "127.0.0.1",     // Localhost (default: none)
     //   port: 7545,            // Standard Ethereum port (default: none)
-    //   network_id: "5777",       // Any network (default: none)
+    //   network_id: "*",       // Any network (default: none)
     // },
     sepolia: {
-      provider: () => new HDWalletProvider(privateKey, `https://sepolia.infura.io/v3/${infura_api_key}`),
+      provider: () => new HDWalletProvider(MNEMONIC, `https://sepolia.infura.io/v3/1ef89977b32e4d87b214c310ce14f594`),
       network_id: 11155111, //Goerli's id
       gas: 5000000, //gas limit
+      networkCheckTimeout:100000,
+      timeoutBlocks:200,
+      skyDryRun:true
      },
     //
     // An additional network, but with some advanced options…

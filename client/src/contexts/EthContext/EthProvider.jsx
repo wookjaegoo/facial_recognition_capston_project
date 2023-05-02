@@ -21,7 +21,7 @@ import {
 
 import { Web3Modal } from "@web3modal/react";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
-import { goerli } from "wagmi";
+import { sepolia } from "wagmi/chains";
 
 
 // import '@tensorflow/tfjs-node';
@@ -31,7 +31,7 @@ var newjson=[]
 
 export  function EthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const chains =[goerli];
+  const chains =[sepolia];
 
 const {provider} = configureChains(chains,[ w3mProvider({ projectId: "251542da3c8552393e55d6d3b636127e" })]);
 
@@ -112,7 +112,11 @@ const ethereumClient = new EthereumClient(wagmiClient,chains);
         let address, contract;
         try {
           address = artifact.networks[networkID].address;
+          web3.utils.toChecksumAddress(address)
+
           contract = new web3.eth.Contract(abi, address);   
+          console.log(contract.methods)
+          
           
         } catch (err) {
           console.error(err);
@@ -132,7 +136,7 @@ const ethereumClient = new EthereumClient(wagmiClient,chains);
   useEffect(() => {
     const tryInit = async () => {
       try {
-        const artifact = require("../../contracts/ArtGrowNFT.json");
+        const artifact = require("../../contracts/RedNotice.json");
         init(artifact);
       } catch (err) {
         console.error(err);
