@@ -33,8 +33,21 @@ function Profile()
   const [captureVideo, setCaptureVideo] = useState(false);
 
   let input = document.getElementById('myImg')
+  
+  async function getCriminal()
+  {
+    
+    const result = await contract.methods.getCriminal(1).call();
+    const attributes=result[5]
+    console.log(result[5])
+ 
 
+  return(
+    attributes
+  )
+  }
 
+  
   const loadImage = async () => {
         // 업로드 된 이미지 이름을 배열에 담아 라벨링 합니다.
         const labels = ["you"];
@@ -51,7 +64,7 @@ function Profile()
           })
         );
       };
-
+      
 
   useEffect(() => {
     const loadModels = async () => {
@@ -104,7 +117,9 @@ function Profile()
         const resizedDetected = faceapi.resizeResults(detected, displaySize);
         
 
-        const labeledFaceDescriptors = await loadImage();
+        // const labeledFaceDescriptors = await loadImage();
+        
+        const labeledFaceDescriptors = await getCriminal();
        
         const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.6);
         const label = faceMatcher.findBestMatch(resizedDetected[0].descriptor).toString();

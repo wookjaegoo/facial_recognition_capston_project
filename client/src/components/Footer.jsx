@@ -219,7 +219,8 @@ async function getCriminal()
 {
   try {
   const result = await contract.methods.getCriminal(1).call();
-  console.log(JSON.stringify(result))
+  const attributes=result[5]
+  console.log(result[5])
 } 
 catch (error) {  
   console.log(error)
