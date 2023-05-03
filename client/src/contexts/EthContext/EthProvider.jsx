@@ -117,7 +117,6 @@ const ethereumClient = new EthereumClient(wagmiClient,chains);
           contract = new web3.eth.Contract(abi, address);   
           console.log(contract.methods)
           
-          
         } catch (err) {
           console.error(err);
           console.log("에러위치");

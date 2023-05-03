@@ -201,16 +201,15 @@ contract RedNotice is ERC721, Ownable {
     function getCriminal(
         uint256 tokenId
     )
-        public
-        view
+        public view
         returns (
             string memory,
             string memory,
             uint256,
             string memory,
-            uint256,
             bool,
-            string memory
+            string memory,
+            uint256
         )
     {
         // tokenId를 bytes32로 변환하여 범죄자 정보 매핑에서 검색
@@ -227,9 +226,9 @@ contract RedNotice is ERC721, Ownable {
             _criminalInfoList[tokenId].nationality,
             _criminalInfoList[tokenId].age,
             _criminalInfoList[tokenId].crime,
-            _criminalInfoList[tokenId].amount,
             _criminalInfoList[tokenId].redNoticeIssued,
-            _criminalInfoList[tokenId].discriptors
+            _criminalInfoList[tokenId].discriptors,
+            _criminalInfoList[tokenId].tokenId
         );
     }
 

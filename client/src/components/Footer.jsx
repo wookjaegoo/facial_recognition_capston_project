@@ -166,7 +166,7 @@ const onUpload = (e) => {
   });
 
 }
-async function authentify3(e)
+async function discriptorFromImage(e)
 {
   try {
 
@@ -184,22 +184,51 @@ async function authentify3(e)
   // const added3 = await client2.add(json3)
   // const url3 = `https://auth.infura-ipfs.io/ipfs/${added3.path}`;
   // console.log(url3);
-
-
-
-
-  // const output = await contract.methods.safeMint(accounts[0],url3).send({from:accounts[0]});
-  // console.log(output)
-
-
   const labeledFaceDescriptors =await  loadImage();
-  console.log(JSON.stringify(labeledFaceDescriptors[0]))
+  const descriptor=JSON.stringify(labeledFaceDescriptors[0])
+  console.log(descriptor)
+  const result = await contract.methods.processRequest("test","China",20,"Fraud",100000,descriptor).send({from:accounts[0]});
+  console.log(result.events.RequestReceived.returnValues[0])
+
   
 } 
 catch (error) {  
   console.log(error)
 }
 }
+
+async function discriptorFromImage(e)
+{
+  try {
+  const labeledFaceDescriptors =await  loadImage();
+  const descriptor=JSON.stringify(labeledFaceDescriptors[0])
+  console.log(descriptor)
+  const result = await contract.methods.processRequest("test","China",20,"Fraud",100000,descriptor).send({from:accounts[0]});
+  const requstid=result.events.RequestReceived.returnValues[0]
+  const result2 = await contract.methods.issueRedNotice(requstid).send({from:accounts[0]});
+  console.log(result2)
+
+  
+} 
+catch (error) {  
+  console.log(error)
+}
+}
+
+async function getCriminal()
+{
+  try {
+  const result = await contract.methods.getCriminal(1).call();
+  console.log(JSON.stringify(result))
+} 
+catch (error) {  
+  console.log(error)
+}
+}
+
+
+
+
 
   return (
 
@@ -244,8 +273,10 @@ catch (error) {
           src={imageSrc} 
       />
       <br />
-      <label type="fileupload" onClick={authentify3} id="fileup"  className='custom-btn2' >특징추출</label>
-      <br />
+      <label type="fileupload" onClick={discriptorFromImage} id="fileup"  className='custom-btn2' >특징추출후 트랜잭션</label>
+      <label  onClick={getCriminal}   className='custom-btn2' >범죄자 로그 조회</label>
+
+      <br />  
       </div>
 
    </div>

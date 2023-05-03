@@ -130,25 +130,25 @@ function Profile()
 
   async function howmany()
   {
-    const num =await contract.methods.totalSupply().call();
+  //   const num =await contract.methods.totalSupply().call();
 
-    try{
-      for(let i=0; i<num; i++)
-    {
+  //   try{
+  //     for(let i=0; i<num; i++)
+  //   {
   
-      await contract.methods.tokenURI(i).call();
-      numset(i);
+  //     await contract.methods.tokenURI(i).call();
+  //     numset(i);
     
-    }
+  //   }
     
-  }
+  // }
   
-  catch(error)
-    { 
-      console.log("마지막아이디1");
-      console.log(yournumber);
+  // catch(error)
+  //   { 
+  //     console.log("마지막아이디1");
+  //     console.log(yournumber);
       
-    }
+  //   }
   }
   useEffect(() => {
     howmany()
