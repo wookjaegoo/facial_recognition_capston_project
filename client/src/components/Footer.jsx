@@ -123,6 +123,29 @@ const loadImage = async () => {
         .withFaceDescriptor();
       descriptions.push(detections.descriptor);
 
+      console.log(detections.descriptor)
+
+      return new faceapi.LabeledFaceDescriptors(label, descriptions);
+    })
+  );
+};
+
+const CustomloadImage = async () => {
+  // 업로드 된 이미지 이름을 배열에 담아 라벨링 합니다.
+  const labels = ["you"];
+
+
+  return Promise.all(
+    labels.map(async (label) => {
+      const descriptions = [];
+        const result = await contract.methods.getCriminal(1).call();
+        const attributes=result[5]
+        let jsonatt=JSON.parse(attributes)
+        let crimedescriptors=jsonatt.descriptors[0]
+        let newarray=new Float32Array(crimedescriptors)
+      descriptions.push(newarray);
+
+
       return new faceapi.LabeledFaceDescriptors(label, descriptions);
     })
   );
@@ -166,43 +189,16 @@ const onUpload = (e) => {
   });
 
 }
-async function discriptorFromImage(e)
-{
-  try {
 
-  // let json3= `{"links":{
-  //     "loc":[
-  //       {
-  //         "장애인인증서":"${url1}"
-  //       },
-  //       {
-  //         "본인경력인증서":"${url2}"
-  //       }
-  //     ]
-  //   },"attributes":[{"trait_type": "Unknown","value": "Unknown"}]
-  // }`
-  // const added3 = await client2.add(json3)
-  // const url3 = `https://auth.infura-ipfs.io/ipfs/${added3.path}`;
-  // console.log(url3);
-  const labeledFaceDescriptors =await  loadImage();
-  const descriptor=JSON.stringify(labeledFaceDescriptors[0])
-  console.log(descriptor)
-  const result = await contract.methods.processRequest("test","China",20,"Fraud",100000,descriptor).send({from:accounts[0]});
-  console.log(result.events.RequestReceived.returnValues[0])
 
-  
-} 
-catch (error) {  
-  console.log(error)
-}
-}
+
 
 async function discriptorFromImage(e)
 {
   try {
   const labeledFaceDescriptors =await  loadImage();
-  const descriptor=JSON.stringify(labeledFaceDescriptors[0])
-  console.log(descriptor)
+  let jsondata=labeledFaceDescriptors[0].descriptors
+  const descriptor=JSON.stringify(jsondata)
   const result = await contract.methods.processRequest("test","China",20,"Fraud",100000,descriptor).send({from:accounts[0]});
   const requstid=result.events.RequestReceived.returnValues[0]
   const result2 = await contract.methods.issueRedNotice(requstid).send({from:accounts[0]});
@@ -218,9 +214,16 @@ catch (error) {
 async function getCriminal()
 {
   try {
-  const result = await contract.methods.getCriminal(1).call();
-  const attributes=result[5]
-  console.log(result[5])
+  // const result = await contract.methods.getCriminal(1).call();
+  // const attributes=result[5]
+  // let jsonatt=JSON.parse(attributes)
+  // let crimedescriptors=jsonatt.descriptors[0]
+  // console.log(jsonatt.descriptors[0])
+  const labeledFaceDescriptors =await  CustomloadImage();
+  console.log(labeledFaceDescriptors)
+
+
+
 } 
 catch (error) {  
   console.log(error)

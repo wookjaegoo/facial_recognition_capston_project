@@ -47,24 +47,27 @@ function Profile()
   )
   }
 
+  const CustomloadImage = async () => {
+    // 업로드 된 이미지 이름을 배열에 담아 라벨링 합니다.
+    const labels = ["you"];
   
-  const loadImage = async () => {
-        // 업로드 된 이미지 이름을 배열에 담아 라벨링 합니다.
-        const labels = ["you"];
-        return Promise.all(
-          labels.map(async (label) => {
-            const descriptions = [];
-            const detections = await faceapi
-              .detectSingleFace(input)
-              .withFaceLandmarks()
-              .withFaceDescriptor();
-            descriptions.push(detections.descriptor);
-    
-            return new faceapi.LabeledFaceDescriptors(label, descriptions);
-          })
-        );
-      };
-      
+  
+    return Promise.all(
+      labels.map(async (label) => {
+        const descriptions = [];
+          const result = await contract.methods.getCriminal(1).call();
+          const attributes=result[5]
+          let jsonatt=JSON.parse(attributes)
+          let crimedescriptors=jsonatt.descriptors[0]
+          let newarray=new Float32Array(crimedescriptors)
+        descriptions.push(newarray);
+  
+  
+        return new faceapi.LabeledFaceDescriptors(label, descriptions);
+      })
+    );
+  };
+  
 
   useEffect(() => {
     const loadModels = async () => {
@@ -118,9 +121,10 @@ function Profile()
         
 
         // const labeledFaceDescriptors = await loadImage();
+        // console.log(labeledFaceDescriptors)
         
-        const labeledFaceDescriptors = await getCriminal();
-       
+        const labeledFaceDescriptors = await CustomloadImage();
+      
         const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.6);
         const label = faceMatcher.findBestMatch(resizedDetected[0].descriptor).toString();
         
