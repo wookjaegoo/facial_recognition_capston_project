@@ -69,6 +69,12 @@ const NavBar = () => {
                             FACE RECOGNITION
                         </Link>
                     </li>
+
+                    <li className='nav-item'>
+                        <Link to="/Profile" className='nav-links' onClick = {closeMobileMenu}>
+                            DETECTED CRIMINAL
+                        </Link>
+                    </li>
                 </ul>
                 {/* {button && <Button buttonStyle='btn--outline'>SIGN UP</Button>} */}
         

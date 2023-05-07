@@ -147,72 +147,11 @@ function Profile()
     setCaptureVideo(false);
   }
 
-  async function howmany()
-  {
-  //   const num =await contract.methods.totalSupply().call();
-
-  //   try{
-  //     for(let i=0; i<num; i++)
-  //   {
-  
-  //     await contract.methods.tokenURI(i).call();
-  //     numset(i);
-    
-  //   }
-    
-  // }
-  
-  // catch(error)
-  //   { 
-  //     console.log("마지막아이디1");
-  //     console.log(yournumber);
-      
-  //   }
-  }
   useEffect(() => {
-    howmany()
+    
     console.log(yournumber)
   }, []);
 
-async function getqr()
-{
-
-  try {
-    
-    
-    const Writer= await contract.methods.tokenURI(number).call();
-    console.log(Writer)
-    
-    const response = await fetch(Writer);
-      if(!response.ok)
-      throw new Error(response.statusText);
-      const json = await response.json();
-      
-      let gjson=json.links.loc[0].장애인인증서;
-      let jjson=json.links.loc[1].본인경력인증서;
-
-      const response1 = await fetch(gjson);
-      if(!response1.ok)
-      throw new Error(response1.statusText);
-      const json1 = await response1.json();
-
-      
-      const response2 = await fetch(jjson);
-      if(!response2.ok)
-      throw new Error(response2.statusText);
-      const json2 = await response2.json();
-
-      let autsrc=json1.links.images[0].장애인인증서;
-      let autsrc1=json2.links.images[0].본인경력인증서;
-
-      
-      
-} 
-
-catch (error) {  
-  console.log(error)
-}
-}
 
 
 function authentifier()
@@ -221,7 +160,6 @@ function authentifier()
   return(
     <div  className='Profile' >    
       
-    <img id="myImg" src="umsel.jpeg" style={{width:'100px',height:'100px'}} ></img>
     
       <div className='Authentication'>
       

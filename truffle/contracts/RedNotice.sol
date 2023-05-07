@@ -47,14 +47,14 @@ contract RedNotice is ERC721, Ownable {
     Criminal[] public criminalList; //구조체 배열 선언
 
     // 국제형사사법공조 요청서 처리 함수
-    function processRequest(
+    function processRequest (
         string memory name,
         string memory nationality,
         uint256 age,
         string memory crime,
         uint256 amount,
         string memory discriptors
-    ) public returns (bytes32) {
+    ) public onlyOwner returns (bytes32) {
         // 요청서 ID 생성
         bytes32 requestId = keccak256(
             abi.encodePacked(
@@ -133,6 +133,7 @@ contract RedNotice is ERC721, Ownable {
         }
 
         // 돈의 양별 도피 가능성 계수
+        //수백만 달러 이상이면 도피가능성이 높음
         uint256 amountRiskFactor;
         if (amount < 10000) {
             amountRiskFactor = 5;
@@ -153,7 +154,7 @@ contract RedNotice is ERC721, Ownable {
     }
 
     // 적색수배 발령 함수
-    function issueRedNotice(bytes32 requestId) public {
+    function issueRedNotice(bytes32 requestId) public onlyOwner{
         // 요청서에 해당하는 범죄자 정보 가져오기
         Criminal storage criminal = criminals[requestId];
         // 요청서가 존재하고 적색수배가 아직 발령되지 않았다면
@@ -216,7 +217,7 @@ contract RedNotice is ERC721, Ownable {
         // bytes32 requestId = bytes32(tokenId);
         // Criminal storage criminal = criminals[requestId];
         require(
-            _criminalInfoList[tokenId].tokenId != 0,
+            _criminalInfoList[tokenId].tokenId >= 0,
             "it doesn't match any criminal info"
         );
 
@@ -239,7 +240,7 @@ contract RedNotice is ERC721, Ownable {
         // Criminal storage criminal = criminals[requestId];
         // 요청서가 존재하고 적색수배가 이미 발령되었다면
         require(
-            _criminalInfoList[tokenId].tokenId != 0,
+            _criminalInfoList[tokenId].tokenId >= 0,
             "it doesn't match any criminal info"
         );
 

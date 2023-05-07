@@ -68,31 +68,8 @@ function Footer() {
   const ethereumClient = new EthereumClient(wagmiClient,chains);
   
 
-
-
-async function howmany()
-{
-
-//   const num =await contract.methods.totalSupply().call();
-//   try{
-//     for(let i=0; i<num; i++)
-//   {
-
-//     await contract.methods.tokenURI(i).call();
-//     numset(i);
-  
-//   }
-// }
-
-// catch(error)
-//   { 
-//     console.log("마지막아이디1");
-    
-    
-//   }
-} 
 useEffect(() => {
-  howmany()
+  
  input= document.getElementById('myImg')
 
   console.log(yournumber)
@@ -123,7 +100,6 @@ const loadImage = async () => {
         .withFaceDescriptor();
       descriptions.push(detections.descriptor);
 
-      console.log(detections.descriptor)
 
       return new faceapi.LabeledFaceDescriptors(label, descriptions);
     })
@@ -140,6 +116,7 @@ const CustomloadImage = async () => {
       const descriptions = [];
         const result = await contract.methods.getCriminal(1).call();
         const attributes=result[5]
+        console.log(attributes)
         let jsonatt=JSON.parse(attributes)
         let crimedescriptors=jsonatt.descriptors[0]
         let newarray=new Float32Array(crimedescriptors)
@@ -181,11 +158,6 @@ const onUpload = (e) => {
 
       }; 
 
-  //     console.log(input)
-  // const labeledFaceDescriptors =  loadImage();
-  // console.log(labeledFaceDescriptors)
-          //여기서 labeledface~의 json데이터 뽑아서 민팅 ㄱㄱ
-        //다른 함수에서 loadimage 함수써서 뽑던지 하자 4/27
   });
 
 }
@@ -197,14 +169,13 @@ async function discriptorFromImage(e)
 {
   try {
   const labeledFaceDescriptors =await  loadImage();
-  let jsondata=labeledFaceDescriptors[0].descriptors
-  const descriptor=JSON.stringify(jsondata)
-  const result = await contract.methods.processRequest("test","China",20,"Fraud",100000,descriptor).send({from:accounts[0]});
-  const requstid=result.events.RequestReceived.returnValues[0]
-  const result2 = await contract.methods.issueRedNotice(requstid).send({from:accounts[0]});
-  console.log(result2)
+  const descriptor=JSON.stringify(labeledFaceDescriptors[0])
 
-  
+  //여기서 processrequest 파라미터는 입력탭 만들어서 받아야한다.
+  const processRequest = await contract.methods.processRequest("wook","Russia",20,"Fraud",1000000,descriptor).send({from:accounts[0]});
+  const requstid=processRequest.events.RequestReceived.returnValues[0]
+  const issueRedNotice = await contract.methods.issueRedNotice(requstid).send({from:accounts[0]});
+  console.log(issueRedNotice)
 } 
 catch (error) {  
   console.log(error)
@@ -214,13 +185,9 @@ catch (error) {
 async function getCriminal()
 {
   try {
-  // const result = await contract.methods.getCriminal(1).call();
-  // const attributes=result[5]
-  // let jsonatt=JSON.parse(attributes)
-  // let crimedescriptors=jsonatt.descriptors[0]
-  // console.log(jsonatt.descriptors[0])
-  const labeledFaceDescriptors =await  CustomloadImage();
-  console.log(labeledFaceDescriptors)
+    const result = await contract.methods.getCriminal(1).call();
+
+  console.log(result)
 
 
 
@@ -251,10 +218,10 @@ catch (error) {
     <h1 style={{color:'white'}}>본인 정보를 입력해주세요</h1>
       <div style={{display:'inline-block'}} >
       <div >
-         <input name="name2" placeholder='성명' onChange={onChange2} value={name2} style={{width:'130px'}} />
+         {/* <input name="name2" placeholder='성명' onChange={onChange2} value={name2} style={{width:'130px'}} /> */}
       </div> 
       <div >
-       <input name="member2"placeholder='생년월일' onChange={onChange2} value={member2} style={{width:'130px'}}/>
+       {/* <input name="member2"placeholder='생년월일' onChange={onChange2} value={member2} style={{width:'130px'}}/> */}
       </div>
       </div>      
       <br>
