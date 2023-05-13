@@ -555,71 +555,71 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: MIT\n// OpenZeppelin Contracts (last updated v4.6.0) (token/ERC721/extensions/draft-ERC721Votes.sol)\n\npragma solidity ^0.8.0;\n\nimport \"../ERC721.sol\";\nimport \"../../../governance/utils/Votes.sol\";\n\n/**\n * @dev Extension of ERC721 to support voting and delegation as implemented by {Votes}, where each individual NFT counts\n * as 1 vote unit.\n *\n * Tokens do not count as votes until they are delegated, because votes must be tracked which incurs an additional cost\n * on every transfer. Token holders can either delegate to a trusted representative who will decide how to make use of\n * the votes in governance decisions, or they can delegate to themselves to be their own representative.\n *\n * _Available since v4.5._\n */\nabstract contract ERC721Votes is ERC721, Votes {\n    /**\n     * @dev Adjusts votes when tokens are transferred.\n     *\n     * Emits a {Votes-DelegateVotesChanged} event.\n     */\n    function _afterTokenTransfer(\n        address from,\n        address to,\n        uint256 tokenId\n    ) internal virtual override {\n        _transferVotingUnits(from, to, 1);\n        super._afterTokenTransfer(from, to, tokenId);\n    }\n\n    /**\n     * @dev Returns the balance of `account`.\n     */\n    function _getVotingUnits(address account) internal view virtual override returns (uint256) {\n        return balanceOf(account);\n    }\n}\n",
-  "sourcePath": "C:\\Users\\paete\\CapstonPro\\truffle\\contracts\\token\\ERC721\\extensions\\draft-ERC721Votes.sol",
+  "sourcePath": "/Users/gujaeug/Desktop/capstonpro/truffle/contracts/token/ERC721/extensions/draft-ERC721Votes.sol",
   "ast": {
     "absolutePath": "project:/contracts/token/ERC721/extensions/draft-ERC721Votes.sol",
     "exportedSymbols": {
       "Address": [
-        20372
+        20422
       ],
       "Checkpoints": [
-        20738
+        20788
       ],
       "Context": [
-        20760
+        20810
       ],
       "Counters": [
-        20834
+        20884
       ],
       "ECDSA": [
-        21907
+        21957
       ],
       "EIP712": [
-        22643
+        22693
       ],
       "ERC165": [
-        22977
+        23027
       ],
       "ERC721": [
-        17517
+        17567
       ],
       "ERC721Votes": [
-        18335
+        18385
       ],
       "IERC165": [
-        23301
+        23351
       ],
       "IERC721": [
-        17633
+        17683
       ],
       "IERC721Metadata": [
-        18285
+        18335
       ],
       "IERC721Receiver": [
-        17651
+        17701
       ],
       "IVotes": [
-        8525
+        8575
       ],
       "Math": [
-        23909
+        23959
       ],
       "SafeCast": [
-        25760
+        25810
       ],
       "Strings": [
-        21286
+        21336
       ],
       "Votes": [
-        8979
+        9029
       ]
     },
-    "id": 18336,
+    "id": 18386,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 18287,
+        "id": 18337,
         "literals": [
           "solidity",
           "^",
@@ -632,11 +632,11 @@
       {
         "absolutePath": "project:/contracts/token/ERC721/ERC721.sol",
         "file": "../ERC721.sol",
-        "id": 18288,
+        "id": 18338,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 18336,
-        "sourceUnit": 17518,
+        "scope": 18386,
+        "sourceUnit": 17568,
         "src": "154:23:273",
         "symbolAliases": [],
         "unitAlias": ""
@@ -644,11 +644,11 @@
       {
         "absolutePath": "project:/contracts/governance/utils/Votes.sol",
         "file": "../../../governance/utils/Votes.sol",
-        "id": 18289,
+        "id": 18339,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 18336,
-        "sourceUnit": 8980,
+        "scope": 18386,
+        "sourceUnit": 9030,
         "src": "178:45:273",
         "symbolAliases": [],
         "unitAlias": ""
@@ -658,25 +658,25 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 18291,
+              "id": 18341,
               "name": "ERC721",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 17517,
+              "referencedDeclaration": 17567,
               "src": "783:6:273"
             },
-            "id": 18292,
+            "id": 18342,
             "nodeType": "InheritanceSpecifier",
             "src": "783:6:273"
           },
           {
             "baseName": {
-              "id": 18293,
+              "id": 18343,
               "name": "Votes",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 8979,
+              "referencedDeclaration": 9029,
               "src": "791:5:273"
             },
-            "id": 18294,
+            "id": 18344,
             "nodeType": "InheritanceSpecifier",
             "src": "791:5:273"
           }
@@ -685,24 +685,24 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "documentation": {
-          "id": 18290,
+          "id": 18340,
           "nodeType": "StructuredDocumentation",
           "src": "225:524:273",
           "text": " @dev Extension of ERC721 to support voting and delegation as implemented by {Votes}, where each individual NFT counts\n as 1 vote unit.\n Tokens do not count as votes until they are delegated, because votes must be tracked which incurs an additional cost\n on every transfer. Token holders can either delegate to a trusted representative who will decide how to make use of\n the votes in governance decisions, or they can delegate to themselves to be their own representative.\n _Available since v4.5._"
         },
         "fullyImplemented": false,
-        "id": 18335,
+        "id": 18385,
         "linearizedBaseContracts": [
+          18385,
+          9029,
+          22693,
+          17567,
           18335,
-          8979,
-          22643,
-          17517,
-          18285,
-          17633,
-          22977,
-          23301,
-          20760,
-          8525
+          17683,
+          23027,
+          23351,
+          20810,
+          8575
         ],
         "name": "ERC721Votes",
         "nameLocation": "768:11:273",
@@ -710,10 +710,10 @@
         "nodes": [
           {
             "baseFunctions": [
-              17516
+              17566
             ],
             "body": {
-              "id": 18319,
+              "id": 18369,
               "nodeType": "Block",
               "src": "1060:104:273",
               "statements": [
@@ -721,11 +721,11 @@
                   "expression": {
                     "arguments": [
                       {
-                        "id": 18306,
+                        "id": 18356,
                         "name": "from",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 18297,
+                        "referencedDeclaration": 18347,
                         "src": "1091:4:273",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -733,11 +733,11 @@
                         }
                       },
                       {
-                        "id": 18307,
+                        "id": 18357,
                         "name": "to",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 18299,
+                        "referencedDeclaration": 18349,
                         "src": "1097:2:273",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -746,7 +746,7 @@
                       },
                       {
                         "hexValue": "31",
-                        "id": 18308,
+                        "id": 18358,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -776,18 +776,18 @@
                           "typeString": "int_const 1"
                         }
                       ],
-                      "id": 18305,
+                      "id": 18355,
                       "name": "_transferVotingUnits",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8816,
+                      "referencedDeclaration": 8866,
                       "src": "1070:20:273",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_address_$_t_uint256_$returns$__$",
                         "typeString": "function (address,address,uint256)"
                       }
                     },
-                    "id": 18309,
+                    "id": 18359,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -802,7 +802,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 18310,
+                  "id": 18360,
                   "nodeType": "ExpressionStatement",
                   "src": "1070:33:273"
                 },
@@ -810,11 +810,11 @@
                   "expression": {
                     "arguments": [
                       {
-                        "id": 18314,
+                        "id": 18364,
                         "name": "from",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 18297,
+                        "referencedDeclaration": 18347,
                         "src": "1139:4:273",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -822,11 +822,11 @@
                         }
                       },
                       {
-                        "id": 18315,
+                        "id": 18365,
                         "name": "to",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 18299,
+                        "referencedDeclaration": 18349,
                         "src": "1145:2:273",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -834,11 +834,11 @@
                         }
                       },
                       {
-                        "id": 18316,
+                        "id": 18366,
                         "name": "tokenId",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 18301,
+                        "referencedDeclaration": 18351,
                         "src": "1149:7:273",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -862,32 +862,32 @@
                         }
                       ],
                       "expression": {
-                        "id": 18311,
+                        "id": 18361,
                         "name": "super",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 4294967271,
                         "src": "1113:5:273",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_super$_ERC721Votes_$18335_$",
+                          "typeIdentifier": "t_type$_t_super$_ERC721Votes_$18385_$",
                           "typeString": "type(contract super ERC721Votes)"
                         }
                       },
-                      "id": 18313,
+                      "id": 18363,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "_afterTokenTransfer",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 17516,
+                      "referencedDeclaration": 17566,
                       "src": "1113:25:273",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_address_$_t_uint256_$returns$__$",
                         "typeString": "function (address,address,uint256)"
                       }
                     },
-                    "id": 18317,
+                    "id": 18367,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -902,19 +902,19 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 18318,
+                  "id": 18368,
                   "nodeType": "ExpressionStatement",
                   "src": "1113:44:273"
                 }
               ]
             },
             "documentation": {
-              "id": 18295,
+              "id": 18345,
               "nodeType": "StructuredDocumentation",
               "src": "803:124:273",
               "text": " @dev Adjusts votes when tokens are transferred.\n Emits a {Votes-DelegateVotesChanged} event."
             },
-            "id": 18320,
+            "id": 18370,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
@@ -922,23 +922,23 @@
             "nameLocation": "941:19:273",
             "nodeType": "FunctionDefinition",
             "overrides": {
-              "id": 18303,
+              "id": 18353,
               "nodeType": "OverrideSpecifier",
               "overrides": [],
               "src": "1051:8:273"
             },
             "parameters": {
-              "id": 18302,
+              "id": 18352,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 18297,
+                  "id": 18347,
                   "mutability": "mutable",
                   "name": "from",
                   "nameLocation": "978:4:273",
                   "nodeType": "VariableDeclaration",
-                  "scope": 18320,
+                  "scope": 18370,
                   "src": "970:12:273",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -947,7 +947,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 18296,
+                    "id": 18346,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "970:7:273",
@@ -961,12 +961,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 18299,
+                  "id": 18349,
                   "mutability": "mutable",
                   "name": "to",
                   "nameLocation": "1000:2:273",
                   "nodeType": "VariableDeclaration",
-                  "scope": 18320,
+                  "scope": 18370,
                   "src": "992:10:273",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -975,7 +975,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 18298,
+                    "id": 18348,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "992:7:273",
@@ -989,12 +989,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 18301,
+                  "id": 18351,
                   "mutability": "mutable",
                   "name": "tokenId",
                   "nameLocation": "1020:7:273",
                   "nodeType": "VariableDeclaration",
-                  "scope": 18320,
+                  "scope": 18370,
                   "src": "1012:15:273",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1003,7 +1003,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 18300,
+                    "id": 18350,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1012:7:273",
@@ -1018,12 +1018,12 @@
               "src": "960:73:273"
             },
             "returnParameters": {
-              "id": 18304,
+              "id": 18354,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1060:0:273"
             },
-            "scope": 18335,
+            "scope": 18385,
             "src": "932:232:273",
             "stateMutability": "nonpayable",
             "virtual": true,
@@ -1031,10 +1031,10 @@
           },
           {
             "baseFunctions": [
-              8978
+              9028
             ],
             "body": {
-              "id": 18333,
+              "id": 18383,
               "nodeType": "Block",
               "src": "1323:42:273",
               "statements": [
@@ -1042,11 +1042,11 @@
                   "expression": {
                     "arguments": [
                       {
-                        "id": 18330,
+                        "id": 18380,
                         "name": "account",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 18323,
+                        "referencedDeclaration": 18373,
                         "src": "1350:7:273",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -1061,18 +1061,18 @@
                           "typeString": "address"
                         }
                       ],
-                      "id": 18329,
+                      "id": 18379,
                       "name": "balanceOf",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 16768,
+                      "referencedDeclaration": 16818,
                       "src": "1340:9:273",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_view$_t_address_$returns$_t_uint256_$",
                         "typeString": "function (address) view returns (uint256)"
                       }
                     },
-                    "id": 18331,
+                    "id": 18381,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1087,20 +1087,20 @@
                       "typeString": "uint256"
                     }
                   },
-                  "functionReturnParameters": 18328,
-                  "id": 18332,
+                  "functionReturnParameters": 18378,
+                  "id": 18382,
                   "nodeType": "Return",
                   "src": "1333:25:273"
                 }
               ]
             },
             "documentation": {
-              "id": 18321,
+              "id": 18371,
               "nodeType": "StructuredDocumentation",
               "src": "1170:57:273",
               "text": " @dev Returns the balance of `account`."
             },
-            "id": 18334,
+            "id": 18384,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
@@ -1108,23 +1108,23 @@
             "nameLocation": "1241:15:273",
             "nodeType": "FunctionDefinition",
             "overrides": {
-              "id": 18325,
+              "id": 18375,
               "nodeType": "OverrideSpecifier",
               "overrides": [],
               "src": "1296:8:273"
             },
             "parameters": {
-              "id": 18324,
+              "id": 18374,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 18323,
+                  "id": 18373,
                   "mutability": "mutable",
                   "name": "account",
                   "nameLocation": "1265:7:273",
                   "nodeType": "VariableDeclaration",
-                  "scope": 18334,
+                  "scope": 18384,
                   "src": "1257:15:273",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1133,7 +1133,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 18322,
+                    "id": 18372,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1257:7:273",
@@ -1149,17 +1149,17 @@
               "src": "1256:17:273"
             },
             "returnParameters": {
-              "id": 18328,
+              "id": 18378,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 18327,
+                  "id": 18377,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 18334,
+                  "scope": 18384,
                   "src": "1314:7:273",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1168,7 +1168,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 18326,
+                    "id": 18376,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1314:7:273",
@@ -1182,14 +1182,14 @@
               ],
               "src": "1313:9:273"
             },
-            "scope": 18335,
+            "scope": 18385,
             "src": "1232:133:273",
             "stateMutability": "view",
             "virtual": true,
             "visibility": "internal"
           }
         ],
-        "scope": 18336,
+        "scope": 18386,
         "src": "750:617:273",
         "usedErrors": []
       }
@@ -1202,7 +1202,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-05-03T08:44:13.440Z",
+  "updatedAt": "2023-05-12T01:11:09.170Z",
   "devdoc": {
     "details": "Extension of ERC721 to support voting and delegation as implemented by {Votes}, where each individual NFT counts as 1 vote unit. Tokens do not count as votes until they are delegated, because votes must be tracked which incurs an additional cost on every transfer. Token holders can either delegate to a trusted representative who will decide how to make use of the votes in governance decisions, or they can delegate to themselves to be their own representative. _Available since v4.5._",
     "kind": "dev",

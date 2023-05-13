@@ -49,7 +49,7 @@ function Profile()
 
   const CustomloadImage = async () => {
     // 업로드 된 이미지 이름을 배열에 담아 라벨링 합니다.
-    const labels = ["you"];
+    const labels = ["1","2","3","4","5","6","7","8","9","10"];
   
   
     return Promise.all(
@@ -138,7 +138,7 @@ function Profile()
 
         // canvasRef && canvasRef.current && faceapi.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
       }
-    }, 1)
+    }, 100)
   }
 
   const closeWebcam = () => {

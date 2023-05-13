@@ -27,6 +27,22 @@ contract RedNotice is ERC721, Ownable {
     // token ID 별 범죄자 정보 매핑 (추가)
     mapping(uint256 => bytes32) public tokenIdToRequest;
 
+    mapping(address => bool) allowed;
+
+    modifier onlyAllowed() {
+        require(allowed[msg.sender], "Only allowed investigative agency can call this function");
+        _;
+    }
+
+    function addAllowedUser(address user) public onlyOwner {
+        allowed[user] = true;
+    }
+
+    function removeAllowedUser(address user) public onlyOwner {
+        allowed[user] = false;
+    }
+
+
     // 국제형사사법공조 요청서 이벤트
     event RequestReceived(
         bytes32 indexed requestId,
@@ -54,7 +70,7 @@ contract RedNotice is ERC721, Ownable {
         string memory crime,
         uint256 amount,
         string memory discriptors
-    ) public onlyOwner returns (bytes32) {
+    ) public onlyAllowed returns (bytes32) {
         // 요청서 ID 생성
         bytes32 requestId = keccak256(
             abi.encodePacked(
@@ -116,7 +132,7 @@ contract RedNotice is ERC721, Ownable {
             ageRiskFactor = 15;
         } else {
             ageRiskFactor = 20;
-        }
+        } 
 
         // 범죄 유형별 도피 가능성 계수
         uint256 crimeRiskFactor;
@@ -154,7 +170,7 @@ contract RedNotice is ERC721, Ownable {
     }
 
     // 적색수배 발령 함수
-    function issueRedNotice(bytes32 requestId) public onlyOwner{
+    function issueRedNotice(bytes32 requestId) public onlyAllowed{
         // 요청서에 해당하는 범죄자 정보 가져오기
         Criminal storage criminal = criminals[requestId];
         // 요청서가 존재하고 적색수배가 아직 발령되지 않았다면
@@ -217,7 +233,7 @@ contract RedNotice is ERC721, Ownable {
         // bytes32 requestId = bytes32(tokenId);
         // Criminal storage criminal = criminals[requestId];
         require(
-            _criminalInfoList[tokenId].tokenId >= 0,
+            _criminalInfoList[tokenId].tokenId == tokenId,
             "it doesn't match any criminal info"
         );
 
@@ -234,13 +250,13 @@ contract RedNotice is ERC721, Ownable {
     }
 
     // 적색수배 철회 함수
-    function withdrawRedNotice(uint tokenId) public {
+    function withdrawRedNotice(uint tokenId) public onlyAllowed{
         // tokenId를 bytes32로 변환하여 범죄자 정보 매핑에서 검색
         // bytes32 requestId = bytes32(tokenId);
         // Criminal storage criminal = criminals[requestId];
         // 요청서가 존재하고 적색수배가 이미 발령되었다면
         require(
-            _criminalInfoList[tokenId].tokenId >= 0,
+            _criminalInfoList[tokenId].tokenId == tokenId,
             "it doesn't match any criminal info"
         );
 

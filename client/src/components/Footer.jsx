@@ -13,13 +13,12 @@ import {
 
 
 import { Web3Button } from "@web3modal/react";
-
 import { Web3Modal } from "@web3modal/react";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { goerli } from "wagmi";
-
 import * as faceapi from 'face-api.js';
 import * as canvas from 'canvas';
+
 const { Canvas, Image, ImageData } = canvas;
 faceapi.env.monkeyPatch({
   Canvas:HTMLCanvasElement,
@@ -40,11 +39,9 @@ function Footer() {
   const [fileUrl, updateFileUrl] = useState("");
   const{state: {contract,accounts,web3}} = useEth();
   const[yournumber,numset]=useState("");
-  const[inputs, setInputs]=useState({name1:'',name2:'',number:'',date1:'',institution1:'',date2:'',institution2:'',usage1:'',usage2:'',location:'',dgrade:'',guardian:'',education:'',awards:'',relationship:'',member1:'',member2:'',submit1:'',submit2:'',duration:'',severe:'',work:''});
-  const {member2,name2 } =inputs;
+  const[inputs, setInputs]=useState({selectaddr:''});
+  const {selectaddr}  =inputs;
   const inputss = document.getElementById('myImg')
-
-
   const chains =[goerli];
   
   
@@ -76,7 +73,7 @@ useEffect(() => {
   
 }, []);
 
-async function onChange2(e)
+async function onChange(e)
 {
   const {value,name} =e.target
     setInputs({
@@ -99,28 +96,6 @@ const loadImage = async () => {
         .withFaceLandmarks()
         .withFaceDescriptor();
       descriptions.push(detections.descriptor);
-
-
-      return new faceapi.LabeledFaceDescriptors(label, descriptions);
-    })
-  );
-};
-
-const CustomloadImage = async () => {
-  // 업로드 된 이미지 이름을 배열에 담아 라벨링 합니다.
-  const labels = ["you"];
-
-
-  return Promise.all(
-    labels.map(async (label) => {
-      const descriptions = [];
-        const result = await contract.methods.getCriminal(1).call();
-        const attributes=result[5]
-        console.log(attributes)
-        let jsonatt=JSON.parse(attributes)
-        let crimedescriptors=jsonatt.descriptors[0]
-        let newarray=new Float32Array(crimedescriptors)
-      descriptions.push(newarray);
 
 
       return new faceapi.LabeledFaceDescriptors(label, descriptions);
@@ -163,7 +138,8 @@ const onUpload = (e) => {
 }
 
 
-
+//여기에 솔리디티 접근제어 메소드 및 버튼 추가해서 반영할것
+//요청서 형식으로 ui변경해서 반영
 
 async function discriptorFromImage(e)
 {
@@ -186,11 +162,20 @@ async function getCriminal()
 {
   try {
     const result = await contract.methods.getCriminal(1).call();
-
-  console.log(result)
-
+      console.log(result)
 
 
+} 
+catch (error) {  
+  console.log(error)
+}
+}
+
+async function addAllowedUser()
+{
+  try {
+    const result = await contract.methods.addAllowedUser(selectaddr).send({from:accounts[0]});
+    console.log(result)
 } 
 catch (error) {  
   console.log(error)
@@ -244,8 +229,11 @@ catch (error) {
           src={imageSrc} 
       />
       <br />
-      <label type="fileupload" onClick={discriptorFromImage} id="fileup"  className='custom-btn2' >특징추출후 트랜잭션</label>
-      <label  onClick={getCriminal}   className='custom-btn2' >범죄자 로그 조회</label>
+      <label type="fileupload" onClick={discriptorFromImage} id="fileup"  className='custom-btn2' >discripted transaction</label>
+      <label  onClick={getCriminal}   className='custom-btn2' >criminal log</label>
+      <label  onClick={addAllowedUser}   className='custom-btn2' >Authorize</label>
+      <input name='selectaddr'value={selectaddr} onChange={onChange} style={{width:'300px'}}></input>
+
 
       <br />  
       </div>

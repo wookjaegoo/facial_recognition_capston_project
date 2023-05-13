@@ -59,29 +59,29 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: MIT\n// OpenZeppelin Contracts (last updated v4.7.0) (token/common/ERC2981.sol)\n\npragma solidity ^0.8.0;\n\nimport \"../../interfaces/IERC2981.sol\";\nimport \"../../utils/introspection/ERC165.sol\";\n\n/**\n * @dev Implementation of the NFT Royalty Standard, a standardized way to retrieve royalty payment information.\n *\n * Royalty information can be specified globally for all token ids via {_setDefaultRoyalty}, and/or individually for\n * specific token ids via {_setTokenRoyalty}. The latter takes precedence over the first.\n *\n * Royalty is specified as a fraction of sale price. {_feeDenominator} is overridable but defaults to 10000, meaning the\n * fee is specified in basis points by default.\n *\n * IMPORTANT: ERC-2981 only specifies a way to signal royalty information and does not enforce its payment. See\n * https://eips.ethereum.org/EIPS/eip-2981#optional-royalty-payments[Rationale] in the EIP. Marketplaces are expected to\n * voluntarily pay royalties together with sales, but note that this standard is not yet widely supported.\n *\n * _Available since v4.5._\n */\nabstract contract ERC2981 is IERC2981, ERC165 {\n    struct RoyaltyInfo {\n        address receiver;\n        uint96 royaltyFraction;\n    }\n\n    RoyaltyInfo private _defaultRoyaltyInfo;\n    mapping(uint256 => RoyaltyInfo) private _tokenRoyaltyInfo;\n\n    /**\n     * @dev See {IERC165-supportsInterface}.\n     */\n    function supportsInterface(bytes4 interfaceId) public view virtual override(IERC165, ERC165) returns (bool) {\n        return interfaceId == type(IERC2981).interfaceId || super.supportsInterface(interfaceId);\n    }\n\n    /**\n     * @inheritdoc IERC2981\n     */\n    function royaltyInfo(uint256 _tokenId, uint256 _salePrice) public view virtual override returns (address, uint256) {\n        RoyaltyInfo memory royalty = _tokenRoyaltyInfo[_tokenId];\n\n        if (royalty.receiver == address(0)) {\n            royalty = _defaultRoyaltyInfo;\n        }\n\n        uint256 royaltyAmount = (_salePrice * royalty.royaltyFraction) / _feeDenominator();\n\n        return (royalty.receiver, royaltyAmount);\n    }\n\n    /**\n     * @dev The denominator with which to interpret the fee set in {_setTokenRoyalty} and {_setDefaultRoyalty} as a\n     * fraction of the sale price. Defaults to 10000 so fees are expressed in basis points, but may be customized by an\n     * override.\n     */\n    function _feeDenominator() internal pure virtual returns (uint96) {\n        return 10000;\n    }\n\n    /**\n     * @dev Sets the royalty information that all ids in this contract will default to.\n     *\n     * Requirements:\n     *\n     * - `receiver` cannot be the zero address.\n     * - `feeNumerator` cannot be greater than the fee denominator.\n     */\n    function _setDefaultRoyalty(address receiver, uint96 feeNumerator) internal virtual {\n        require(feeNumerator <= _feeDenominator(), \"ERC2981: royalty fee will exceed salePrice\");\n        require(receiver != address(0), \"ERC2981: invalid receiver\");\n\n        _defaultRoyaltyInfo = RoyaltyInfo(receiver, feeNumerator);\n    }\n\n    /**\n     * @dev Removes default royalty information.\n     */\n    function _deleteDefaultRoyalty() internal virtual {\n        delete _defaultRoyaltyInfo;\n    }\n\n    /**\n     * @dev Sets the royalty information for a specific token id, overriding the global default.\n     *\n     * Requirements:\n     *\n     * - `receiver` cannot be the zero address.\n     * - `feeNumerator` cannot be greater than the fee denominator.\n     */\n    function _setTokenRoyalty(\n        uint256 tokenId,\n        address receiver,\n        uint96 feeNumerator\n    ) internal virtual {\n        require(feeNumerator <= _feeDenominator(), \"ERC2981: royalty fee will exceed salePrice\");\n        require(receiver != address(0), \"ERC2981: Invalid parameters\");\n\n        _tokenRoyaltyInfo[tokenId] = RoyaltyInfo(receiver, feeNumerator);\n    }\n\n    /**\n     * @dev Resets royalty information for the token id back to the global default.\n     */\n    function _resetTokenRoyalty(uint256 tokenId) internal virtual {\n        delete _tokenRoyaltyInfo[tokenId];\n    }\n}\n",
-  "sourcePath": "C:\\Users\\paete\\CapstonPro\\truffle\\contracts\\token\\common\\ERC2981.sol",
+  "sourcePath": "/Users/gujaeug/Desktop/capstonpro/truffle/contracts/token/common/ERC2981.sol",
   "ast": {
     "absolutePath": "project:/contracts/token/common/ERC2981.sol",
     "exportedSymbols": {
       "ERC165": [
-        22977
+        23027
       ],
       "ERC2981": [
-        20077
+        20127
       ],
       "IERC165": [
-        23301
+        23351
       ],
       "IERC2981": [
-        9147
+        9197
       ]
     },
-    "id": 20078,
+    "id": 20128,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 19881,
+        "id": 19931,
         "literals": [
           "solidity",
           "^",
@@ -94,11 +94,11 @@
       {
         "absolutePath": "project:/contracts/interfaces/IERC2981.sol",
         "file": "../../interfaces/IERC2981.sol",
-        "id": 19882,
+        "id": 19932,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 20078,
-        "sourceUnit": 9148,
+        "scope": 20128,
+        "sourceUnit": 9198,
         "src": "133:39:281",
         "symbolAliases": [],
         "unitAlias": ""
@@ -106,11 +106,11 @@
       {
         "absolutePath": "project:/contracts/utils/introspection/ERC165.sol",
         "file": "../../utils/introspection/ERC165.sol",
-        "id": 19883,
+        "id": 19933,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 20078,
-        "sourceUnit": 22978,
+        "scope": 20128,
+        "sourceUnit": 23028,
         "src": "173:46:281",
         "symbolAliases": [],
         "unitAlias": ""
@@ -120,25 +120,25 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 19885,
+              "id": 19935,
               "name": "IERC2981",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 9147,
+              "referencedDeclaration": 9197,
               "src": "1125:8:281"
             },
-            "id": 19886,
+            "id": 19936,
             "nodeType": "InheritanceSpecifier",
             "src": "1125:8:281"
           },
           {
             "baseName": {
-              "id": 19887,
+              "id": 19937,
               "name": "ERC165",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 22977,
+              "referencedDeclaration": 23027,
               "src": "1135:6:281"
             },
-            "id": 19888,
+            "id": 19938,
             "nodeType": "InheritanceSpecifier",
             "src": "1135:6:281"
           }
@@ -147,18 +147,18 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "documentation": {
-          "id": 19884,
+          "id": 19934,
           "nodeType": "StructuredDocumentation",
           "src": "221:874:281",
           "text": " @dev Implementation of the NFT Royalty Standard, a standardized way to retrieve royalty payment information.\n Royalty information can be specified globally for all token ids via {_setDefaultRoyalty}, and/or individually for\n specific token ids via {_setTokenRoyalty}. The latter takes precedence over the first.\n Royalty is specified as a fraction of sale price. {_feeDenominator} is overridable but defaults to 10000, meaning the\n fee is specified in basis points by default.\n IMPORTANT: ERC-2981 only specifies a way to signal royalty information and does not enforce its payment. See\n https://eips.ethereum.org/EIPS/eip-2981#optional-royalty-payments[Rationale] in the EIP. Marketplaces are expected to\n voluntarily pay royalties together with sales, but note that this standard is not yet widely supported.\n _Available since v4.5._"
         },
         "fullyImplemented": true,
-        "id": 20077,
+        "id": 20127,
         "linearizedBaseContracts": [
-          20077,
-          22977,
-          9147,
-          23301
+          20127,
+          23027,
+          9197,
+          23351
         ],
         "name": "ERC2981",
         "nameLocation": "1114:7:281",
@@ -166,16 +166,16 @@
         "nodes": [
           {
             "canonicalName": "ERC2981.RoyaltyInfo",
-            "id": 19893,
+            "id": 19943,
             "members": [
               {
                 "constant": false,
-                "id": 19890,
+                "id": 19940,
                 "mutability": "mutable",
                 "name": "receiver",
                 "nameLocation": "1185:8:281",
                 "nodeType": "VariableDeclaration",
-                "scope": 19893,
+                "scope": 19943,
                 "src": "1177:16:281",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -184,7 +184,7 @@
                   "typeString": "address"
                 },
                 "typeName": {
-                  "id": 19889,
+                  "id": 19939,
                   "name": "address",
                   "nodeType": "ElementaryTypeName",
                   "src": "1177:7:281",
@@ -198,12 +198,12 @@
               },
               {
                 "constant": false,
-                "id": 19892,
+                "id": 19942,
                 "mutability": "mutable",
                 "name": "royaltyFraction",
                 "nameLocation": "1210:15:281",
                 "nodeType": "VariableDeclaration",
-                "scope": 19893,
+                "scope": 19943,
                 "src": "1203:22:281",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -212,7 +212,7 @@
                   "typeString": "uint96"
                 },
                 "typeName": {
-                  "id": 19891,
+                  "id": 19941,
                   "name": "uint96",
                   "nodeType": "ElementaryTypeName",
                   "src": "1203:6:281",
@@ -227,39 +227,39 @@
             "name": "RoyaltyInfo",
             "nameLocation": "1155:11:281",
             "nodeType": "StructDefinition",
-            "scope": 20077,
+            "scope": 20127,
             "src": "1148:84:281",
             "visibility": "public"
           },
           {
             "constant": false,
-            "id": 19896,
+            "id": 19946,
             "mutability": "mutable",
             "name": "_defaultRoyaltyInfo",
             "nameLocation": "1258:19:281",
             "nodeType": "VariableDeclaration",
-            "scope": 20077,
+            "scope": 20127,
             "src": "1238:39:281",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_struct$_RoyaltyInfo_$19893_storage",
+              "typeIdentifier": "t_struct$_RoyaltyInfo_$19943_storage",
               "typeString": "struct ERC2981.RoyaltyInfo"
             },
             "typeName": {
-              "id": 19895,
+              "id": 19945,
               "nodeType": "UserDefinedTypeName",
               "pathNode": {
-                "id": 19894,
+                "id": 19944,
                 "name": "RoyaltyInfo",
                 "nodeType": "IdentifierPath",
-                "referencedDeclaration": 19893,
+                "referencedDeclaration": 19943,
                 "src": "1238:11:281"
               },
-              "referencedDeclaration": 19893,
+              "referencedDeclaration": 19943,
               "src": "1238:11:281",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_RoyaltyInfo_$19893_storage_ptr",
+                "typeIdentifier": "t_struct$_RoyaltyInfo_$19943_storage_ptr",
                 "typeString": "struct ERC2981.RoyaltyInfo"
               }
             },
@@ -267,23 +267,23 @@
           },
           {
             "constant": false,
-            "id": 19901,
+            "id": 19951,
             "mutability": "mutable",
             "name": "_tokenRoyaltyInfo",
             "nameLocation": "1323:17:281",
             "nodeType": "VariableDeclaration",
-            "scope": 20077,
+            "scope": 20127,
             "src": "1283:57:281",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_RoyaltyInfo_$19893_storage_$",
+              "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_RoyaltyInfo_$19943_storage_$",
               "typeString": "mapping(uint256 => struct ERC2981.RoyaltyInfo)"
             },
             "typeName": {
-              "id": 19900,
+              "id": 19950,
               "keyType": {
-                "id": 19897,
+                "id": 19947,
                 "name": "uint256",
                 "nodeType": "ElementaryTypeName",
                 "src": "1291:7:281",
@@ -295,23 +295,23 @@
               "nodeType": "Mapping",
               "src": "1283:31:281",
               "typeDescriptions": {
-                "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_RoyaltyInfo_$19893_storage_$",
+                "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_RoyaltyInfo_$19943_storage_$",
                 "typeString": "mapping(uint256 => struct ERC2981.RoyaltyInfo)"
               },
               "valueType": {
-                "id": 19899,
+                "id": 19949,
                 "nodeType": "UserDefinedTypeName",
                 "pathNode": {
-                  "id": 19898,
+                  "id": 19948,
                   "name": "RoyaltyInfo",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 19893,
+                  "referencedDeclaration": 19943,
                   "src": "1302:11:281"
                 },
-                "referencedDeclaration": 19893,
+                "referencedDeclaration": 19943,
                 "src": "1302:11:281",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_RoyaltyInfo_$19893_storage_ptr",
+                  "typeIdentifier": "t_struct$_RoyaltyInfo_$19943_storage_ptr",
                   "typeString": "struct ERC2981.RoyaltyInfo"
                 }
               }
@@ -320,11 +320,11 @@
           },
           {
             "baseFunctions": [
-              22976,
-              23300
+              23026,
+              23350
             ],
             "body": {
-              "id": 19924,
+              "id": 19974,
               "nodeType": "Block",
               "src": "1516:105:281",
               "statements": [
@@ -334,7 +334,7 @@
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     },
-                    "id": 19922,
+                    "id": 19972,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -344,17 +344,17 @@
                         "typeIdentifier": "t_bytes4",
                         "typeString": "bytes4"
                       },
-                      "id": 19917,
+                      "id": 19967,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "leftExpression": {
-                        "id": 19912,
+                        "id": 19962,
                         "name": "interfaceId",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 19904,
+                        "referencedDeclaration": 19954,
                         "src": "1533:11:281",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes4",
@@ -367,14 +367,14 @@
                         "expression": {
                           "arguments": [
                             {
-                              "id": 19914,
+                              "id": 19964,
                               "name": "IERC2981",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 9147,
+                              "referencedDeclaration": 9197,
                               "src": "1553:8:281",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_type$_t_contract$_IERC2981_$9147_$",
+                                "typeIdentifier": "t_type$_t_contract$_IERC2981_$9197_$",
                                 "typeString": "type(contract IERC2981)"
                               }
                             }
@@ -382,11 +382,11 @@
                           "expression": {
                             "argumentTypes": [
                               {
-                                "typeIdentifier": "t_type$_t_contract$_IERC2981_$9147_$",
+                                "typeIdentifier": "t_type$_t_contract$_IERC2981_$9197_$",
                                 "typeString": "type(contract IERC2981)"
                               }
                             ],
-                            "id": 19913,
+                            "id": 19963,
                             "name": "type",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -397,7 +397,7 @@
                               "typeString": "function () pure"
                             }
                           },
-                          "id": 19915,
+                          "id": 19965,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -408,11 +408,11 @@
                           "src": "1548:14:281",
                           "tryCall": false,
                           "typeDescriptions": {
-                            "typeIdentifier": "t_magic_meta_type_t_contract$_IERC2981_$9147",
+                            "typeIdentifier": "t_magic_meta_type_t_contract$_IERC2981_$9197",
                             "typeString": "type(contract IERC2981)"
                           }
                         },
-                        "id": 19916,
+                        "id": 19966,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -436,11 +436,11 @@
                     "rightExpression": {
                       "arguments": [
                         {
-                          "id": 19920,
+                          "id": 19970,
                           "name": "interfaceId",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 19904,
+                          "referencedDeclaration": 19954,
                           "src": "1602:11:281",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes4",
@@ -456,32 +456,32 @@
                           }
                         ],
                         "expression": {
-                          "id": 19918,
+                          "id": 19968,
                           "name": "super",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 4294967271,
                           "src": "1578:5:281",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_type$_t_super$_ERC2981_$20077_$",
+                            "typeIdentifier": "t_type$_t_super$_ERC2981_$20127_$",
                             "typeString": "type(contract super ERC2981)"
                           }
                         },
-                        "id": 19919,
+                        "id": 19969,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "supportsInterface",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 22976,
+                        "referencedDeclaration": 23026,
                         "src": "1578:23:281",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_bytes4_$returns$_t_bool_$",
                           "typeString": "function (bytes4) view returns (bool)"
                         }
                       },
-                      "id": 19921,
+                      "id": 19971,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -502,21 +502,21 @@
                       "typeString": "bool"
                     }
                   },
-                  "functionReturnParameters": 19911,
-                  "id": 19923,
+                  "functionReturnParameters": 19961,
+                  "id": 19973,
                   "nodeType": "Return",
                   "src": "1526:88:281"
                 }
               ]
             },
             "documentation": {
-              "id": 19902,
+              "id": 19952,
               "nodeType": "StructuredDocumentation",
               "src": "1347:56:281",
               "text": " @dev See {IERC165-supportsInterface}."
             },
             "functionSelector": "01ffc9a7",
-            "id": 19925,
+            "id": 19975,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
@@ -524,38 +524,38 @@
             "nameLocation": "1417:17:281",
             "nodeType": "FunctionDefinition",
             "overrides": {
-              "id": 19908,
+              "id": 19958,
               "nodeType": "OverrideSpecifier",
               "overrides": [
                 {
-                  "id": 19906,
+                  "id": 19956,
                   "name": "IERC165",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 23301,
+                  "referencedDeclaration": 23351,
                   "src": "1484:7:281"
                 },
                 {
-                  "id": 19907,
+                  "id": 19957,
                   "name": "ERC165",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 22977,
+                  "referencedDeclaration": 23027,
                   "src": "1493:6:281"
                 }
               ],
               "src": "1475:25:281"
             },
             "parameters": {
-              "id": 19905,
+              "id": 19955,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 19904,
+                  "id": 19954,
                   "mutability": "mutable",
                   "name": "interfaceId",
                   "nameLocation": "1442:11:281",
                   "nodeType": "VariableDeclaration",
-                  "scope": 19925,
+                  "scope": 19975,
                   "src": "1435:18:281",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -564,7 +564,7 @@
                     "typeString": "bytes4"
                   },
                   "typeName": {
-                    "id": 19903,
+                    "id": 19953,
                     "name": "bytes4",
                     "nodeType": "ElementaryTypeName",
                     "src": "1435:6:281",
@@ -579,17 +579,17 @@
               "src": "1434:20:281"
             },
             "returnParameters": {
-              "id": 19911,
+              "id": 19961,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 19910,
+                  "id": 19960,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 19925,
+                  "scope": 19975,
                   "src": "1510:4:281",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -598,7 +598,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 19909,
+                    "id": 19959,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "1510:4:281",
@@ -612,7 +612,7 @@
               ],
               "src": "1509:6:281"
             },
-            "scope": 20077,
+            "scope": 20127,
             "src": "1408:213:281",
             "stateMutability": "view",
             "virtual": true,
@@ -620,74 +620,74 @@
           },
           {
             "baseFunctions": [
-              9146
+              9196
             ],
             "body": {
-              "id": 19974,
+              "id": 20024,
               "nodeType": "Block",
               "src": "1786:317:281",
               "statements": [
                 {
                   "assignments": [
-                    19940
+                    19990
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 19940,
+                      "id": 19990,
                       "mutability": "mutable",
                       "name": "royalty",
                       "nameLocation": "1815:7:281",
                       "nodeType": "VariableDeclaration",
-                      "scope": 19974,
+                      "scope": 20024,
                       "src": "1796:26:281",
                       "stateVariable": false,
                       "storageLocation": "memory",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_RoyaltyInfo_$19893_memory_ptr",
+                        "typeIdentifier": "t_struct$_RoyaltyInfo_$19943_memory_ptr",
                         "typeString": "struct ERC2981.RoyaltyInfo"
                       },
                       "typeName": {
-                        "id": 19939,
+                        "id": 19989,
                         "nodeType": "UserDefinedTypeName",
                         "pathNode": {
-                          "id": 19938,
+                          "id": 19988,
                           "name": "RoyaltyInfo",
                           "nodeType": "IdentifierPath",
-                          "referencedDeclaration": 19893,
+                          "referencedDeclaration": 19943,
                           "src": "1796:11:281"
                         },
-                        "referencedDeclaration": 19893,
+                        "referencedDeclaration": 19943,
                         "src": "1796:11:281",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_RoyaltyInfo_$19893_storage_ptr",
+                          "typeIdentifier": "t_struct$_RoyaltyInfo_$19943_storage_ptr",
                           "typeString": "struct ERC2981.RoyaltyInfo"
                         }
                       },
                       "visibility": "internal"
                     }
                   ],
-                  "id": 19944,
+                  "id": 19994,
                   "initialValue": {
                     "baseExpression": {
-                      "id": 19941,
+                      "id": 19991,
                       "name": "_tokenRoyaltyInfo",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 19901,
+                      "referencedDeclaration": 19951,
                       "src": "1825:17:281",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_RoyaltyInfo_$19893_storage_$",
+                        "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_RoyaltyInfo_$19943_storage_$",
                         "typeString": "mapping(uint256 => struct ERC2981.RoyaltyInfo storage ref)"
                       }
                     },
-                    "id": 19943,
+                    "id": 19993,
                     "indexExpression": {
-                      "id": 19942,
+                      "id": 19992,
                       "name": "_tokenId",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 19928,
+                      "referencedDeclaration": 19978,
                       "src": "1843:8:281",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -701,7 +701,7 @@
                     "nodeType": "IndexAccess",
                     "src": "1825:27:281",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_RoyaltyInfo_$19893_storage",
+                      "typeIdentifier": "t_struct$_RoyaltyInfo_$19943_storage",
                       "typeString": "struct ERC2981.RoyaltyInfo storage ref"
                     }
                   },
@@ -714,32 +714,32 @@
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     },
-                    "id": 19951,
+                    "id": 20001,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
                       "expression": {
-                        "id": 19945,
+                        "id": 19995,
                         "name": "royalty",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 19940,
+                        "referencedDeclaration": 19990,
                         "src": "1867:7:281",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_RoyaltyInfo_$19893_memory_ptr",
+                          "typeIdentifier": "t_struct$_RoyaltyInfo_$19943_memory_ptr",
                           "typeString": "struct ERC2981.RoyaltyInfo memory"
                         }
                       },
-                      "id": 19946,
+                      "id": 19996,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "receiver",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 19890,
+                      "referencedDeclaration": 19940,
                       "src": "1867:16:281",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -752,7 +752,7 @@
                       "arguments": [
                         {
                           "hexValue": "30",
-                          "id": 19949,
+                          "id": 19999,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -774,7 +774,7 @@
                             "typeString": "int_const 0"
                           }
                         ],
-                        "id": 19948,
+                        "id": 19998,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -786,14 +786,14 @@
                           "typeString": "type(address)"
                         },
                         "typeName": {
-                          "id": 19947,
+                          "id": 19997,
                           "name": "address",
                           "nodeType": "ElementaryTypeName",
                           "src": "1887:7:281",
                           "typeDescriptions": {}
                         }
                       },
-                      "id": 19950,
+                      "id": 20000,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -814,54 +814,54 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 19957,
+                  "id": 20007,
                   "nodeType": "IfStatement",
                   "src": "1863:90:281",
                   "trueBody": {
-                    "id": 19956,
+                    "id": 20006,
                     "nodeType": "Block",
                     "src": "1899:54:281",
                     "statements": [
                       {
                         "expression": {
-                          "id": 19954,
+                          "id": 20004,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
                           "lValueRequested": false,
                           "leftHandSide": {
-                            "id": 19952,
+                            "id": 20002,
                             "name": "royalty",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 19940,
+                            "referencedDeclaration": 19990,
                             "src": "1913:7:281",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_RoyaltyInfo_$19893_memory_ptr",
+                              "typeIdentifier": "t_struct$_RoyaltyInfo_$19943_memory_ptr",
                               "typeString": "struct ERC2981.RoyaltyInfo memory"
                             }
                           },
                           "nodeType": "Assignment",
                           "operator": "=",
                           "rightHandSide": {
-                            "id": 19953,
+                            "id": 20003,
                             "name": "_defaultRoyaltyInfo",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 19896,
+                            "referencedDeclaration": 19946,
                             "src": "1923:19:281",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_RoyaltyInfo_$19893_storage",
+                              "typeIdentifier": "t_struct$_RoyaltyInfo_$19943_storage",
                               "typeString": "struct ERC2981.RoyaltyInfo storage ref"
                             }
                           },
                           "src": "1913:29:281",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_RoyaltyInfo_$19893_memory_ptr",
+                            "typeIdentifier": "t_struct$_RoyaltyInfo_$19943_memory_ptr",
                             "typeString": "struct ERC2981.RoyaltyInfo memory"
                           }
                         },
-                        "id": 19955,
+                        "id": 20005,
                         "nodeType": "ExpressionStatement",
                         "src": "1913:29:281"
                       }
@@ -870,17 +870,17 @@
                 },
                 {
                   "assignments": [
-                    19959
+                    20009
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 19959,
+                      "id": 20009,
                       "mutability": "mutable",
                       "name": "royaltyAmount",
                       "nameLocation": "1971:13:281",
                       "nodeType": "VariableDeclaration",
-                      "scope": 19974,
+                      "scope": 20024,
                       "src": "1963:21:281",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -889,7 +889,7 @@
                         "typeString": "uint256"
                       },
                       "typeName": {
-                        "id": 19958,
+                        "id": 20008,
                         "name": "uint256",
                         "nodeType": "ElementaryTypeName",
                         "src": "1963:7:281",
@@ -901,13 +901,13 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 19968,
+                  "id": 20018,
                   "initialValue": {
                     "commonType": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     },
-                    "id": 19967,
+                    "id": 20017,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -919,17 +919,17 @@
                             "typeIdentifier": "t_uint256",
                             "typeString": "uint256"
                           },
-                          "id": 19963,
+                          "id": 20013,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
                           "lValueRequested": false,
                           "leftExpression": {
-                            "id": 19960,
+                            "id": 20010,
                             "name": "_salePrice",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 19930,
+                            "referencedDeclaration": 19980,
                             "src": "1988:10:281",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint256",
@@ -940,25 +940,25 @@
                           "operator": "*",
                           "rightExpression": {
                             "expression": {
-                              "id": 19961,
+                              "id": 20011,
                               "name": "royalty",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 19940,
+                              "referencedDeclaration": 19990,
                               "src": "2001:7:281",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_struct$_RoyaltyInfo_$19893_memory_ptr",
+                                "typeIdentifier": "t_struct$_RoyaltyInfo_$19943_memory_ptr",
                                 "typeString": "struct ERC2981.RoyaltyInfo memory"
                               }
                             },
-                            "id": 19962,
+                            "id": 20012,
                             "isConstant": false,
                             "isLValue": true,
                             "isPure": false,
                             "lValueRequested": false,
                             "memberName": "royaltyFraction",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 19892,
+                            "referencedDeclaration": 19942,
                             "src": "2001:23:281",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint96",
@@ -972,7 +972,7 @@
                           }
                         }
                       ],
-                      "id": 19964,
+                      "id": 20014,
                       "isConstant": false,
                       "isInlineArray": false,
                       "isLValue": false,
@@ -991,18 +991,18 @@
                       "arguments": [],
                       "expression": {
                         "argumentTypes": [],
-                        "id": 19965,
+                        "id": 20015,
                         "name": "_feeDenominator",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 19984,
+                        "referencedDeclaration": 20034,
                         "src": "2028:15:281",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_pure$__$returns$_t_uint96_$",
                           "typeString": "function () pure returns (uint96)"
                         }
                       },
-                      "id": 19966,
+                      "id": 20016,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1031,25 +1031,25 @@
                     "components": [
                       {
                         "expression": {
-                          "id": 19969,
+                          "id": 20019,
                           "name": "royalty",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 19940,
+                          "referencedDeclaration": 19990,
                           "src": "2064:7:281",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_RoyaltyInfo_$19893_memory_ptr",
+                            "typeIdentifier": "t_struct$_RoyaltyInfo_$19943_memory_ptr",
                             "typeString": "struct ERC2981.RoyaltyInfo memory"
                           }
                         },
-                        "id": 19970,
+                        "id": 20020,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "receiver",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 19890,
+                        "referencedDeclaration": 19940,
                         "src": "2064:16:281",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -1057,11 +1057,11 @@
                         }
                       },
                       {
-                        "id": 19971,
+                        "id": 20021,
                         "name": "royaltyAmount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 19959,
+                        "referencedDeclaration": 20009,
                         "src": "2082:13:281",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -1069,7 +1069,7 @@
                         }
                       }
                     ],
-                    "id": 19972,
+                    "id": 20022,
                     "isConstant": false,
                     "isInlineArray": false,
                     "isLValue": false,
@@ -1082,21 +1082,21 @@
                       "typeString": "tuple(address,uint256)"
                     }
                   },
-                  "functionReturnParameters": 19937,
-                  "id": 19973,
+                  "functionReturnParameters": 19987,
+                  "id": 20023,
                   "nodeType": "Return",
                   "src": "2056:40:281"
                 }
               ]
             },
             "documentation": {
-              "id": 19926,
+              "id": 19976,
               "nodeType": "StructuredDocumentation",
               "src": "1627:39:281",
               "text": " @inheritdoc IERC2981"
             },
             "functionSelector": "2a55205a",
-            "id": 19975,
+            "id": 20025,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
@@ -1104,23 +1104,23 @@
             "nameLocation": "1680:11:281",
             "nodeType": "FunctionDefinition",
             "overrides": {
-              "id": 19932,
+              "id": 19982,
               "nodeType": "OverrideSpecifier",
               "overrides": [],
               "src": "1750:8:281"
             },
             "parameters": {
-              "id": 19931,
+              "id": 19981,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 19928,
+                  "id": 19978,
                   "mutability": "mutable",
                   "name": "_tokenId",
                   "nameLocation": "1700:8:281",
                   "nodeType": "VariableDeclaration",
-                  "scope": 19975,
+                  "scope": 20025,
                   "src": "1692:16:281",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1129,7 +1129,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 19927,
+                    "id": 19977,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1692:7:281",
@@ -1142,12 +1142,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 19930,
+                  "id": 19980,
                   "mutability": "mutable",
                   "name": "_salePrice",
                   "nameLocation": "1718:10:281",
                   "nodeType": "VariableDeclaration",
-                  "scope": 19975,
+                  "scope": 20025,
                   "src": "1710:18:281",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1156,7 +1156,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 19929,
+                    "id": 19979,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1710:7:281",
@@ -1171,17 +1171,17 @@
               "src": "1691:38:281"
             },
             "returnParameters": {
-              "id": 19937,
+              "id": 19987,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 19934,
+                  "id": 19984,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 19975,
+                  "scope": 20025,
                   "src": "1768:7:281",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1190,7 +1190,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 19933,
+                    "id": 19983,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1768:7:281",
@@ -1204,12 +1204,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 19936,
+                  "id": 19986,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 19975,
+                  "scope": 20025,
                   "src": "1777:7:281",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1218,7 +1218,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 19935,
+                    "id": 19985,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1777:7:281",
@@ -1232,7 +1232,7 @@
               ],
               "src": "1767:18:281"
             },
-            "scope": 20077,
+            "scope": 20127,
             "src": "1671:432:281",
             "stateMutability": "view",
             "virtual": true,
@@ -1240,14 +1240,14 @@
           },
           {
             "body": {
-              "id": 19983,
+              "id": 20033,
               "nodeType": "Block",
               "src": "2444:29:281",
               "statements": [
                 {
                   "expression": {
                     "hexValue": "3130303030",
-                    "id": 19981,
+                    "id": 20031,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
@@ -1261,20 +1261,20 @@
                     },
                     "value": "10000"
                   },
-                  "functionReturnParameters": 19980,
-                  "id": 19982,
+                  "functionReturnParameters": 20030,
+                  "id": 20032,
                   "nodeType": "Return",
                   "src": "2454:12:281"
                 }
               ]
             },
             "documentation": {
-              "id": 19976,
+              "id": 20026,
               "nodeType": "StructuredDocumentation",
               "src": "2109:264:281",
               "text": " @dev The denominator with which to interpret the fee set in {_setTokenRoyalty} and {_setDefaultRoyalty} as a\n fraction of the sale price. Defaults to 10000 so fees are expressed in basis points, but may be customized by an\n override."
             },
-            "id": 19984,
+            "id": 20034,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
@@ -1282,23 +1282,23 @@
             "nameLocation": "2387:15:281",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 19977,
+              "id": 20027,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "2402:2:281"
             },
             "returnParameters": {
-              "id": 19980,
+              "id": 20030,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 19979,
+                  "id": 20029,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 19984,
+                  "scope": 20034,
                   "src": "2436:6:281",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1307,7 +1307,7 @@
                     "typeString": "uint96"
                   },
                   "typeName": {
-                    "id": 19978,
+                    "id": 20028,
                     "name": "uint96",
                     "nodeType": "ElementaryTypeName",
                     "src": "2436:6:281",
@@ -1321,7 +1321,7 @@
               ],
               "src": "2435:8:281"
             },
-            "scope": 20077,
+            "scope": 20127,
             "src": "2378:95:281",
             "stateMutability": "pure",
             "virtual": true,
@@ -1329,7 +1329,7 @@
           },
           {
             "body": {
-              "id": 20017,
+              "id": 20067,
               "nodeType": "Block",
               "src": "2818:243:281",
               "statements": [
@@ -1341,17 +1341,17 @@
                           "typeIdentifier": "t_uint96",
                           "typeString": "uint96"
                         },
-                        "id": 19996,
+                        "id": 20046,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
-                          "id": 19993,
+                          "id": 20043,
                           "name": "feeNumerator",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 19989,
+                          "referencedDeclaration": 20039,
                           "src": "2836:12:281",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint96",
@@ -1364,18 +1364,18 @@
                           "arguments": [],
                           "expression": {
                             "argumentTypes": [],
-                            "id": 19994,
+                            "id": 20044,
                             "name": "_feeDenominator",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 19984,
+                            "referencedDeclaration": 20034,
                             "src": "2852:15:281",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_internal_pure$__$returns$_t_uint96_$",
                               "typeString": "function () pure returns (uint96)"
                             }
                           },
-                          "id": 19995,
+                          "id": 20045,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1398,7 +1398,7 @@
                       },
                       {
                         "hexValue": "455243323938313a20726f79616c7479206665652077696c6c206578636565642073616c655072696365",
-                        "id": 19997,
+                        "id": 20047,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -1424,7 +1424,7 @@
                           "typeString": "literal_string \"ERC2981: royalty fee will exceed salePrice\""
                         }
                       ],
-                      "id": 19992,
+                      "id": 20042,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -1438,7 +1438,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 19998,
+                    "id": 20048,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1453,7 +1453,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 19999,
+                  "id": 20049,
                   "nodeType": "ExpressionStatement",
                   "src": "2828:88:281"
                 },
@@ -1465,17 +1465,17 @@
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 20006,
+                        "id": 20056,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
-                          "id": 20001,
+                          "id": 20051,
                           "name": "receiver",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 19987,
+                          "referencedDeclaration": 20037,
                           "src": "2934:8:281",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -1488,7 +1488,7 @@
                           "arguments": [
                             {
                               "hexValue": "30",
-                              "id": 20004,
+                              "id": 20054,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -1510,7 +1510,7 @@
                                 "typeString": "int_const 0"
                               }
                             ],
-                            "id": 20003,
+                            "id": 20053,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -1522,14 +1522,14 @@
                               "typeString": "type(address)"
                             },
                             "typeName": {
-                              "id": 20002,
+                              "id": 20052,
                               "name": "address",
                               "nodeType": "ElementaryTypeName",
                               "src": "2946:7:281",
                               "typeDescriptions": {}
                             }
                           },
-                          "id": 20005,
+                          "id": 20055,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -1552,7 +1552,7 @@
                       },
                       {
                         "hexValue": "455243323938313a20696e76616c6964207265636569766572",
-                        "id": 20007,
+                        "id": 20057,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -1578,7 +1578,7 @@
                           "typeString": "literal_string \"ERC2981: invalid receiver\""
                         }
                       ],
-                      "id": 20000,
+                      "id": 20050,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -1592,7 +1592,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 20008,
+                    "id": 20058,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1607,26 +1607,26 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 20009,
+                  "id": 20059,
                   "nodeType": "ExpressionStatement",
                   "src": "2926:60:281"
                 },
                 {
                   "expression": {
-                    "id": 20015,
+                    "id": 20065,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
-                      "id": 20010,
+                      "id": 20060,
                       "name": "_defaultRoyaltyInfo",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 19896,
+                      "referencedDeclaration": 19946,
                       "src": "2997:19:281",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_RoyaltyInfo_$19893_storage",
+                        "typeIdentifier": "t_struct$_RoyaltyInfo_$19943_storage",
                         "typeString": "struct ERC2981.RoyaltyInfo storage ref"
                       }
                     },
@@ -1635,11 +1635,11 @@
                     "rightHandSide": {
                       "arguments": [
                         {
-                          "id": 20012,
+                          "id": 20062,
                           "name": "receiver",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 19987,
+                          "referencedDeclaration": 20037,
                           "src": "3031:8:281",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -1647,11 +1647,11 @@
                           }
                         },
                         {
-                          "id": 20013,
+                          "id": 20063,
                           "name": "feeNumerator",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 19989,
+                          "referencedDeclaration": 20039,
                           "src": "3041:12:281",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint96",
@@ -1670,18 +1670,18 @@
                             "typeString": "uint96"
                           }
                         ],
-                        "id": 20011,
+                        "id": 20061,
                         "name": "RoyaltyInfo",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 19893,
+                        "referencedDeclaration": 19943,
                         "src": "3019:11:281",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_struct$_RoyaltyInfo_$19893_storage_ptr_$",
+                          "typeIdentifier": "t_type$_t_struct$_RoyaltyInfo_$19943_storage_ptr_$",
                           "typeString": "type(struct ERC2981.RoyaltyInfo storage pointer)"
                         }
                       },
-                      "id": 20014,
+                      "id": 20064,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1692,29 +1692,29 @@
                       "src": "3019:35:281",
                       "tryCall": false,
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_RoyaltyInfo_$19893_memory_ptr",
+                        "typeIdentifier": "t_struct$_RoyaltyInfo_$19943_memory_ptr",
                         "typeString": "struct ERC2981.RoyaltyInfo memory"
                       }
                     },
                     "src": "2997:57:281",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_RoyaltyInfo_$19893_storage",
+                      "typeIdentifier": "t_struct$_RoyaltyInfo_$19943_storage",
                       "typeString": "struct ERC2981.RoyaltyInfo storage ref"
                     }
                   },
-                  "id": 20016,
+                  "id": 20066,
                   "nodeType": "ExpressionStatement",
                   "src": "2997:57:281"
                 }
               ]
             },
             "documentation": {
-              "id": 19985,
+              "id": 20035,
               "nodeType": "StructuredDocumentation",
               "src": "2479:250:281",
               "text": " @dev Sets the royalty information that all ids in this contract will default to.\n Requirements:\n - `receiver` cannot be the zero address.\n - `feeNumerator` cannot be greater than the fee denominator."
             },
-            "id": 20018,
+            "id": 20068,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
@@ -1722,17 +1722,17 @@
             "nameLocation": "2743:18:281",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 19990,
+              "id": 20040,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 19987,
+                  "id": 20037,
                   "mutability": "mutable",
                   "name": "receiver",
                   "nameLocation": "2770:8:281",
                   "nodeType": "VariableDeclaration",
-                  "scope": 20018,
+                  "scope": 20068,
                   "src": "2762:16:281",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1741,7 +1741,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 19986,
+                    "id": 20036,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "2762:7:281",
@@ -1755,12 +1755,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 19989,
+                  "id": 20039,
                   "mutability": "mutable",
                   "name": "feeNumerator",
                   "nameLocation": "2787:12:281",
                   "nodeType": "VariableDeclaration",
-                  "scope": 20018,
+                  "scope": 20068,
                   "src": "2780:19:281",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1769,7 +1769,7 @@
                     "typeString": "uint96"
                   },
                   "typeName": {
-                    "id": 19988,
+                    "id": 20038,
                     "name": "uint96",
                     "nodeType": "ElementaryTypeName",
                     "src": "2780:6:281",
@@ -1784,12 +1784,12 @@
               "src": "2761:39:281"
             },
             "returnParameters": {
-              "id": 19991,
+              "id": 20041,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "2818:0:281"
             },
-            "scope": 20077,
+            "scope": 20127,
             "src": "2734:327:281",
             "stateMutability": "nonpayable",
             "virtual": true,
@@ -1797,13 +1797,13 @@
           },
           {
             "body": {
-              "id": 20025,
+              "id": 20075,
               "nodeType": "Block",
               "src": "3182:43:281",
               "statements": [
                 {
                   "expression": {
-                    "id": 20023,
+                    "id": 20073,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1813,14 +1813,14 @@
                     "prefix": true,
                     "src": "3192:26:281",
                     "subExpression": {
-                      "id": 20022,
+                      "id": 20072,
                       "name": "_defaultRoyaltyInfo",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 19896,
+                      "referencedDeclaration": 19946,
                       "src": "3199:19:281",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_RoyaltyInfo_$19893_storage",
+                        "typeIdentifier": "t_struct$_RoyaltyInfo_$19943_storage",
                         "typeString": "struct ERC2981.RoyaltyInfo storage ref"
                       }
                     },
@@ -1829,19 +1829,19 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 20024,
+                  "id": 20074,
                   "nodeType": "ExpressionStatement",
                   "src": "3192:26:281"
                 }
               ]
             },
             "documentation": {
-              "id": 20019,
+              "id": 20069,
               "nodeType": "StructuredDocumentation",
               "src": "3067:60:281",
               "text": " @dev Removes default royalty information."
             },
-            "id": 20026,
+            "id": 20076,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
@@ -1849,18 +1849,18 @@
             "nameLocation": "3141:21:281",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 20020,
+              "id": 20070,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "3162:2:281"
             },
             "returnParameters": {
-              "id": 20021,
+              "id": 20071,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "3182:0:281"
             },
-            "scope": 20077,
+            "scope": 20127,
             "src": "3132:93:281",
             "stateMutability": "nonpayable",
             "virtual": true,
@@ -1868,7 +1868,7 @@
           },
           {
             "body": {
-              "id": 20063,
+              "id": 20113,
               "nodeType": "Block",
               "src": "3624:252:281",
               "statements": [
@@ -1880,17 +1880,17 @@
                           "typeIdentifier": "t_uint96",
                           "typeString": "uint96"
                         },
-                        "id": 20040,
+                        "id": 20090,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
-                          "id": 20037,
+                          "id": 20087,
                           "name": "feeNumerator",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 20033,
+                          "referencedDeclaration": 20083,
                           "src": "3642:12:281",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint96",
@@ -1903,18 +1903,18 @@
                           "arguments": [],
                           "expression": {
                             "argumentTypes": [],
-                            "id": 20038,
+                            "id": 20088,
                             "name": "_feeDenominator",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 19984,
+                            "referencedDeclaration": 20034,
                             "src": "3658:15:281",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_internal_pure$__$returns$_t_uint96_$",
                               "typeString": "function () pure returns (uint96)"
                             }
                           },
-                          "id": 20039,
+                          "id": 20089,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1937,7 +1937,7 @@
                       },
                       {
                         "hexValue": "455243323938313a20726f79616c7479206665652077696c6c206578636565642073616c655072696365",
-                        "id": 20041,
+                        "id": 20091,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -1963,7 +1963,7 @@
                           "typeString": "literal_string \"ERC2981: royalty fee will exceed salePrice\""
                         }
                       ],
-                      "id": 20036,
+                      "id": 20086,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -1977,7 +1977,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 20042,
+                    "id": 20092,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1992,7 +1992,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 20043,
+                  "id": 20093,
                   "nodeType": "ExpressionStatement",
                   "src": "3634:88:281"
                 },
@@ -2004,17 +2004,17 @@
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 20050,
+                        "id": 20100,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
-                          "id": 20045,
+                          "id": 20095,
                           "name": "receiver",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 20031,
+                          "referencedDeclaration": 20081,
                           "src": "3740:8:281",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -2027,7 +2027,7 @@
                           "arguments": [
                             {
                               "hexValue": "30",
-                              "id": 20048,
+                              "id": 20098,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -2049,7 +2049,7 @@
                                 "typeString": "int_const 0"
                               }
                             ],
-                            "id": 20047,
+                            "id": 20097,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -2061,14 +2061,14 @@
                               "typeString": "type(address)"
                             },
                             "typeName": {
-                              "id": 20046,
+                              "id": 20096,
                               "name": "address",
                               "nodeType": "ElementaryTypeName",
                               "src": "3752:7:281",
                               "typeDescriptions": {}
                             }
                           },
-                          "id": 20049,
+                          "id": 20099,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -2091,7 +2091,7 @@
                       },
                       {
                         "hexValue": "455243323938313a20496e76616c696420706172616d6574657273",
-                        "id": 20051,
+                        "id": 20101,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -2117,7 +2117,7 @@
                           "typeString": "literal_string \"ERC2981: Invalid parameters\""
                         }
                       ],
-                      "id": 20044,
+                      "id": 20094,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -2131,7 +2131,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 20052,
+                    "id": 20102,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2146,37 +2146,37 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 20053,
+                  "id": 20103,
                   "nodeType": "ExpressionStatement",
                   "src": "3732:62:281"
                 },
                 {
                   "expression": {
-                    "id": 20061,
+                    "id": 20111,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "baseExpression": {
-                        "id": 20054,
+                        "id": 20104,
                         "name": "_tokenRoyaltyInfo",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 19901,
+                        "referencedDeclaration": 19951,
                         "src": "3805:17:281",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_RoyaltyInfo_$19893_storage_$",
+                          "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_RoyaltyInfo_$19943_storage_$",
                           "typeString": "mapping(uint256 => struct ERC2981.RoyaltyInfo storage ref)"
                         }
                       },
-                      "id": 20056,
+                      "id": 20106,
                       "indexExpression": {
-                        "id": 20055,
+                        "id": 20105,
                         "name": "tokenId",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 20029,
+                        "referencedDeclaration": 20079,
                         "src": "3823:7:281",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -2190,7 +2190,7 @@
                       "nodeType": "IndexAccess",
                       "src": "3805:26:281",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_RoyaltyInfo_$19893_storage",
+                        "typeIdentifier": "t_struct$_RoyaltyInfo_$19943_storage",
                         "typeString": "struct ERC2981.RoyaltyInfo storage ref"
                       }
                     },
@@ -2199,11 +2199,11 @@
                     "rightHandSide": {
                       "arguments": [
                         {
-                          "id": 20058,
+                          "id": 20108,
                           "name": "receiver",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 20031,
+                          "referencedDeclaration": 20081,
                           "src": "3846:8:281",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -2211,11 +2211,11 @@
                           }
                         },
                         {
-                          "id": 20059,
+                          "id": 20109,
                           "name": "feeNumerator",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 20033,
+                          "referencedDeclaration": 20083,
                           "src": "3856:12:281",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint96",
@@ -2234,18 +2234,18 @@
                             "typeString": "uint96"
                           }
                         ],
-                        "id": 20057,
+                        "id": 20107,
                         "name": "RoyaltyInfo",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 19893,
+                        "referencedDeclaration": 19943,
                         "src": "3834:11:281",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_struct$_RoyaltyInfo_$19893_storage_ptr_$",
+                          "typeIdentifier": "t_type$_t_struct$_RoyaltyInfo_$19943_storage_ptr_$",
                           "typeString": "type(struct ERC2981.RoyaltyInfo storage pointer)"
                         }
                       },
-                      "id": 20060,
+                      "id": 20110,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -2256,29 +2256,29 @@
                       "src": "3834:35:281",
                       "tryCall": false,
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_RoyaltyInfo_$19893_memory_ptr",
+                        "typeIdentifier": "t_struct$_RoyaltyInfo_$19943_memory_ptr",
                         "typeString": "struct ERC2981.RoyaltyInfo memory"
                       }
                     },
                     "src": "3805:64:281",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_RoyaltyInfo_$19893_storage",
+                      "typeIdentifier": "t_struct$_RoyaltyInfo_$19943_storage",
                       "typeString": "struct ERC2981.RoyaltyInfo storage ref"
                     }
                   },
-                  "id": 20062,
+                  "id": 20112,
                   "nodeType": "ExpressionStatement",
                   "src": "3805:64:281"
                 }
               ]
             },
             "documentation": {
-              "id": 20027,
+              "id": 20077,
               "nodeType": "StructuredDocumentation",
               "src": "3231:259:281",
               "text": " @dev Sets the royalty information for a specific token id, overriding the global default.\n Requirements:\n - `receiver` cannot be the zero address.\n - `feeNumerator` cannot be greater than the fee denominator."
             },
-            "id": 20064,
+            "id": 20114,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
@@ -2286,17 +2286,17 @@
             "nameLocation": "3504:16:281",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 20034,
+              "id": 20084,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 20029,
+                  "id": 20079,
                   "mutability": "mutable",
                   "name": "tokenId",
                   "nameLocation": "3538:7:281",
                   "nodeType": "VariableDeclaration",
-                  "scope": 20064,
+                  "scope": 20114,
                   "src": "3530:15:281",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2305,7 +2305,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 20028,
+                    "id": 20078,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "3530:7:281",
@@ -2318,12 +2318,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 20031,
+                  "id": 20081,
                   "mutability": "mutable",
                   "name": "receiver",
                   "nameLocation": "3563:8:281",
                   "nodeType": "VariableDeclaration",
-                  "scope": 20064,
+                  "scope": 20114,
                   "src": "3555:16:281",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2332,7 +2332,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 20030,
+                    "id": 20080,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "3555:7:281",
@@ -2346,12 +2346,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 20033,
+                  "id": 20083,
                   "mutability": "mutable",
                   "name": "feeNumerator",
                   "nameLocation": "3588:12:281",
                   "nodeType": "VariableDeclaration",
-                  "scope": 20064,
+                  "scope": 20114,
                   "src": "3581:19:281",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2360,7 +2360,7 @@
                     "typeString": "uint96"
                   },
                   "typeName": {
-                    "id": 20032,
+                    "id": 20082,
                     "name": "uint96",
                     "nodeType": "ElementaryTypeName",
                     "src": "3581:6:281",
@@ -2375,12 +2375,12 @@
               "src": "3520:86:281"
             },
             "returnParameters": {
-              "id": 20035,
+              "id": 20085,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "3624:0:281"
             },
-            "scope": 20077,
+            "scope": 20127,
             "src": "3495:381:281",
             "stateMutability": "nonpayable",
             "virtual": true,
@@ -2388,13 +2388,13 @@
           },
           {
             "body": {
-              "id": 20075,
+              "id": 20125,
               "nodeType": "Block",
               "src": "4044:50:281",
               "statements": [
                 {
                   "expression": {
-                    "id": 20073,
+                    "id": 20123,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2405,24 +2405,24 @@
                     "src": "4054:33:281",
                     "subExpression": {
                       "baseExpression": {
-                        "id": 20070,
+                        "id": 20120,
                         "name": "_tokenRoyaltyInfo",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 19901,
+                        "referencedDeclaration": 19951,
                         "src": "4061:17:281",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_RoyaltyInfo_$19893_storage_$",
+                          "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_RoyaltyInfo_$19943_storage_$",
                           "typeString": "mapping(uint256 => struct ERC2981.RoyaltyInfo storage ref)"
                         }
                       },
-                      "id": 20072,
+                      "id": 20122,
                       "indexExpression": {
-                        "id": 20071,
+                        "id": 20121,
                         "name": "tokenId",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 20067,
+                        "referencedDeclaration": 20117,
                         "src": "4079:7:281",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -2436,7 +2436,7 @@
                       "nodeType": "IndexAccess",
                       "src": "4061:26:281",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_RoyaltyInfo_$19893_storage",
+                        "typeIdentifier": "t_struct$_RoyaltyInfo_$19943_storage",
                         "typeString": "struct ERC2981.RoyaltyInfo storage ref"
                       }
                     },
@@ -2445,19 +2445,19 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 20074,
+                  "id": 20124,
                   "nodeType": "ExpressionStatement",
                   "src": "4054:33:281"
                 }
               ]
             },
             "documentation": {
-              "id": 20065,
+              "id": 20115,
               "nodeType": "StructuredDocumentation",
               "src": "3882:95:281",
               "text": " @dev Resets royalty information for the token id back to the global default."
             },
-            "id": 20076,
+            "id": 20126,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
@@ -2465,17 +2465,17 @@
             "nameLocation": "3991:18:281",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 20068,
+              "id": 20118,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 20067,
+                  "id": 20117,
                   "mutability": "mutable",
                   "name": "tokenId",
                   "nameLocation": "4018:7:281",
                   "nodeType": "VariableDeclaration",
-                  "scope": 20076,
+                  "scope": 20126,
                   "src": "4010:15:281",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2484,7 +2484,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 20066,
+                    "id": 20116,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "4010:7:281",
@@ -2499,19 +2499,19 @@
               "src": "4009:17:281"
             },
             "returnParameters": {
-              "id": 20069,
+              "id": 20119,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "4044:0:281"
             },
-            "scope": 20077,
+            "scope": 20127,
             "src": "3982:112:281",
             "stateMutability": "nonpayable",
             "virtual": true,
             "visibility": "internal"
           }
         ],
-        "scope": 20078,
+        "scope": 20128,
         "src": "1096:3000:281",
         "usedErrors": []
       }
@@ -2524,7 +2524,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-05-03T08:44:13.498Z",
+  "updatedAt": "2023-05-12T01:11:09.198Z",
   "devdoc": {
     "details": "Implementation of the NFT Royalty Standard, a standardized way to retrieve royalty payment information. Royalty information can be specified globally for all token ids via {_setDefaultRoyalty}, and/or individually for specific token ids via {_setTokenRoyalty}. The latter takes precedence over the first. Royalty is specified as a fraction of sale price. {_feeDenominator} is overridable but defaults to 10000, meaning the fee is specified in basis points by default. IMPORTANT: ERC-2981 only specifies a way to signal royalty information and does not enforce its payment. See https://eips.ethereum.org/EIPS/eip-2981#optional-royalty-payments[Rationale] in the EIP. Marketplaces are expected to voluntarily pay royalties together with sales, but note that this standard is not yet widely supported. _Available since v4.5._",
     "kind": "dev",

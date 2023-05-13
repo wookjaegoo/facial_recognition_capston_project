@@ -922,29 +922,29 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: MIT\n// OpenZeppelin Contracts v4.4.1 (governance/compatibility/IGovernorCompatibilityBravo.sol)\n\npragma solidity ^0.8.0;\n\nimport \"../IGovernor.sol\";\n\n/**\n * @dev Interface extension that adds missing functions to the {Governor} core to provide `GovernorBravo` compatibility.\n *\n * _Available since v4.3._\n */\nabstract contract IGovernorCompatibilityBravo is IGovernor {\n    /**\n     * @dev Proposal structure from Compound Governor Bravo. Not actually used by the compatibility layer, as\n     * {{proposal}} returns a very different structure.\n     */\n    struct Proposal {\n        uint256 id;\n        address proposer;\n        uint256 eta;\n        address[] targets;\n        uint256[] values;\n        string[] signatures;\n        bytes[] calldatas;\n        uint256 startBlock;\n        uint256 endBlock;\n        uint256 forVotes;\n        uint256 againstVotes;\n        uint256 abstainVotes;\n        bool canceled;\n        bool executed;\n        mapping(address => Receipt) receipts;\n    }\n\n    /**\n     * @dev Receipt structure from Compound Governor Bravo\n     */\n    struct Receipt {\n        bool hasVoted;\n        uint8 support;\n        uint96 votes;\n    }\n\n    /**\n     * @dev Part of the Governor Bravo's interface.\n     */\n    function quorumVotes() public view virtual returns (uint256);\n\n    /**\n     * @dev Part of the Governor Bravo's interface: _\"The official record of all proposals ever proposed\"_.\n     */\n    function proposals(uint256)\n        public\n        view\n        virtual\n        returns (\n            uint256 id,\n            address proposer,\n            uint256 eta,\n            uint256 startBlock,\n            uint256 endBlock,\n            uint256 forVotes,\n            uint256 againstVotes,\n            uint256 abstainVotes,\n            bool canceled,\n            bool executed\n        );\n\n    /**\n     * @dev Part of the Governor Bravo's interface: _\"Function used to propose a new proposal\"_.\n     */\n    function propose(\n        address[] memory targets,\n        uint256[] memory values,\n        string[] memory signatures,\n        bytes[] memory calldatas,\n        string memory description\n    ) public virtual returns (uint256);\n\n    /**\n     * @dev Part of the Governor Bravo's interface: _\"Queues a proposal of state succeeded\"_.\n     */\n    function queue(uint256 proposalId) public virtual;\n\n    /**\n     * @dev Part of the Governor Bravo's interface: _\"Executes a queued proposal if eta has passed\"_.\n     */\n    function execute(uint256 proposalId) public payable virtual;\n\n    /**\n     * @dev Cancels a proposal only if sender is the proposer, or proposer delegates dropped below proposal threshold.\n     */\n    function cancel(uint256 proposalId) public virtual;\n\n    /**\n     * @dev Part of the Governor Bravo's interface: _\"Gets actions of a proposal\"_.\n     */\n    function getActions(uint256 proposalId)\n        public\n        view\n        virtual\n        returns (\n            address[] memory targets,\n            uint256[] memory values,\n            string[] memory signatures,\n            bytes[] memory calldatas\n        );\n\n    /**\n     * @dev Part of the Governor Bravo's interface: _\"Gets the receipt for a voter on a given proposal\"_.\n     */\n    function getReceipt(uint256 proposalId, address voter) public view virtual returns (Receipt memory);\n}\n",
-  "sourcePath": "C:\\Users\\paete\\CapstonPro\\truffle\\contracts\\governance\\compatibility\\IGovernorCompatibilityBravo.sol",
+  "sourcePath": "/Users/gujaeug/Desktop/capstonpro/truffle/contracts/governance/compatibility/IGovernorCompatibilityBravo.sol",
   "ast": {
     "absolutePath": "project:/contracts/governance/compatibility/IGovernorCompatibilityBravo.sol",
     "exportedSymbols": {
       "ERC165": [
-        22977
+        23027
       ],
       "IERC165": [
-        23301
+        23351
       ],
       "IGovernor": [
-        4888
+        4938
       ],
       "IGovernorCompatibilityBravo": [
-        6727
+        6777
       ]
     },
-    "id": 6728,
+    "id": 6778,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 6578,
+        "id": 6628,
         "literals": [
           "solidity",
           "^",
@@ -957,11 +957,11 @@
       {
         "absolutePath": "project:/contracts/governance/IGovernor.sol",
         "file": "../IGovernor.sol",
-        "id": 6579,
+        "id": 6629,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 6728,
-        "sourceUnit": 4889,
+        "scope": 6778,
+        "sourceUnit": 4939,
         "src": "150:26:178",
         "symbolAliases": [],
         "unitAlias": ""
@@ -971,13 +971,13 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 6581,
+              "id": 6631,
               "name": "IGovernor",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 4888,
+              "referencedDeclaration": 4938,
               "src": "386:9:178"
             },
-            "id": 6582,
+            "id": 6632,
             "nodeType": "InheritanceSpecifier",
             "src": "386:9:178"
           }
@@ -986,17 +986,17 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "documentation": {
-          "id": 6580,
+          "id": 6630,
           "nodeType": "StructuredDocumentation",
           "src": "178:158:178",
           "text": " @dev Interface extension that adds missing functions to the {Governor} core to provide `GovernorBravo` compatibility.\n _Available since v4.3._"
         },
         "fullyImplemented": false,
-        "id": 6727,
+        "id": 6777,
         "linearizedBaseContracts": [
-          6727,
-          4888,
-          23301
+          6777,
+          4938,
+          23351
         ],
         "name": "IGovernorCompatibilityBravo",
         "nameLocation": "355:27:178",
@@ -1004,16 +1004,16 @@
         "nodes": [
           {
             "canonicalName": "IGovernorCompatibilityBravo.Proposal",
-            "id": 6620,
+            "id": 6670,
             "members": [
               {
                 "constant": false,
-                "id": 6584,
+                "id": 6634,
                 "mutability": "mutable",
                 "name": "id",
                 "nameLocation": "618:2:178",
                 "nodeType": "VariableDeclaration",
-                "scope": 6620,
+                "scope": 6670,
                 "src": "610:10:178",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -1022,7 +1022,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 6583,
+                  "id": 6633,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
                   "src": "610:7:178",
@@ -1035,12 +1035,12 @@
               },
               {
                 "constant": false,
-                "id": 6586,
+                "id": 6636,
                 "mutability": "mutable",
                 "name": "proposer",
                 "nameLocation": "638:8:178",
                 "nodeType": "VariableDeclaration",
-                "scope": 6620,
+                "scope": 6670,
                 "src": "630:16:178",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -1049,7 +1049,7 @@
                   "typeString": "address"
                 },
                 "typeName": {
-                  "id": 6585,
+                  "id": 6635,
                   "name": "address",
                   "nodeType": "ElementaryTypeName",
                   "src": "630:7:178",
@@ -1063,12 +1063,12 @@
               },
               {
                 "constant": false,
-                "id": 6588,
+                "id": 6638,
                 "mutability": "mutable",
                 "name": "eta",
                 "nameLocation": "664:3:178",
                 "nodeType": "VariableDeclaration",
-                "scope": 6620,
+                "scope": 6670,
                 "src": "656:11:178",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -1077,7 +1077,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 6587,
+                  "id": 6637,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
                   "src": "656:7:178",
@@ -1090,12 +1090,12 @@
               },
               {
                 "constant": false,
-                "id": 6591,
+                "id": 6641,
                 "mutability": "mutable",
                 "name": "targets",
                 "nameLocation": "687:7:178",
                 "nodeType": "VariableDeclaration",
-                "scope": 6620,
+                "scope": 6670,
                 "src": "677:17:178",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -1105,7 +1105,7 @@
                 },
                 "typeName": {
                   "baseType": {
-                    "id": 6589,
+                    "id": 6639,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "677:7:178",
@@ -1115,7 +1115,7 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 6590,
+                  "id": 6640,
                   "nodeType": "ArrayTypeName",
                   "src": "677:9:178",
                   "typeDescriptions": {
@@ -1127,12 +1127,12 @@
               },
               {
                 "constant": false,
-                "id": 6594,
+                "id": 6644,
                 "mutability": "mutable",
                 "name": "values",
                 "nameLocation": "714:6:178",
                 "nodeType": "VariableDeclaration",
-                "scope": 6620,
+                "scope": 6670,
                 "src": "704:16:178",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -1142,7 +1142,7 @@
                 },
                 "typeName": {
                   "baseType": {
-                    "id": 6592,
+                    "id": 6642,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "704:7:178",
@@ -1151,7 +1151,7 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 6593,
+                  "id": 6643,
                   "nodeType": "ArrayTypeName",
                   "src": "704:9:178",
                   "typeDescriptions": {
@@ -1163,12 +1163,12 @@
               },
               {
                 "constant": false,
-                "id": 6597,
+                "id": 6647,
                 "mutability": "mutable",
                 "name": "signatures",
                 "nameLocation": "739:10:178",
                 "nodeType": "VariableDeclaration",
-                "scope": 6620,
+                "scope": 6670,
                 "src": "730:19:178",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -1178,7 +1178,7 @@
                 },
                 "typeName": {
                   "baseType": {
-                    "id": 6595,
+                    "id": 6645,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
                     "src": "730:6:178",
@@ -1187,7 +1187,7 @@
                       "typeString": "string"
                     }
                   },
-                  "id": 6596,
+                  "id": 6646,
                   "nodeType": "ArrayTypeName",
                   "src": "730:8:178",
                   "typeDescriptions": {
@@ -1199,12 +1199,12 @@
               },
               {
                 "constant": false,
-                "id": 6600,
+                "id": 6650,
                 "mutability": "mutable",
                 "name": "calldatas",
                 "nameLocation": "767:9:178",
                 "nodeType": "VariableDeclaration",
-                "scope": 6620,
+                "scope": 6670,
                 "src": "759:17:178",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -1214,7 +1214,7 @@
                 },
                 "typeName": {
                   "baseType": {
-                    "id": 6598,
+                    "id": 6648,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "759:5:178",
@@ -1223,7 +1223,7 @@
                       "typeString": "bytes"
                     }
                   },
-                  "id": 6599,
+                  "id": 6649,
                   "nodeType": "ArrayTypeName",
                   "src": "759:7:178",
                   "typeDescriptions": {
@@ -1235,12 +1235,12 @@
               },
               {
                 "constant": false,
-                "id": 6602,
+                "id": 6652,
                 "mutability": "mutable",
                 "name": "startBlock",
                 "nameLocation": "794:10:178",
                 "nodeType": "VariableDeclaration",
-                "scope": 6620,
+                "scope": 6670,
                 "src": "786:18:178",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -1249,7 +1249,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 6601,
+                  "id": 6651,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
                   "src": "786:7:178",
@@ -1262,12 +1262,12 @@
               },
               {
                 "constant": false,
-                "id": 6604,
+                "id": 6654,
                 "mutability": "mutable",
                 "name": "endBlock",
                 "nameLocation": "822:8:178",
                 "nodeType": "VariableDeclaration",
-                "scope": 6620,
+                "scope": 6670,
                 "src": "814:16:178",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -1276,7 +1276,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 6603,
+                  "id": 6653,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
                   "src": "814:7:178",
@@ -1289,12 +1289,12 @@
               },
               {
                 "constant": false,
-                "id": 6606,
+                "id": 6656,
                 "mutability": "mutable",
                 "name": "forVotes",
                 "nameLocation": "848:8:178",
                 "nodeType": "VariableDeclaration",
-                "scope": 6620,
+                "scope": 6670,
                 "src": "840:16:178",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -1303,7 +1303,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 6605,
+                  "id": 6655,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
                   "src": "840:7:178",
@@ -1316,12 +1316,12 @@
               },
               {
                 "constant": false,
-                "id": 6608,
+                "id": 6658,
                 "mutability": "mutable",
                 "name": "againstVotes",
                 "nameLocation": "874:12:178",
                 "nodeType": "VariableDeclaration",
-                "scope": 6620,
+                "scope": 6670,
                 "src": "866:20:178",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -1330,7 +1330,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 6607,
+                  "id": 6657,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
                   "src": "866:7:178",
@@ -1343,12 +1343,12 @@
               },
               {
                 "constant": false,
-                "id": 6610,
+                "id": 6660,
                 "mutability": "mutable",
                 "name": "abstainVotes",
                 "nameLocation": "904:12:178",
                 "nodeType": "VariableDeclaration",
-                "scope": 6620,
+                "scope": 6670,
                 "src": "896:20:178",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -1357,7 +1357,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 6609,
+                  "id": 6659,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
                   "src": "896:7:178",
@@ -1370,12 +1370,12 @@
               },
               {
                 "constant": false,
-                "id": 6612,
+                "id": 6662,
                 "mutability": "mutable",
                 "name": "canceled",
                 "nameLocation": "931:8:178",
                 "nodeType": "VariableDeclaration",
-                "scope": 6620,
+                "scope": 6670,
                 "src": "926:13:178",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -1384,7 +1384,7 @@
                   "typeString": "bool"
                 },
                 "typeName": {
-                  "id": 6611,
+                  "id": 6661,
                   "name": "bool",
                   "nodeType": "ElementaryTypeName",
                   "src": "926:4:178",
@@ -1397,12 +1397,12 @@
               },
               {
                 "constant": false,
-                "id": 6614,
+                "id": 6664,
                 "mutability": "mutable",
                 "name": "executed",
                 "nameLocation": "954:8:178",
                 "nodeType": "VariableDeclaration",
-                "scope": 6620,
+                "scope": 6670,
                 "src": "949:13:178",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -1411,7 +1411,7 @@
                   "typeString": "bool"
                 },
                 "typeName": {
-                  "id": 6613,
+                  "id": 6663,
                   "name": "bool",
                   "nodeType": "ElementaryTypeName",
                   "src": "949:4:178",
@@ -1424,23 +1424,23 @@
               },
               {
                 "constant": false,
-                "id": 6619,
+                "id": 6669,
                 "mutability": "mutable",
                 "name": "receipts",
                 "nameLocation": "1000:8:178",
                 "nodeType": "VariableDeclaration",
-                "scope": 6620,
+                "scope": 6670,
                 "src": "972:36:178",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Receipt_$6627_storage_$",
+                  "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Receipt_$6677_storage_$",
                   "typeString": "mapping(address => struct IGovernorCompatibilityBravo.Receipt)"
                 },
                 "typeName": {
-                  "id": 6618,
+                  "id": 6668,
                   "keyType": {
-                    "id": 6615,
+                    "id": 6665,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "980:7:178",
@@ -1452,23 +1452,23 @@
                   "nodeType": "Mapping",
                   "src": "972:27:178",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Receipt_$6627_storage_$",
+                    "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Receipt_$6677_storage_$",
                     "typeString": "mapping(address => struct IGovernorCompatibilityBravo.Receipt)"
                   },
                   "valueType": {
-                    "id": 6617,
+                    "id": 6667,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 6616,
+                      "id": 6666,
                       "name": "Receipt",
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 6627,
+                      "referencedDeclaration": 6677,
                       "src": "991:7:178"
                     },
-                    "referencedDeclaration": 6627,
+                    "referencedDeclaration": 6677,
                     "src": "991:7:178",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Receipt_$6627_storage_ptr",
+                      "typeIdentifier": "t_struct$_Receipt_$6677_storage_ptr",
                       "typeString": "struct IGovernorCompatibilityBravo.Receipt"
                     }
                   }
@@ -1479,22 +1479,22 @@
             "name": "Proposal",
             "nameLocation": "591:8:178",
             "nodeType": "StructDefinition",
-            "scope": 6727,
+            "scope": 6777,
             "src": "584:431:178",
             "visibility": "public"
           },
           {
             "canonicalName": "IGovernorCompatibilityBravo.Receipt",
-            "id": 6627,
+            "id": 6677,
             "members": [
               {
                 "constant": false,
-                "id": 6622,
+                "id": 6672,
                 "mutability": "mutable",
                 "name": "hasVoted",
                 "nameLocation": "1126:8:178",
                 "nodeType": "VariableDeclaration",
-                "scope": 6627,
+                "scope": 6677,
                 "src": "1121:13:178",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -1503,7 +1503,7 @@
                   "typeString": "bool"
                 },
                 "typeName": {
-                  "id": 6621,
+                  "id": 6671,
                   "name": "bool",
                   "nodeType": "ElementaryTypeName",
                   "src": "1121:4:178",
@@ -1516,12 +1516,12 @@
               },
               {
                 "constant": false,
-                "id": 6624,
+                "id": 6674,
                 "mutability": "mutable",
                 "name": "support",
                 "nameLocation": "1150:7:178",
                 "nodeType": "VariableDeclaration",
-                "scope": 6627,
+                "scope": 6677,
                 "src": "1144:13:178",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -1530,7 +1530,7 @@
                   "typeString": "uint8"
                 },
                 "typeName": {
-                  "id": 6623,
+                  "id": 6673,
                   "name": "uint8",
                   "nodeType": "ElementaryTypeName",
                   "src": "1144:5:178",
@@ -1543,12 +1543,12 @@
               },
               {
                 "constant": false,
-                "id": 6626,
+                "id": 6676,
                 "mutability": "mutable",
                 "name": "votes",
                 "nameLocation": "1174:5:178",
                 "nodeType": "VariableDeclaration",
-                "scope": 6627,
+                "scope": 6677,
                 "src": "1167:12:178",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -1557,7 +1557,7 @@
                   "typeString": "uint96"
                 },
                 "typeName": {
-                  "id": 6625,
+                  "id": 6675,
                   "name": "uint96",
                   "nodeType": "ElementaryTypeName",
                   "src": "1167:6:178",
@@ -1572,19 +1572,19 @@
             "name": "Receipt",
             "nameLocation": "1103:7:178",
             "nodeType": "StructDefinition",
-            "scope": 6727,
+            "scope": 6777,
             "src": "1096:90:178",
             "visibility": "public"
           },
           {
             "documentation": {
-              "id": 6628,
+              "id": 6678,
               "nodeType": "StructuredDocumentation",
               "src": "1192:63:178",
               "text": " @dev Part of the Governor Bravo's interface."
             },
             "functionSelector": "24bc1a64",
-            "id": 6633,
+            "id": 6683,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -1592,23 +1592,23 @@
             "nameLocation": "1269:11:178",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 6629,
+              "id": 6679,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1280:2:178"
             },
             "returnParameters": {
-              "id": 6632,
+              "id": 6682,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 6631,
+                  "id": 6681,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6633,
+                  "scope": 6683,
                   "src": "1312:7:178",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1617,7 +1617,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 6630,
+                    "id": 6680,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1312:7:178",
@@ -1631,7 +1631,7 @@
               ],
               "src": "1311:9:178"
             },
-            "scope": 6727,
+            "scope": 6777,
             "src": "1260:61:178",
             "stateMutability": "view",
             "virtual": true,
@@ -1639,13 +1639,13 @@
           },
           {
             "documentation": {
-              "id": 6634,
+              "id": 6684,
               "nodeType": "StructuredDocumentation",
               "src": "1327:119:178",
               "text": " @dev Part of the Governor Bravo's interface: _\"The official record of all proposals ever proposed\"_."
             },
             "functionSelector": "013cf08b",
-            "id": 6659,
+            "id": 6709,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -1653,17 +1653,17 @@
             "nameLocation": "1460:9:178",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 6637,
+              "id": 6687,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 6636,
+                  "id": 6686,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6659,
+                  "scope": 6709,
                   "src": "1470:7:178",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1672,7 +1672,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 6635,
+                    "id": 6685,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1470:7:178",
@@ -1687,17 +1687,17 @@
               "src": "1469:9:178"
             },
             "returnParameters": {
-              "id": 6658,
+              "id": 6708,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 6639,
+                  "id": 6689,
                   "mutability": "mutable",
                   "name": "id",
                   "nameLocation": "1561:2:178",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6659,
+                  "scope": 6709,
                   "src": "1553:10:178",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1706,7 +1706,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 6638,
+                    "id": 6688,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1553:7:178",
@@ -1719,12 +1719,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 6641,
+                  "id": 6691,
                   "mutability": "mutable",
                   "name": "proposer",
                   "nameLocation": "1585:8:178",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6659,
+                  "scope": 6709,
                   "src": "1577:16:178",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1733,7 +1733,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 6640,
+                    "id": 6690,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1577:7:178",
@@ -1747,12 +1747,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 6643,
+                  "id": 6693,
                   "mutability": "mutable",
                   "name": "eta",
                   "nameLocation": "1615:3:178",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6659,
+                  "scope": 6709,
                   "src": "1607:11:178",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1761,7 +1761,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 6642,
+                    "id": 6692,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1607:7:178",
@@ -1774,12 +1774,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 6645,
+                  "id": 6695,
                   "mutability": "mutable",
                   "name": "startBlock",
                   "nameLocation": "1640:10:178",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6659,
+                  "scope": 6709,
                   "src": "1632:18:178",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1788,7 +1788,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 6644,
+                    "id": 6694,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1632:7:178",
@@ -1801,12 +1801,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 6647,
+                  "id": 6697,
                   "mutability": "mutable",
                   "name": "endBlock",
                   "nameLocation": "1672:8:178",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6659,
+                  "scope": 6709,
                   "src": "1664:16:178",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1815,7 +1815,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 6646,
+                    "id": 6696,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1664:7:178",
@@ -1828,12 +1828,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 6649,
+                  "id": 6699,
                   "mutability": "mutable",
                   "name": "forVotes",
                   "nameLocation": "1702:8:178",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6659,
+                  "scope": 6709,
                   "src": "1694:16:178",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1842,7 +1842,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 6648,
+                    "id": 6698,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1694:7:178",
@@ -1855,12 +1855,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 6651,
+                  "id": 6701,
                   "mutability": "mutable",
                   "name": "againstVotes",
                   "nameLocation": "1732:12:178",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6659,
+                  "scope": 6709,
                   "src": "1724:20:178",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1869,7 +1869,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 6650,
+                    "id": 6700,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1724:7:178",
@@ -1882,12 +1882,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 6653,
+                  "id": 6703,
                   "mutability": "mutable",
                   "name": "abstainVotes",
                   "nameLocation": "1766:12:178",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6659,
+                  "scope": 6709,
                   "src": "1758:20:178",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1896,7 +1896,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 6652,
+                    "id": 6702,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1758:7:178",
@@ -1909,12 +1909,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 6655,
+                  "id": 6705,
                   "mutability": "mutable",
                   "name": "canceled",
                   "nameLocation": "1797:8:178",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6659,
+                  "scope": 6709,
                   "src": "1792:13:178",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1923,7 +1923,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 6654,
+                    "id": 6704,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "1792:4:178",
@@ -1936,12 +1936,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 6657,
+                  "id": 6707,
                   "mutability": "mutable",
                   "name": "executed",
                   "nameLocation": "1824:8:178",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6659,
+                  "scope": 6709,
                   "src": "1819:13:178",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1950,7 +1950,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 6656,
+                    "id": 6706,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "1819:4:178",
@@ -1964,7 +1964,7 @@
               ],
               "src": "1539:303:178"
             },
-            "scope": 6727,
+            "scope": 6777,
             "src": "1451:392:178",
             "stateMutability": "view",
             "virtual": true,
@@ -1972,13 +1972,13 @@
           },
           {
             "documentation": {
-              "id": 6660,
+              "id": 6710,
               "nodeType": "StructuredDocumentation",
               "src": "1849:108:178",
               "text": " @dev Part of the Governor Bravo's interface: _\"Function used to propose a new proposal\"_."
             },
             "functionSelector": "da95691a",
-            "id": 6679,
+            "id": 6729,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -1986,17 +1986,17 @@
             "nameLocation": "1971:7:178",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 6675,
+              "id": 6725,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 6663,
+                  "id": 6713,
                   "mutability": "mutable",
                   "name": "targets",
                   "nameLocation": "2005:7:178",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6679,
+                  "scope": 6729,
                   "src": "1988:24:178",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -2006,7 +2006,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 6661,
+                      "id": 6711,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
                       "src": "1988:7:178",
@@ -2016,7 +2016,7 @@
                         "typeString": "address"
                       }
                     },
-                    "id": 6662,
+                    "id": 6712,
                     "nodeType": "ArrayTypeName",
                     "src": "1988:9:178",
                     "typeDescriptions": {
@@ -2028,12 +2028,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 6666,
+                  "id": 6716,
                   "mutability": "mutable",
                   "name": "values",
                   "nameLocation": "2039:6:178",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6679,
+                  "scope": 6729,
                   "src": "2022:23:178",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -2043,7 +2043,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 6664,
+                      "id": 6714,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
                       "src": "2022:7:178",
@@ -2052,7 +2052,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 6665,
+                    "id": 6715,
                     "nodeType": "ArrayTypeName",
                     "src": "2022:9:178",
                     "typeDescriptions": {
@@ -2064,12 +2064,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 6669,
+                  "id": 6719,
                   "mutability": "mutable",
                   "name": "signatures",
                   "nameLocation": "2071:10:178",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6679,
+                  "scope": 6729,
                   "src": "2055:26:178",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -2079,7 +2079,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 6667,
+                      "id": 6717,
                       "name": "string",
                       "nodeType": "ElementaryTypeName",
                       "src": "2055:6:178",
@@ -2088,7 +2088,7 @@
                         "typeString": "string"
                       }
                     },
-                    "id": 6668,
+                    "id": 6718,
                     "nodeType": "ArrayTypeName",
                     "src": "2055:8:178",
                     "typeDescriptions": {
@@ -2100,12 +2100,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 6672,
+                  "id": 6722,
                   "mutability": "mutable",
                   "name": "calldatas",
                   "nameLocation": "2106:9:178",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6679,
+                  "scope": 6729,
                   "src": "2091:24:178",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -2115,7 +2115,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 6670,
+                      "id": 6720,
                       "name": "bytes",
                       "nodeType": "ElementaryTypeName",
                       "src": "2091:5:178",
@@ -2124,7 +2124,7 @@
                         "typeString": "bytes"
                       }
                     },
-                    "id": 6671,
+                    "id": 6721,
                     "nodeType": "ArrayTypeName",
                     "src": "2091:7:178",
                     "typeDescriptions": {
@@ -2136,12 +2136,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 6674,
+                  "id": 6724,
                   "mutability": "mutable",
                   "name": "description",
                   "nameLocation": "2139:11:178",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6679,
+                  "scope": 6729,
                   "src": "2125:25:178",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -2150,7 +2150,7 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 6673,
+                    "id": 6723,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
                     "src": "2125:6:178",
@@ -2165,17 +2165,17 @@
               "src": "1978:178:178"
             },
             "returnParameters": {
-              "id": 6678,
+              "id": 6728,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 6677,
+                  "id": 6727,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6679,
+                  "scope": 6729,
                   "src": "2181:7:178",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2184,7 +2184,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 6676,
+                    "id": 6726,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "2181:7:178",
@@ -2198,7 +2198,7 @@
               ],
               "src": "2180:9:178"
             },
-            "scope": 6727,
+            "scope": 6777,
             "src": "1962:228:178",
             "stateMutability": "nonpayable",
             "virtual": true,
@@ -2206,13 +2206,13 @@
           },
           {
             "documentation": {
-              "id": 6680,
+              "id": 6730,
               "nodeType": "StructuredDocumentation",
               "src": "2196:105:178",
               "text": " @dev Part of the Governor Bravo's interface: _\"Queues a proposal of state succeeded\"_."
             },
             "functionSelector": "ddf0b009",
-            "id": 6685,
+            "id": 6735,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -2220,17 +2220,17 @@
             "nameLocation": "2315:5:178",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 6683,
+              "id": 6733,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 6682,
+                  "id": 6732,
                   "mutability": "mutable",
                   "name": "proposalId",
                   "nameLocation": "2329:10:178",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6685,
+                  "scope": 6735,
                   "src": "2321:18:178",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2239,7 +2239,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 6681,
+                    "id": 6731,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "2321:7:178",
@@ -2254,12 +2254,12 @@
               "src": "2320:20:178"
             },
             "returnParameters": {
-              "id": 6684,
+              "id": 6734,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "2355:0:178"
             },
-            "scope": 6727,
+            "scope": 6777,
             "src": "2306:50:178",
             "stateMutability": "nonpayable",
             "virtual": true,
@@ -2267,13 +2267,13 @@
           },
           {
             "documentation": {
-              "id": 6686,
+              "id": 6736,
               "nodeType": "StructuredDocumentation",
               "src": "2362:113:178",
               "text": " @dev Part of the Governor Bravo's interface: _\"Executes a queued proposal if eta has passed\"_."
             },
             "functionSelector": "fe0d94c1",
-            "id": 6691,
+            "id": 6741,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -2281,17 +2281,17 @@
             "nameLocation": "2489:7:178",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 6689,
+              "id": 6739,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 6688,
+                  "id": 6738,
                   "mutability": "mutable",
                   "name": "proposalId",
                   "nameLocation": "2505:10:178",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6691,
+                  "scope": 6741,
                   "src": "2497:18:178",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2300,7 +2300,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 6687,
+                    "id": 6737,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "2497:7:178",
@@ -2315,12 +2315,12 @@
               "src": "2496:20:178"
             },
             "returnParameters": {
-              "id": 6690,
+              "id": 6740,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "2539:0:178"
             },
-            "scope": 6727,
+            "scope": 6777,
             "src": "2480:60:178",
             "stateMutability": "payable",
             "virtual": true,
@@ -2328,13 +2328,13 @@
           },
           {
             "documentation": {
-              "id": 6692,
+              "id": 6742,
               "nodeType": "StructuredDocumentation",
               "src": "2546:130:178",
               "text": " @dev Cancels a proposal only if sender is the proposer, or proposer delegates dropped below proposal threshold."
             },
             "functionSelector": "40e58ee5",
-            "id": 6697,
+            "id": 6747,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -2342,17 +2342,17 @@
             "nameLocation": "2690:6:178",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 6695,
+              "id": 6745,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 6694,
+                  "id": 6744,
                   "mutability": "mutable",
                   "name": "proposalId",
                   "nameLocation": "2705:10:178",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6697,
+                  "scope": 6747,
                   "src": "2697:18:178",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2361,7 +2361,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 6693,
+                    "id": 6743,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "2697:7:178",
@@ -2376,12 +2376,12 @@
               "src": "2696:20:178"
             },
             "returnParameters": {
-              "id": 6696,
+              "id": 6746,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "2731:0:178"
             },
-            "scope": 6727,
+            "scope": 6777,
             "src": "2681:51:178",
             "stateMutability": "nonpayable",
             "virtual": true,
@@ -2389,13 +2389,13 @@
           },
           {
             "documentation": {
-              "id": 6698,
+              "id": 6748,
               "nodeType": "StructuredDocumentation",
               "src": "2738:95:178",
               "text": " @dev Part of the Governor Bravo's interface: _\"Gets actions of a proposal\"_."
             },
             "functionSelector": "328dd982",
-            "id": 6715,
+            "id": 6765,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -2403,17 +2403,17 @@
             "nameLocation": "2847:10:178",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 6701,
+              "id": 6751,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 6700,
+                  "id": 6750,
                   "mutability": "mutable",
                   "name": "proposalId",
                   "nameLocation": "2866:10:178",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6715,
+                  "scope": 6765,
                   "src": "2858:18:178",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2422,7 +2422,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 6699,
+                    "id": 6749,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "2858:7:178",
@@ -2437,17 +2437,17 @@
               "src": "2857:20:178"
             },
             "returnParameters": {
-              "id": 6714,
+              "id": 6764,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 6704,
+                  "id": 6754,
                   "mutability": "mutable",
                   "name": "targets",
                   "nameLocation": "2969:7:178",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6715,
+                  "scope": 6765,
                   "src": "2952:24:178",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -2457,7 +2457,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 6702,
+                      "id": 6752,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
                       "src": "2952:7:178",
@@ -2467,7 +2467,7 @@
                         "typeString": "address"
                       }
                     },
-                    "id": 6703,
+                    "id": 6753,
                     "nodeType": "ArrayTypeName",
                     "src": "2952:9:178",
                     "typeDescriptions": {
@@ -2479,12 +2479,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 6707,
+                  "id": 6757,
                   "mutability": "mutable",
                   "name": "values",
                   "nameLocation": "3007:6:178",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6715,
+                  "scope": 6765,
                   "src": "2990:23:178",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -2494,7 +2494,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 6705,
+                      "id": 6755,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
                       "src": "2990:7:178",
@@ -2503,7 +2503,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 6706,
+                    "id": 6756,
                     "nodeType": "ArrayTypeName",
                     "src": "2990:9:178",
                     "typeDescriptions": {
@@ -2515,12 +2515,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 6710,
+                  "id": 6760,
                   "mutability": "mutable",
                   "name": "signatures",
                   "nameLocation": "3043:10:178",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6715,
+                  "scope": 6765,
                   "src": "3027:26:178",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -2530,7 +2530,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 6708,
+                      "id": 6758,
                       "name": "string",
                       "nodeType": "ElementaryTypeName",
                       "src": "3027:6:178",
@@ -2539,7 +2539,7 @@
                         "typeString": "string"
                       }
                     },
-                    "id": 6709,
+                    "id": 6759,
                     "nodeType": "ArrayTypeName",
                     "src": "3027:8:178",
                     "typeDescriptions": {
@@ -2551,12 +2551,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 6713,
+                  "id": 6763,
                   "mutability": "mutable",
                   "name": "calldatas",
                   "nameLocation": "3082:9:178",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6715,
+                  "scope": 6765,
                   "src": "3067:24:178",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -2566,7 +2566,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 6711,
+                      "id": 6761,
                       "name": "bytes",
                       "nodeType": "ElementaryTypeName",
                       "src": "3067:5:178",
@@ -2575,7 +2575,7 @@
                         "typeString": "bytes"
                       }
                     },
-                    "id": 6712,
+                    "id": 6762,
                     "nodeType": "ArrayTypeName",
                     "src": "3067:7:178",
                     "typeDescriptions": {
@@ -2588,7 +2588,7 @@
               ],
               "src": "2938:163:178"
             },
-            "scope": 6727,
+            "scope": 6777,
             "src": "2838:264:178",
             "stateMutability": "view",
             "virtual": true,
@@ -2596,13 +2596,13 @@
           },
           {
             "documentation": {
-              "id": 6716,
+              "id": 6766,
               "nodeType": "StructuredDocumentation",
               "src": "3108:117:178",
               "text": " @dev Part of the Governor Bravo's interface: _\"Gets the receipt for a voter on a given proposal\"_."
             },
             "functionSelector": "e23a9a52",
-            "id": 6726,
+            "id": 6776,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -2610,17 +2610,17 @@
             "nameLocation": "3239:10:178",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 6721,
+              "id": 6771,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 6718,
+                  "id": 6768,
                   "mutability": "mutable",
                   "name": "proposalId",
                   "nameLocation": "3258:10:178",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6726,
+                  "scope": 6776,
                   "src": "3250:18:178",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2629,7 +2629,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 6717,
+                    "id": 6767,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "3250:7:178",
@@ -2642,12 +2642,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 6720,
+                  "id": 6770,
                   "mutability": "mutable",
                   "name": "voter",
                   "nameLocation": "3278:5:178",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6726,
+                  "scope": 6776,
                   "src": "3270:13:178",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2656,7 +2656,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 6719,
+                    "id": 6769,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "3270:7:178",
@@ -2672,38 +2672,38 @@
               "src": "3249:35:178"
             },
             "returnParameters": {
-              "id": 6725,
+              "id": 6775,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 6724,
+                  "id": 6774,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6726,
+                  "scope": 6776,
                   "src": "3314:14:178",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Receipt_$6627_memory_ptr",
+                    "typeIdentifier": "t_struct$_Receipt_$6677_memory_ptr",
                     "typeString": "struct IGovernorCompatibilityBravo.Receipt"
                   },
                   "typeName": {
-                    "id": 6723,
+                    "id": 6773,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 6722,
+                      "id": 6772,
                       "name": "Receipt",
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 6627,
+                      "referencedDeclaration": 6677,
                       "src": "3314:7:178"
                     },
-                    "referencedDeclaration": 6627,
+                    "referencedDeclaration": 6677,
                     "src": "3314:7:178",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Receipt_$6627_storage_ptr",
+                      "typeIdentifier": "t_struct$_Receipt_$6677_storage_ptr",
                       "typeString": "struct IGovernorCompatibilityBravo.Receipt"
                     }
                   },
@@ -2712,14 +2712,14 @@
               ],
               "src": "3313:16:178"
             },
-            "scope": 6727,
+            "scope": 6777,
             "src": "3230:100:178",
             "stateMutability": "view",
             "virtual": true,
             "visibility": "public"
           }
         ],
-        "scope": 6728,
+        "scope": 6778,
         "src": "337:2995:178",
         "usedErrors": []
       }
@@ -2732,7 +2732,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-05-03T08:44:13.118Z",
+  "updatedAt": "2023-05-12T01:11:09.052Z",
   "devdoc": {
     "details": "Interface extension that adds missing functions to the {Governor} core to provide `GovernorBravo` compatibility. _Available since v4.3._",
     "kind": "dev",
