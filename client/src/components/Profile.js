@@ -55,7 +55,7 @@ function Profile()
     return Promise.all(
       labels.map(async (label) => {
         const descriptions = [];
-          const result = await contract.methods.getCriminal(1).call();
+          const result = await contract.methods.getCriminal(2).call();
           const attributes=result[5]
           let jsonatt=JSON.parse(attributes)
           let crimedescriptors=jsonatt.descriptors[0]

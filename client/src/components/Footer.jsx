@@ -15,7 +15,7 @@ import {
 import { Web3Button } from "@web3modal/react";
 import { Web3Modal } from "@web3modal/react";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
-import { goerli } from "wagmi";
+import { sepolia } from "wagmi/chains";
 import * as faceapi from 'face-api.js';
 import * as canvas from 'canvas';
 
@@ -39,10 +39,10 @@ function Footer() {
   const [fileUrl, updateFileUrl] = useState("");
   const{state: {contract,accounts,web3}} = useEth();
   const[yournumber,numset]=useState("");
-  const[inputs, setInputs]=useState({selectaddr:''});
-  const {selectaddr}  =inputs;
+  const[inputs, setInputs]=useState({selectaddr:'',cname:'',nationality:'',crime:'',amount:'',age:''});
+  const {selectaddr,cname,nationality,age,crime,amount}  =inputs;
   const inputss = document.getElementById('myImg')
-  const chains =[goerli];
+  const chains =[sepolia];
   
   
   
@@ -53,7 +53,7 @@ function Footer() {
     connectors: w3mConnectors({
   
       projectId:'ad51cb658b57c4bb5916b92e7f4a4ff7',
-      version: "2", 
+      version: "1", 
   
     chains,
     
@@ -148,7 +148,7 @@ async function discriptorFromImage(e)
   const descriptor=JSON.stringify(labeledFaceDescriptors[0])
 
   //여기서 processrequest 파라미터는 입력탭 만들어서 받아야한다.
-  const processRequest = await contract.methods.processRequest("wook","Russia",20,"Fraud",1000000,descriptor).send({from:accounts[0]});
+  const processRequest = await contract.methods.processRequest(cname,nationality,age,crime,amount,descriptor).send({from:accounts[0]});
   const requstid=processRequest.events.RequestReceived.returnValues[0]
   const issueRedNotice = await contract.methods.issueRedNotice(requstid).send({from:accounts[0]});
   console.log(issueRedNotice)
@@ -161,7 +161,7 @@ catch (error) {
 async function getCriminal()
 {
   try {
-    const result = await contract.methods.getCriminal(1).call();
+    const result = await contract.methods.getCriminal(5).call();
       console.log(result)
 
 
@@ -194,58 +194,63 @@ catch (error) {
             </WagmiConfig>
         <Web3Modal projectId="ad51cb658b57c4bb5916b92e7f4a4ff7"ethereumClient={ethereumClient}/>
 
+
 <div className='Procedure'>
+
+
       
       <div className='container'>
-    <div className='ProDetail2'>
-        <Web3Button  />
-      <h1 style={{color:'white'}}>마지막 토큰아이디:{yournumber}</h1>
-    <h1 style={{color:'white'}}>본인 정보를 입력해주세요</h1>
+    <div className='CrimeDetail' style={{display:'inline-block'}}>
       <div style={{display:'inline-block'}} >
-      <div >
-         {/* <input name="name2" placeholder='성명' onChange={onChange2} value={name2} style={{width:'130px'}} /> */}
-      </div> 
-      <div >
-       {/* <input name="member2"placeholder='생년월일' onChange={onChange2} value={member2} style={{width:'130px'}}/> */}
-      </div>
-      </div>      
-      <br>
-      </br>
-
-      <br>
-      </br>
-   <h1 style={{color:'white'}}>얼굴 업로드</h1>
-   <div>
-        <input 
-          accept="image/*" 
-          multiple type="file"
-          onChange={e => onUpload(e)}
-      />
-      
+      <div>
+      <input name="cname" placeholder='성명' onChange={onChange} value={cname} style={{width:'200px'}} />
       </div>
       <div>
+       <input name="nationality"placeholder='국가' onChange={onChange} value={nationality} style={{width:'200px'}}/>
+      </div>
+      <div>
+       <input name="age"placeholder='나이' onChange={onChange} value={age} style={{width:'200px'}}/>
+      </div>
+      <div>
+       <input name="crime"placeholder='범죄' onChange={onChange} value={crime} style={{width:'200px'}}/>
+      </div>
+      <div>
+      <input name="amount"placeholder='자산' onChange={onChange} value={amount} style={{width:'200px'}}/>
+      </div>
+     
+      </div>       
+      
+      <div style={{display:'inline-block' , width:'200px'}}>
       <img id="myImg"
           width={'100px'} height={'100px'} 
           src={imageSrc} 
       />
-      <br />
-      <label type="fileupload" onClick={discriptorFromImage} id="fileup"  className='custom-btn2' >discripted transaction</label>
-      <label  onClick={getCriminal}   className='custom-btn2' >criminal log</label>
-      <label  onClick={addAllowedUser}   className='custom-btn2' >Authorize</label>
-      <input name='selectaddr'value={selectaddr} onChange={onChange} style={{width:'300px'}}></input>
+       <input 
+          accept="image/*" 
+          multiple type="file"
+          onChange={e => onUpload(e)}
+          style={{right:'25%'}}
+      />
+              <label>discriptions 추출</label>
 
-
-      <br />  
       </div>
-
    </div>
-   
+<div>
+
+<label  onClick={addAllowedUser}   className='custom-btn2' >Authorize</label>
+
+      <input name='selectaddr' placeholder='insert address for athorization' value={selectaddr} onChange={onChange} style={{width:'300px'}}></input>
+</div>
+<label  onClick={getCriminal}   className='custom-btn2' >criminal log</label>
+<label type="fileupload" onClick={discriptorFromImage} id="fileup"  className='custom-btn2' >transaction</label>
+
     </div>
+
+    <Web3Button  />    
+    </div>
+
+
     
-    <div  className='ProDetail1'>
-      
-        </div>
-    </div>
 
   </div>
 

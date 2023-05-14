@@ -33,12 +33,12 @@ export  function EthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const chains =[sepolia];
 
-const {provider} = configureChains(chains,[ w3mProvider({ projectId: "251542da3c8552393e55d6d3b636127e" })]);
+const {provider} = configureChains(chains,[ w3mProvider({ projectId: "ad51cb658b57c4bb5916b92e7f4a4ff7" })]);
 
 const wagmiClient = createClient({
   autoConnect: true,
   connectors: w3mConnectors({
-    projectId: "251542da3c8552393e55d6d3b636127e",
+    projectId: "ad51cb658b57c4bb5916b92e7f4a4ff7",
     version: "1", // or "2"
     chains,
   }),
