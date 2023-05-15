@@ -182,11 +182,11 @@ function authentifier()
 <div style={{ textAlign: 'center', padding: '10px' }}>
         {
           captureVideo && modelsLoaded ?
-            <button onClick={closeWebcam} style={{ cursor: 'pointer', backgroundColor: 'green', color: 'white', padding: '15px', fontSize: '25px', border: 'none', borderRadius: '10px' }}>
+            <button onClick={closeWebcam} style={{ cursor: 'pointer', backgroundColor: 'black', color: 'white', padding: '15px', fontSize: '25px', border: 'none', borderRadius: '10px' }}>
               Close Webcam
             </button>
             :
-            <button onClick={startVideo} style={{ cursor: 'pointer', backgroundColor: 'green', color: 'white', padding: '15px', fontSize: '25px', border: 'none', borderRadius: '10px' }}>
+            <button onClick={startVideo} style={{ cursor: 'pointer', backgroundColor: 'black', color: 'white', padding: '15px', fontSize: '25px', border: 'none', borderRadius: '10px' }}>
               Open Webcam
             </button>
         }

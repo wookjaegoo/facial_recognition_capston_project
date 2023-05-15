@@ -161,7 +161,7 @@ catch (error) {
 async function getCriminal()
 {
   try {
-    const result = await contract.methods.getCriminal(5).call();
+    const result = await contract.methods.getCriminal(7).call();
       console.log(result)
 
 
@@ -201,48 +201,70 @@ catch (error) {
       
       <div className='container'>
     <div className='CrimeDetail' style={{display:'inline-block'}}>
-      <div style={{display:'inline-block'}} >
-      <div>
-      <input name="cname" placeholder='성명' onChange={onChange} value={cname} style={{width:'200px'}} />
+      <h1>Deploy Face Descriptors</h1>
+      <div style={{display:'inline-block' ,height:'200px',fontSize:'15px'}} >
+
+      <div style={{width:'210px',height:'30px'}}>
+        <label style={{float:'left'}}>Name</label>
+      <input name="cname" onChange={onChange} value={cname} style={{width:'150px',height:'30px',float:'right'}} />
       </div>
-      <div>
-       <input name="nationality"placeholder='국가' onChange={onChange} value={nationality} style={{width:'200px'}}/>
+
+      <div style={{width:'210px',height:'30px'}}>
+      <label style={{float:'left'}}>Nation</label>
+
+       <input name="nationality" onChange={onChange} value={nationality} style={{width:'150px',height:'30px',float:'right'}}/>
       </div>
-      <div>
-       <input name="age"placeholder='나이' onChange={onChange} value={age} style={{width:'200px'}}/>
+
+      <div style={{width:'210px',height:'30px'}}>
+      <label style={{float:'left'}}>Age</label>
+
+       <input name="age" onChange={onChange} value={age} style={{width:'150px',height:'30px',float:'right'}}/>
       </div>
-      <div>
-       <input name="crime"placeholder='범죄' onChange={onChange} value={crime} style={{width:'200px'}}/>
+
+      <div style={{width:'210px',height:'30px'}}>
+      <label style={{float:'left'}}>Crime</label>
+
+       <input name="crime" onChange={onChange} value={crime} style={{width:'150px',height:'30px',float:'right'}}/>
       </div>
-      <div>
-      <input name="amount"placeholder='자산' onChange={onChange} value={amount} style={{width:'200px'}}/>
+
+      <div style={{width:'210px',height:'30px',marginBottom:'30px'}}>
+      <label style={{float:'left'}}>Asset</label>
+
+      <input name="amount" onChange={onChange} value={amount} style={{width:'150px',height:'30px',float:'right'}}/>
       </div>
-     
-      </div>       
+      <br></br>
+
+
+      </div >       
       
-      <div style={{display:'inline-block' , width:'200px'}}>
+      <div style={{display:'inline-block' , width:'200px',marginLeft:'90px',marginTop:'30px',height:'200px'}}>
       <img id="myImg"
-          width={'100px'} height={'100px'} 
+          width={'150px'} height={'150px'} 
           src={imageSrc} 
+          style={{float:'left',background:'white', border:'2px solid black'}}
       />
        <input 
           accept="image/*" 
           multiple type="file"
           onChange={e => onUpload(e)}
-          style={{right:'25%'}}
+          style={{width:'180px',float:'left'}}
       />
-              <label>discriptions 추출</label>
+      <label className='custom-btn2' style={{float:'left',width:'150px'} }>Discriptions Extraction</label>
 
       </div>
-   </div>
-<div>
-
-<label  onClick={addAllowedUser}   className='custom-btn2' >Authorize</label>
-
-      <input name='selectaddr' placeholder='insert address for athorization' value={selectaddr} onChange={onChange} style={{width:'300px'}}></input>
-</div>
-<label  onClick={getCriminal}   className='custom-btn2' >criminal log</label>
+      <div style={{display:'inline-block',float:'left', width:'300px', height:'60px'}}>
+      <input name='selectaddr' placeholder='insert address for athorization' value={selectaddr} onChange={onChange} style={{width:'200px',height:'30px',float:'left'}}></input>
+      <label  onClick={addAllowedUser}   className='custom-btn2'style={{float:'left'}} >Authorize</label>
+      <label  onClick={getCriminal}   className='custom-btn2' >criminal log</label>
 <label type="fileupload" onClick={discriptorFromImage} id="fileup"  className='custom-btn2' >transaction</label>
+
+      
+      </div>
+      <div>
+
+      </div>
+
+   </div>
 
     </div>
 
