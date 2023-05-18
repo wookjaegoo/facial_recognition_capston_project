@@ -34,28 +34,16 @@ function Profile()
 
   let input = document.getElementById('myImg')
   
-  async function getCriminal()
-  {
-    
-    const result = await contract.methods.getCriminal(1).call();
-    const attributes=result[5]
-    console.log(result[5])
- 
-
-  return(
-    attributes
-  )
-  }
+  
 
   const CustomloadImage = async () => {
     // 업로드 된 이미지 이름을 배열에 담아 라벨링 합니다.
     const labels = ["1","2","3","4","5","6","7","8","9","10"];
   
-  
     return Promise.all(
       labels.map(async (label) => {
         const descriptions = [];
-          const result = await contract.methods.getCriminal(2).call();
+          const result = await contract.methods.getCriminal(3).call();
           const attributes=result[5]
           let jsonatt=JSON.parse(attributes)
           let crimedescriptors=jsonatt.descriptors[0]
@@ -68,6 +56,42 @@ function Profile()
     );
   };
   
+
+  const CustomloadImage2 = async () => {
+    // 업로드 된 이미지 이름을 배열에 담아 라벨링 합니다.
+    const labels = ["0","1","2","3"];
+    const max= await contract.methods.totalSupply().call();
+    let CriminalList=[]
+    let DiscriptorList=[]
+
+    for(let i=0; i<max; i++)
+    {
+      const info = await contract.methods.getCriminal(i).call();
+      CriminalList.push(info)
+      let att=JSON.parse(CriminalList[i][5])
+      let newarray=new Float32Array(att.descriptors[0])
+      DiscriptorList.push(newarray);
+
+    }
+
+    
+    return Promise.all(
+      labels.map(async (label) => {
+        let descriptions = [];
+          // const result = await contract.methods.getCriminal(3).call();
+          // const attributes=result[5]
+          // let jsonatt=JSON.parse(attributes)
+          // let crimedescriptors=jsonatt.descriptors[0]
+          // let newarray=new Float32Array(crimedescriptors)
+        // descriptions.push(newarray);
+        let n= parseInt(label)
+        descriptions.push(DiscriptorList[n])
+  
+  
+        return new faceapi.LabeledFaceDescriptors(label, descriptions);
+      })
+    );
+  };
 
   useEffect(() => {
     const loadModels = async () => {
@@ -112,18 +136,16 @@ function Profile()
         faceapi.matchDimensions(canvasRef.current, displaySize);
         const detections = await faceapi.detectAllFaces(videoRef.current).withFaceLandmarks();
         const detected = await faceapi.detectAllFaces(videoRef.current).withFaceLandmarks().withFaceDescriptors();
-        // console.log(detections)
-        // let marks=[detections[0].landmarks.positions]
-        // console.log(marks)
 
         const resizedDetections = faceapi.resizeResults(detections, displaySize);
         const resizedDetected = faceapi.resizeResults(detected, displaySize);
+        //감지된 얼굴들 담은 변수
         
 
         // const labeledFaceDescriptors = await loadImage();
         // console.log(labeledFaceDescriptors)
         
-        const labeledFaceDescriptors = await CustomloadImage();
+        const labeledFaceDescriptors = await CustomloadImage2();
       
         const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.6);
         const label = faceMatcher.findBestMatch(resizedDetected[0].descriptor).toString();

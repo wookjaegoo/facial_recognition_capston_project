@@ -35,24 +35,6 @@ function App() {
       
   // };
   
-      // useEffect(() => {
-        
-      //     mainApi();
-          
-          
-      // }, [
-      // ]);
-      const [message, setMessage] = useState([]);
-  useEffect(() => {
-    fetch("/hello")
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setMessage(data);
-      });
-  }, []);
-  
 
   return (
     

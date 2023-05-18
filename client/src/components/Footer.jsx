@@ -14,7 +14,9 @@ import {
 
 import { Web3Button } from "@web3modal/react";
 import { Web3Modal } from "@web3modal/react";
-import { configureChains, createClient, WagmiConfig } from "wagmi";
+
+import { configureChains, createConfig, WagmiConfig } from "wagmi";
+
 import { sepolia } from "wagmi/chains";
 import * as faceapi from 'face-api.js';
 import * as canvas from 'canvas';
@@ -46,9 +48,9 @@ function Footer() {
   
   
   
-  const {provider} = configureChains(chains,[w3mProvider({ projectId:'ad51cb658b57c4bb5916b92e7f4a4ff7'})]);
+  const {publicClient} = configureChains(chains,[w3mProvider({ projectId:'ad51cb658b57c4bb5916b92e7f4a4ff7'})]);
     
-  const wagmiClient = createClient({
+  const wagmiConfig = createConfig({
     autoConnect: true,
     connectors: w3mConnectors({
   
@@ -58,11 +60,13 @@ function Footer() {
     chains,
     
   }),
-  provider,
+  publicClient,
   });
 
   
-  const ethereumClient = new EthereumClient(wagmiClient,chains);
+
+  
+  const ethereumClient = new EthereumClient(wagmiConfig,chains);
   
 
 useEffect(() => {
@@ -161,9 +165,34 @@ catch (error) {
 async function getCriminal()
 {
   try {
-    const result = await contract.methods.getCriminal(7).call();
-      console.log(result)
+    // const max= await contract.methods.totalSupply().call();
+    // let CriminalList=[]
 
+    // for(let i=0; i<max; i++)
+    // {
+    //   const result = await contract.methods.getCriminal(i).call();
+    //   CriminalList.push(result)
+
+    // }
+    // console.log(CriminalList[0][5])
+
+    const max= await contract.methods.totalSupply().call();
+    let CriminalList=[]
+    let DiscriptorList=[]
+
+    for(let i=0; i<max; i++)
+    {
+      const info = await contract.methods.getCriminal(i).call();
+      CriminalList.push(info)
+      let att=JSON.parse(CriminalList[i][5])
+      let newarray=new Float32Array(att.descriptors[0])
+      DiscriptorList.push(newarray);
+
+    }
+    let boy=[]
+    boy=DiscriptorList
+
+    console.log(boy)
 
 } 
 catch (error) {  
@@ -188,16 +217,12 @@ catch (error) {
 
   return (
 
+<WagmiConfig config={wagmiConfig} >      
   <div className='Deploys' >
-
-<WagmiConfig client={wagmiClient} >            
-            </WagmiConfig>
-        <Web3Modal projectId="ad51cb658b57c4bb5916b92e7f4a4ff7"ethereumClient={ethereumClient}/>
+      
 
 
 <div className='Procedure'>
-
-
       
       <div className='container'>
     <div className='CrimeDetail' style={{display:'inline-block'}}>
@@ -270,12 +295,10 @@ catch (error) {
 
     <Web3Button  />    
     </div>
-
-
-    
-
   </div>
+  <Web3Modal projectId="ad51cb658b57c4bb5916b92e7f4a4ff7"ethereumClient={ethereumClient}/>
 
+  </WagmiConfig>
   
    
   );
