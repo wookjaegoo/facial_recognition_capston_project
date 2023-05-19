@@ -4,6 +4,7 @@ import React from 'react';
 import "./Footer.css"
 import useEth from "../contexts/EthContext/useEth";
 import { Buffer } from 'buffer';
+import {transferData, criminalTransfer} from "../api/transfer";
 
 import {
   EthereumClient,
@@ -165,34 +166,17 @@ catch (error) {
 async function getCriminal()
 {
   try {
-    // const max= await contract.methods.totalSupply().call();
-    // let CriminalList=[]
-
-    // for(let i=0; i<max; i++)
-    // {
-    //   const result = await contract.methods.getCriminal(i).call();
-    //   CriminalList.push(result)
-
-    // }
-    // console.log(CriminalList[0][5])
-
-    const max= await contract.methods.totalSupply().call();
     let CriminalList=[]
-    let DiscriptorList=[]
-
+    const max= await contract.methods.totalSupply().call();
     for(let i=0; i<max; i++)
     {
       const info = await contract.methods.getCriminal(i).call();
       CriminalList.push(info)
-      let att=JSON.parse(CriminalList[i][5])
-      let newarray=new Float32Array(att.descriptors[0])
-      DiscriptorList.push(newarray);
-
+     
     }
-    let boy=[]
-    boy=DiscriptorList
 
-    console.log(boy)
+    console.log(CriminalList)
+    criminalTransfer(CriminalList)
 
 } 
 catch (error) {  

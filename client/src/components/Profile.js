@@ -3,7 +3,7 @@ import './Profile.css'
 import useEth from '../contexts/EthContext/useEth';
 import { useState } from 'react';
 import { useRef } from 'react';
-
+import {transferData, criminalTransfer} from "../api/transfer";
 import * as canvas from 'canvas';
 import * as faceapi from 'face-api.js';
 
@@ -73,7 +73,7 @@ function Profile()
       DiscriptorList.push(newarray);
 
     }
-
+    
     
     return Promise.all(
       labels.map(async (label) => {
