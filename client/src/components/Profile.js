@@ -148,10 +148,17 @@ function Profile()
         const labeledFaceDescriptors = await CustomloadImage2();
       
         const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.6);
-        const label = faceMatcher.findBestMatch(resizedDetected[0].descriptor).toString();
-        
-        
-        console.log(label)
+        // const label = faceMatcher.findBestMatch(resizedDetected[0].descriptor).toString();
+
+        for(let i=0; i<11; i++)
+        {
+          if(resizedDetected[i])
+          {
+            const label = faceMatcher.findBestMatch(resizedDetected[i].descriptor).toString();
+            console.log(label)
+          }
+
+        }
         
 
         canvasRef && canvasRef.current && canvasRef.current.getContext('2d').clearRect(0, 0, videoWidth, videoHeight);
