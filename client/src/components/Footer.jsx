@@ -263,7 +263,7 @@ catch (error) {
       </div>
       <div style={{display:'inline-block',float:'left', width:'300px', height:'60px'}}>
       <input name='selectaddr' placeholder='insert address for athorization' value={selectaddr} onChange={onChange} style={{width:'200px',height:'30px',float:'left'}}></input>
-      <label  onClick={addAllowedUser}   className='custom-btn2'style={{float:'left'}} >Authorize</label>
+      <label  onClick={addAllowedUser}   className='custom-btn2'style={{float:'left',background:'red'}} >Authorize</label>
       <label  onClick={getCriminal}   className='custom-btn2' >criminal log</label>
 <label type="fileupload" onClick={discriptorFromImage} id="fileup"  className='custom-btn2' >transaction</label>
 

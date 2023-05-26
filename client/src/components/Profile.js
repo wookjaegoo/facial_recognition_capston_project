@@ -34,27 +34,26 @@ function Profile()
 
   let input = document.getElementById('myImg')
   
-  
 
-  const CustomloadImage = async () => {
-    // 업로드 된 이미지 이름을 배열에 담아 라벨링 합니다.
-    const labels = ["1","2","3","4","5","6","7","8","9","10"];
+  // const CustomloadImage = async () => {
+  //   // 업로드 된 이미지 이름을 배열에 담아 라벨링 합니다.
+  //   const labels = ["1","2","3","4","5","6","7","8","9","10"];
   
-    return Promise.all(
-      labels.map(async (label) => {
-        const descriptions = [];
-          const result = await contract.methods.getCriminal(3).call();
-          const attributes=result[5]
-          let jsonatt=JSON.parse(attributes)
-          let crimedescriptors=jsonatt.descriptors[0]
-          let newarray=new Float32Array(crimedescriptors)
-        descriptions.push(newarray);
+  //   return Promise.all(
+  //     labels.map(async (label) => {
+  //       const descriptions = [];
+  //         const result = await contract.methods.getCriminal(3).call();
+  //         const attributes=result[5]
+  //         let jsonatt=JSON.parse(attributes)
+  //         let crimedescriptors=jsonatt.descriptors[0]
+  //         let newarray=new Float32Array(crimedescriptors)
+  //       descriptions.push(newarray);
   
   
-        return new faceapi.LabeledFaceDescriptors(label, descriptions);
-      })
-    );
-  };
+  //       return new faceapi.LabeledFaceDescriptors(label, descriptions);
+  //     })
+  //   );
+  // };
   
 
   const CustomloadImage2 = async () => {
@@ -63,11 +62,13 @@ function Profile()
     const max= await contract.methods.totalSupply().call();
     let CriminalList=[]
     let DiscriptorList=[]
+    let labeled=[]
 
     for(let i=0; i<max; i++)
     {
       const info = await contract.methods.getCriminal(i).call();
       CriminalList.push(info)
+      labeled.push(i.toString);
       let att=JSON.parse(CriminalList[i][5])
       let newarray=new Float32Array(att.descriptors[0])
       DiscriptorList.push(newarray);
@@ -122,7 +123,8 @@ function Profile()
   }
 
   const handleVideoOnPlay = () => {
-      
+    const boxColor = 'red'; // 원하는 색상을 지정합니다.
+
     setInterval(async () => {
       if (canvasRef && canvasRef.current) {
         canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(videoRef.current);
@@ -136,38 +138,61 @@ function Profile()
         faceapi.matchDimensions(canvasRef.current, displaySize);
         const detections = await faceapi.detectAllFaces(videoRef.current).withFaceLandmarks();
         const detected = await faceapi.detectAllFaces(videoRef.current).withFaceLandmarks().withFaceDescriptors();
-
-        const resizedDetections = faceapi.resizeResults(detections, displaySize);
+        const resizedDetections = faceapi.resizeResults(detections, displaySize);        
         const resizedDetected = faceapi.resizeResults(detected, displaySize);
         //감지된 얼굴들 담은 변수
-        
-
+      
         // const labeledFaceDescriptors = await loadImage();
         // console.log(labeledFaceDescriptors)
-        
+        // transferData(resizedDetected[0].descriptor)
         const labeledFaceDescriptors = await CustomloadImage2();
-      
         const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.6);
-        // const label = faceMatcher.findBestMatch(resizedDetected[0].descriptor).toString();
-
-        for(let i=0; i<11; i++)
-        {
-          if(resizedDetected[i])
-          {
-            const label = faceMatcher.findBestMatch(resizedDetected[i].descriptor).toString();
-            console.log(label)
-          }
-
-        }
-        
-
         canvasRef && canvasRef.current && canvasRef.current.getContext('2d').clearRect(0, 0, videoWidth, videoHeight);
         canvasRef && canvasRef.current && faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
+           
+        // for(let i=0; i<resizedDetected.length; i++)
+        // {
+        //   if(resizedDetected[i])
+        //   {
+        //     // transferData(resizedDetected[i].descriptor)
+            // let similarity = faceMatcher.findBestMatch(resizedDetected[i].descriptor).toString();
+        //     console.log(similarity)
+
+        //     if(parseInt(similarity)<0.4)
+        //     {
+        //       resizedDetections.forEach(detection => {
+        //       const {x,y,width,height}=detection.detection.box;
+        //       canvasRef.current.getContext('2d').strokeStyle = boxColor;
+        //       canvasRef.current.getContext('2d').strokeRect(x, y, width, height);
+        //       });   
+        //     }
+        //   }
+        
+        // }
+
+        resizedDetected.forEach(detection => {
+        const {x,y,width,height}=detection.detection.box;
+        let distance = faceMatcher.findBestMatch(detection.descriptor).distance;
+        console.log(distance)
+
+                if(parseInt(distance)<0.4)
+                {
+
+                canvasRef.current.getContext('2d').strokeStyle = boxColor;
+                canvasRef.current.getContext('2d').strokeRect(x, y, width, height);
+                }
+                else
+                {
+
         canvasRef && canvasRef.current && faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
 
+                }
+            });   
+              
+        
         // canvasRef && canvasRef.current && faceapi.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
       }
-    }, 100)
+    }, 1000)
   }
 
   const closeWebcam = () => {
@@ -198,7 +223,7 @@ function authentifier()
             <div>
               <div style={{ display: 'flex', justifyContent: 'center', padding: '10px' }}>
                 <video ref={videoRef} height={videoHeight} width={videoWidth} onPlay={handleVideoOnPlay} style={{ borderRadius: '10px' }} />
-                <canvas ref={canvasRef} style={{ position: 'absolute' }} />
+                <canvas ref={canvasRef} style={{ position: 'absolute',border:'1px solid red'}} />
               </div>
             </div>
             :
