@@ -32,64 +32,35 @@ function Profile()
   const [modelsLoaded, setModelsLoaded] = useState(false);
   const [captureVideo, setCaptureVideo] = useState(false);
 
-  let input = document.getElementById('myImg')
-  
-
-  // const CustomloadImage = async () => {
-  //   // 업로드 된 이미지 이름을 배열에 담아 라벨링 합니다.
-  //   const labels = ["1","2","3","4","5","6","7","8","9","10"];
-  
-  //   return Promise.all(
-  //     labels.map(async (label) => {
-  //       const descriptions = [];
-  //         const result = await contract.methods.getCriminal(3).call();
-  //         const attributes=result[5]
-  //         let jsonatt=JSON.parse(attributes)
-  //         let crimedescriptors=jsonatt.descriptors[0]
-  //         let newarray=new Float32Array(crimedescriptors)
-  //       descriptions.push(newarray);
-  
-  
-  //       return new faceapi.LabeledFaceDescriptors(label, descriptions);
-  //     })
-  //   );
-  // };
   
 
   const CustomloadImage2 = async () => {
     // 업로드 된 이미지 이름을 배열에 담아 라벨링 합니다.
-    const labels = ["0","1","2","3"];
+    // const labels = ["0","1","2","3"];
     const max= await contract.methods.totalSupply().call();
     let CriminalList=[]
     let DiscriptorList=[]
-    let labeled=[]
+    let labels=[]
 
     for(let i=0; i<max; i++)
     {
+      //범죄자 info discriptor 파싱
       const info = await contract.methods.getCriminal(i).call();
       CriminalList.push(info)
-      labeled.push(i.toString);
+      labels.push(i);
       let att=JSON.parse(CriminalList[i][5])
       let newarray=new Float32Array(att.descriptors[0])
       DiscriptorList.push(newarray);
-
     }
-    
     
     return Promise.all(
       labels.map(async (label) => {
         let descriptions = [];
-          // const result = await contract.methods.getCriminal(3).call();
-          // const attributes=result[5]
-          // let jsonatt=JSON.parse(attributes)
-          // let crimedescriptors=jsonatt.descriptors[0]
-          // let newarray=new Float32Array(crimedescriptors)
-        // descriptions.push(newarray);
-        let n= parseInt(label)
-        descriptions.push(DiscriptorList[n])
+        // let n= parseInt(label)
+        descriptions.push(DiscriptorList[label])
   
   
-        return new faceapi.LabeledFaceDescriptors(label, descriptions);
+        return new faceapi.LabeledFaceDescriptors(label.toString(), descriptions);
       })
     );
   };
@@ -144,55 +115,39 @@ function Profile()
       
         // const labeledFaceDescriptors = await loadImage();
         // console.log(labeledFaceDescriptors)
-        // transferData(resizedDetected[0].descriptor)
         const labeledFaceDescriptors = await CustomloadImage2();
         const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.6);
         canvasRef && canvasRef.current && canvasRef.current.getContext('2d').clearRect(0, 0, videoWidth, videoHeight);
-        canvasRef && canvasRef.current && faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
            
-        // for(let i=0; i<resizedDetected.length; i++)
-        // {
-        //   if(resizedDetected[i])
-        //   {
-        //     // transferData(resizedDetected[i].descriptor)
-            // let similarity = faceMatcher.findBestMatch(resizedDetected[i].descriptor).toString();
-        //     console.log(similarity)
 
-        //     if(parseInt(similarity)<0.4)
-        //     {
-        //       resizedDetections.forEach(detection => {
-        //       const {x,y,width,height}=detection.detection.box;
-        //       canvasRef.current.getContext('2d').strokeStyle = boxColor;
-        //       canvasRef.current.getContext('2d').strokeRect(x, y, width, height);
-        //       });   
-        //     }
-        //   }
-        
-        // }
-
+        //감지된 객체 distance에 따라서 빨강 혹은 파랑 canvas 설정
+        //감지된 각 객ㅊ
         resizedDetected.forEach(detection => {
-        const {x,y,width,height}=detection.detection.box;
-        let distance = faceMatcher.findBestMatch(detection.descriptor).distance;
-        console.log(distance)
+          
+          // transferData(detection.descriptor)
+          let distance = faceMatcher.findBestMatch(detection.descriptor).distance;
+          console.log(distance)
 
-                if(parseInt(distance)<0.4)
-                {
+          const { x, y, width, height } = detection.detection.box;
 
-                canvasRef.current.getContext('2d').strokeStyle = boxColor;
-                canvasRef.current.getContext('2d').strokeRect(x, y, width, height);
-                }
-                else
-                {
+          if (distance < 0.4) {
 
-        canvasRef && canvasRef.current && faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
+            canvasRef.current.getContext('2d').strokeStyle = boxColor;
+            canvasRef.current.getContext('2d').strokeRect(x, y, width, height);
+            canvasRef && canvasRef.current && faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
+          }
+          else {
 
-                }
-            });   
+            canvasRef && canvasRef.current && faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
+            canvasRef && canvasRef.current && faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
+
+          }
+        });   
               
         
         // canvasRef && canvasRef.current && faceapi.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
       }
-    }, 1000)
+    }, 100)
   }
 
   const closeWebcam = () => {
@@ -200,11 +155,6 @@ function Profile()
     videoRef.current.srcObject.getTracks()[0].stop();
     setCaptureVideo(false);
   }
-
-  useEffect(() => {
-    
-    console.log(yournumber)
-  }, []);
 
 
 
@@ -261,21 +211,10 @@ function authentifier()
   
     return(
 
-      
-      
-    <React.Fragment>
-
-
-
-
-
-{authentifier()}
-
-
-
-    </React.Fragment>
+      <React.Fragment>
+        {authentifier()}
+      </React.Fragment>
     
-      
     );
 }
 
