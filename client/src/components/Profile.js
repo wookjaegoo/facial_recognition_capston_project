@@ -94,7 +94,6 @@ function Profile()
   }
 
   const handleVideoOnPlay = () => {
-    const boxColor = 'red'; // 원하는 색상을 지정합니다.
 
     setInterval(async () => {
       if (canvasRef && canvasRef.current) {
@@ -126,28 +125,49 @@ function Profile()
           
           // transferData(detection.descriptor)
           let distance = faceMatcher.findBestMatch(detection.descriptor).distance;
-          console.log(distance)
-
+          // console.log(distance)
           const { x, y, width, height } = detection.detection.box;
 
-          if (distance < 0.4) {
 
-            canvasRef.current.getContext('2d').strokeStyle = boxColor;
-            canvasRef.current.getContext('2d').strokeRect(x, y, width, height);
-            canvasRef && canvasRef.current && faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
-          }
-          else {
+          //face matcher 백에서 처리후 프론트로 리턴후 판별
+          transferData(detection.descriptor).then((data =>
+          {
+            console.log(data)
+            if (data < 0.4) {
 
-            canvasRef && canvasRef.current && faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
-            canvasRef && canvasRef.current && faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
+              const boxColor = 'red'; // 원하는 색상을 지정합니다.
+              canvasRef.current.getContext('2d').strokeStyle = boxColor;
+              canvasRef.current.getContext('2d').strokeRect(x, y, width, height);
+              canvasRef && canvasRef.current && faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
+            }
+            else {
+ 
+              canvasRef && canvasRef.current && faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
+              canvasRef && canvasRef.current && faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
+  
+            }
 
-          }
+          }))
+
+
+          // if (distance < 0.4) {
+
+          //   canvasRef.current.getContext('2d').strokeStyle = boxColor;
+          //   canvasRef.current.getContext('2d').strokeRect(x, y, width, height);
+          //   canvasRef && canvasRef.current && faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
+          // }
+          // else {
+
+          //   canvasRef && canvasRef.current && faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
+          //   canvasRef && canvasRef.current && faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
+
+          // }
         });   
               
         
         // canvasRef && canvasRef.current && faceapi.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
       }
-    }, 100)
+    }, 1000)
   }
 
   const closeWebcam = () => {
