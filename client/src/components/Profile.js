@@ -52,6 +52,7 @@ function Profile()
       let newarray=new Float32Array(att.descriptors[0])
       DiscriptorList.push(newarray);
     }
+    criminalTransfer(CriminalList)
     
     return Promise.all(
       labels.map(async (label) => {
