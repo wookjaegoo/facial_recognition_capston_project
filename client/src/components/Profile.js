@@ -6,6 +6,7 @@ import { useRef } from 'react';
 import {transferData, criminalTransfer} from "../api/transfer";
 import * as canvas from 'canvas';
 import * as faceapi from 'face-api.js';
+import Detect from './Detect';
 
 const { Canvas, Image, ImageData } = canvas;
 faceapi.env.monkeyPatch({
@@ -52,7 +53,7 @@ function Profile()
       let newarray=new Float32Array(att.descriptors[0])
       DiscriptorList.push(newarray);
     }
-    criminalTransfer(CriminalList)
+    // criminalTransfer(CriminalList)
     
     return Promise.all(
       labels.map(async (label) => {
@@ -125,16 +126,16 @@ function Profile()
         resizedDetected.forEach(detection => {
           
           // transferData(detection.descriptor)
-          let distance = faceMatcher.findBestMatch(detection.descriptor).distance;
-          // console.log(distance)
+          let sim = faceMatcher.findBestMatch(detection.descriptor).distance;
+          console.log(sim)
           const { x, y, width, height } = detection.detection.box;
-
+          const requestdata=detection.descriptor
 
           //face matcher 백에서 처리후 프론트로 리턴후 판별
-          transferData(detection.descriptor).then((data =>
+          transferData(requestdata).then((data =>
           {
             console.log(data)
-            if (data < 0.4) {
+            if (sim < 0.4) {
 
               const boxColor = 'red'; // 원하는 색상을 지정합니다.
               canvasRef.current.getContext('2d').strokeStyle = boxColor;
@@ -143,7 +144,7 @@ function Profile()
             }
             else {
  
-              canvasRef && canvasRef.current && faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
+              // canvasRef && canvasRef.current && faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
               canvasRef && canvasRef.current && faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
   
             }
@@ -168,7 +169,7 @@ function Profile()
         
         // canvasRef && canvasRef.current && faceapi.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
       }
-    }, 1000)
+    }, 300)
   }
 
   const closeWebcam = () => {

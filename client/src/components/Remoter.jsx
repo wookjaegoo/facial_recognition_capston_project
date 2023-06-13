@@ -21,7 +21,7 @@ function Remoter()
           <Route path='/Footer' element={<Footer/>}/> 
           <Route path='/' element={<Main/>}/>
           <Route path='/Profile' element={<Profile/>}/>
-          <Route path='/Detect' element={<Detect/>}/>
+          {/* <Route path='/Detect' element={<Detect/>}/> */}
 
 
         </Routes>
