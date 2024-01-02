@@ -10,7 +10,7 @@ const initialState = {
   accounts: null,
   networkID: null,
   contract: null,
-  provider:null,
+  provider: null,
 };
 
 const reducer = (state, action) => {
@@ -23,8 +23,4 @@ const reducer = (state, action) => {
   }
 };
 
-export {
-  actions,
-  initialState,
-  reducer
-};
+export { actions, initialState, reducer };

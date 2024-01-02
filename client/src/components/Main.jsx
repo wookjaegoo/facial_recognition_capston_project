@@ -3,17 +3,16 @@ import useEth from "../contexts/EthContext/useEth";
 import Footer from "./Footer";
 import Profile from "./Profile";
 
+function Main() {
+  const {
+    state: { newjson },
+  } = useEth();
 
-function Main()
-{
-  const{state:{newjson}} = useEth();
-
-    return(
+  return (
     <React.Fragment>
-      <Profile/>
-          
+      <Profile />
     </React.Fragment>
-    );
+  );
 }
 
 export default Main;
