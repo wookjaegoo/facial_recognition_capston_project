@@ -206,10 +206,11 @@ uint256 amount
         return totalRisk;
     }
 
+```
+
 해외 도피가능성을 계산하는 함수의 일부이다. 범죄유형에 따라서 가중치를 다르게 부여한다.
 
 ```
-
 function issueRedNotice(bytes32 requestId) public onlyAllowed{
 // 요청서에 해당하는 범죄자 정보 가져오기
 Criminal storage criminal = criminals[requestId];
@@ -273,4 +274,3 @@ criminal.age > 0 && !criminal.redNoticeIssued,
 또한 팀원간의 소통이 부족하여 많은 시간을 허비해버렸던 점도 문제였다. 적극적인 소통과 프로젝트의 주제선정이
 
 매우 중요함을 깨닫는 프로젝트였다.
-```
