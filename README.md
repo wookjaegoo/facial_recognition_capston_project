@@ -87,7 +87,7 @@
 
 ## 홈화면
 
-<div align="center">
+<div >
 <!-- 홈화면 이미지 -->
 <img src="/Doc/img/home.png" alt="홈화면" width="324" height="707">
 <img src="/Doc/sit/fistsit.png" alt="정보입력" width="324" height="707">
@@ -99,7 +99,7 @@
 
 <div align="center">
 <!-- 트랜잭션 이미지 -->
-<img src="/Doc/sit/secondsit.png.png" alt="트랜잭션발생" width="324" height="707">
+<img src="/Doc/sit/secondsit.png" alt="트랜잭션발생" width="324" height="707">
 
 두 번의 트랜잭션이 발생한다.
 
@@ -107,7 +107,7 @@
 
 </div>
 
-<div align="center">
+<div >
 
 <img src="/Doc/img/facial.png" alt="얼굴인식" width="324" height="707">
 <img src="/Doc/img/similarity.png" alt="얼굴인식" width="324" height="707">
