@@ -172,6 +172,11 @@ function processRequest (
 
 
 두번의 트랜잭션에서 첫번째로 발생하는 트랜잭션이다.
+```
+
+```solidity
+// 예시 솔리디티 코드
+pragma solidity ^0.8.0;
 
 function calculateFleeingRisk(
 string memory nationality,
@@ -205,6 +210,11 @@ uint256 amount
 
 
 해외 도피가능성을 계산하는 함수의 일부이다. 범죄유형에 따라서 가중치를 다르게 부여한다.
+```
+
+```solidity
+// 예시 솔리디티 코드
+pragma solidity ^0.8.0;
 
 
 function issueRedNotice(bytes32 requestId) public onlyAllowed{
@@ -252,11 +262,12 @@ criminal.age > 0 && !criminal.redNoticeIssued,
 
 }
 
-```
 
 두번의 트랜잭션에서 마지막에 발생하는 적색수배 발령함수이다.
 
 해외 도피가능성이 기준치를 넘으면 적색수배를 발령한다.
+
+```
 
 ## 후기
 
