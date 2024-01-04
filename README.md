@@ -90,14 +90,15 @@
 <div >
 <!-- 홈화면 이미지 -->
 <img src="/Doc/img/home.png" alt="홈화면" width="324" height="707">
-<img src="/Doc/sit/fistsit.png" alt="정보입력" width="324" height="707">
 </div>
-
 범죄자의 신상정보를 입력한다. 사진 이름 국가 나이 범죄명 자산 등의 정보를 입력해야한다.
 
-안면 정보가 추출되고 입력정보에 따라서 적색수배 발령 여부가 결정된다.
+<div >
+<img src="/Doc/sit/fistsit.png" alt="정보입력" width="324" height="707">
+</div>
+transaction버튼을 클릭하면 transaction이 발생하며 안면 정보가 추출되고 입력정보에 따라서 적색수배 발령 여부가 결정된다.
 
-<div align="center">
+<div >
 <!-- 트랜잭션 이미지 -->
 <img src="/Doc/sit/secondsit.png" alt="트랜잭션발생" width="324" height="707">
 
@@ -108,11 +109,12 @@
 </div>
 
 <div >
-
 <img src="/Doc/img/facial.png" alt="얼굴인식" width="324" height="707">
-<img src="/Doc/img/similarity.png" alt="얼굴인식" width="324" height="707">
+</div>
 1.화면에 비친 사람의 얼굴이 실시간으로 블록체인에 기록된 범죄자의 안면정보와 비교된다.
 
+<div >
+<img src="/Doc/img/similarity.png" alt="얼굴인식" width="324" height="707">
 2.이때 유사도값이 0에 근접할수록 기록된 정보와 일치할 확률이 매우높아서 파란색 테두리가 아닌
 빨간색 테두리로 표시된다.
 
