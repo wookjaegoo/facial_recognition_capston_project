@@ -3,18 +3,12 @@ import "./App.css";
 import Remoter from "./components/Remoter";
 import BottomBar from "./components/BottomBar";
 
-
 function App() {
-  
   return (
-    
     <React.Fragment>
-
       <Remoter />
-      <BottomBar>
-        </BottomBar>
+      <BottomBar></BottomBar>
     </React.Fragment>
-    
   );
 }
 
