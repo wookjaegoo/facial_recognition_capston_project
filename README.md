@@ -127,7 +127,7 @@ transaction버튼을 클릭하면 transaction이 발생하며 안면 정보가 �
 </div>
 2.이때 유사도값이 0에 근접할수록 기록된 정보와 일치할 확률이 매우높아서 파란색 테두리가 아닌빨간색 테두리로 표시된다.
 
-### SmartContract
+## SmartContract
 
 ```solidity
 // 예시 솔리디티 코드
@@ -175,6 +175,7 @@ function processRequest (
 
 두번의 트랜잭션에서 첫번째로 발생하는 트랜잭션이다.
 
+```
 function calculateFleeingRisk(
 string memory nationality,
 uint256 age,
@@ -206,6 +207,8 @@ uint256 amount
     }
 
 해외 도피가능성을 계산하는 함수의 일부이다. 범죄유형에 따라서 가중치를 다르게 부여한다.
+
+```
 
 function issueRedNotice(bytes32 requestId) public onlyAllowed{
 // 요청서에 해당하는 범죄자 정보 가져오기
@@ -252,11 +255,13 @@ criminal.age > 0 && !criminal.redNoticeIssued,
 
 }
 
+```
+
 두번의 트랜잭션에서 마지막에 발생하는 적색수배 발령함수이다.
 
 해외 도피가능성이 기준치를 넘으면 적색수배를 발령한다.
 
-### 후기
+## 후기
 
 적색수배를 발령할때 판단하는 해외 도피가능성의 로직이 너무 단순했다.
 
@@ -268,3 +273,4 @@ criminal.age > 0 && !criminal.redNoticeIssued,
 또한 팀원간의 소통이 부족하여 많은 시간을 허비해버렸던 점도 문제였다. 적극적인 소통과 프로젝트의 주제선정이
 
 매우 중요함을 깨닫는 프로젝트였다.
+```
