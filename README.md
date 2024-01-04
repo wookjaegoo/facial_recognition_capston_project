@@ -129,7 +129,7 @@ transaction버튼을 클릭하면 transaction이 발생하며 안면 정보가 �
 
 ## SmartContract
 
-````solidity
+`````solidity
 // 예시 솔리디티 코드
 pragma solidity ^0.8.0;
 
@@ -171,14 +171,14 @@ function processRequest (
     }
 
 
-```solidity
-// 예시 솔리디티 코드
-pragma solidity ^0.8.0;
-
+```
 
 두번의 트랜잭션에서 첫번째로 발생하는 트랜잭션이다.
 
-````
+````solidity
+// 예시 솔리디티 코드
+pragma solidity ^0.8.0;
+
 
 function calculateFleeingRisk(
 string memory nationality,
@@ -210,14 +210,14 @@ uint256 amount
         return totalRisk;
     }
 
+```
+
+해외 도피가능성을 계산하는 함수의 일부이다. 범죄유형에 따라서 가중치를 다르게 부여한다.
+
 ```solidity
 // 예시 솔리디티 코드
 pragma solidity ^0.8.0;
 
-
-해외 도피가능성을 계산하는 함수의 일부이다. 범죄유형에 따라서 가중치를 다르게 부여한다.
-
-```
 
 function issueRedNotice(bytes32 requestId) public onlyAllowed{
 // 요청서에 해당하는 범죄자 정보 가져오기
@@ -283,3 +283,4 @@ criminal.age > 0 && !criminal.redNoticeIssued,
 
 매우 중요함을 깨닫는 프로젝트였다.
 ```
+`````
