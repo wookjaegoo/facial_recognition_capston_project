@@ -1,10 +1,9 @@
 import { useState, useCallback, useEffect } from "react";
-import { create } from "ipfs-http-client";
 import React from "react";
 import "./Footer.css";
 import useEth from "../contexts/EthContext/useEth";
 import { Buffer } from "buffer";
-import { transferData, criminalTransfer } from "../api/transfer";
+import { criminalTransfer } from "../api/transfer";
 
 import {
   EthereumClient,
@@ -21,7 +20,7 @@ import { sepolia } from "wagmi/chains";
 import * as faceapi from "face-api.js";
 import * as canvas from "canvas";
 
-const { Canvas, Image, ImageData } = canvas;
+const { ImageData } = canvas;
 faceapi.env.monkeyPatch({
   Canvas: HTMLCanvasElement,
   Image: HTMLImageElement,
@@ -38,9 +37,8 @@ const auth =
 let input = "";
 
 function Footer() {
-  const [fileUrl, updateFileUrl] = useState("");
   const {
-    state: { contract, accounts, web3 },
+    state: { contract, accounts },
   } = useEth();
   const [yournumber, numset] = useState("");
   const [inputs, setInputs] = useState({
@@ -52,7 +50,6 @@ function Footer() {
     age: "",
   });
   const { selectaddr, cname, nationality, age, crime, amount } = inputs;
-  const inputss = document.getElementById("myImg");
   const chains = [sepolia];
 
   const { publicClient } = configureChains(chains, [
@@ -100,7 +97,7 @@ function Footer() {
         descriptions.push(detections.descriptor);
 
         return new faceapi.LabeledFaceDescriptors(label, descriptions);
-      }),
+      })
     );
   };
 
@@ -108,16 +105,16 @@ function Footer() {
     const loadModels = async () => {
       Promise.all([
         faceapi.nets.ssdMobilenetv1.loadFromUri(
-          "https://raw.githubusercontent.com/ml5js/ml5-data-and-models/main/models/faceapi/ssd_mobilenetv1_model-weights_manifest.json",
+          "https://raw.githubusercontent.com/ml5js/ml5-data-and-models/main/models/faceapi/ssd_mobilenetv1_model-weights_manifest.json"
         ),
         faceapi.nets.faceLandmark68Net.loadFromUri(
-          "https://raw.githubusercontent.com/ml5js/ml5-data-and-models/main/models/faceapi/face_landmark_68_model-weights_manifest.json",
+          "https://raw.githubusercontent.com/ml5js/ml5-data-and-models/main/models/faceapi/face_landmark_68_model-weights_manifest.json"
         ),
         faceapi.nets.faceLandmark68TinyNet.loadFromUri(
-          "https://raw.githubusercontent.com/ml5js/ml5-data-and-models/main/models/faceapi/face_landmark_68_tiny_model-weights_manifest.json",
+          "https://raw.githubusercontent.com/ml5js/ml5-data-and-models/main/models/faceapi/face_landmark_68_tiny_model-weights_manifest.json"
         ),
         faceapi.nets.faceRecognitionNet.loadFromUri(
-          "https://raw.githubusercontent.com/ml5js/ml5-data-and-models/main/models/faceapi/face_recognition_model-weights_manifest.json",
+          "https://raw.githubusercontent.com/ml5js/ml5-data-and-models/main/models/faceapi/face_recognition_model-weights_manifest.json"
         ),
       ]);
     };
@@ -133,21 +130,16 @@ function Footer() {
 
     return new Promise((resolve) => {
       reader.onload = () => {
-        setImageSrc(reader.result || null); // 파일의 컨텐츠
+        setImageSrc(reader.result || null);
         resolve();
       };
     });
   };
 
-  //여기에 솔리디티 접근제어 메소드 및 버튼 추가해서 반영할것
-  //요청서 형식으로 ui변경해서 반영
-
   async function discriptorFromImage(e) {
     try {
       const labeledFaceDescriptors = await loadImage();
       const descriptor = JSON.stringify(labeledFaceDescriptors[0]);
-
-      //여기서 processrequest 파라미터는 입력탭 만들어서 받아야한다.
       const processRequest = await contract.methods
         .processRequest(cname, nationality, age, crime, amount, descriptor)
         .send({ from: accounts[0] });

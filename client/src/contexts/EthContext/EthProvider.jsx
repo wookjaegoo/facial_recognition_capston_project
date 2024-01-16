@@ -3,14 +3,8 @@ import Web3 from "web3";
 import EthContext from "./EthContext";
 import { reducer, actions, initialState } from "./state";
 
-import {
-  EthereumClient,
-  w3mConnectors,
-  w3mProvider,
-} from "@web3modal/ethereum";
-
-import { Web3Modal } from "@web3modal/react";
-import { configureChains, createConfig, WagmiConfig } from "wagmi";
+import { w3mProvider } from "@web3modal/ethereum";
+import { configureChains } from "wagmi";
 
 import { sepolia } from "wagmi/chains";
 
@@ -24,65 +18,8 @@ export function EthProvider({ children }) {
     w3mProvider({ projectId: "ad51cb658b57c4bb5916b92e7f4a4ff7" }),
   ]);
 
-  // const wagmiClient = createConfig({
-  //   autoConnect: true,
-  //   connectors: w3mConnectors({
-  //     projectId: "ad51cb658b57c4bb5916b92e7f4a4ff7",
-  //     version: "1", // or "2"
-  //     chains,
-  //   }),
-  //   publicClient,
-  // });
-
-  // Web3Modal Ethereum Client
-  // const ethereumClient = new EthereumClient(wagmiClient,chains);
-
-  //  const provider3 = new WalletConnectProvdier({
-
-  //   rpc: {
-  //     5:'https://goerli.infura.io/v3/ff2d998f9cdf4be29197ce3ffb727d89'
-
-  //   },
-  //   infuraId: "ff2d998f9cdf4be29197ce3ffb727d89",
-
-  //  qrcodeModalOptions: {
-  //    desktopLinks: [
-  //      'ledger',
-  //      'tokenary',
-  //      'wallet',
-  //      'wallet 3',
-  //      'secuX',
-  //      'ambire',
-  //      'wallet3',
-  //      'apolloX',
-  //      'zerion',
-  //      'sequence',
-  //      'punkWallet',
-  //      'kryptoGO',
-  //      'nft',
-  //      'riceWallet',
-  //      'vision',
-  //      'keyring'
-  //    ],
-  //    mobileLinks: [
-  //      "rainbow",
-  //      "metamask",
-  //      "argent",
-  //      "trust",
-  //      "imtoken",
-  //      "pillar",
-
-  //    ],}});
-
   const init = useCallback(async (artifact) => {
     if (artifact) {
-      // const web3 = new Web3(Web3.givenProvider || "ws://127.0.0.1:7545");
-
-      // await provider.disconnect();
-      // await provider3.enable();
-
-      //  const web3 = new Web3(provider);
-
       const web3 = new Web3(window.web3.currentProvider);
       await window.web3.currentProvider.enable();
 
